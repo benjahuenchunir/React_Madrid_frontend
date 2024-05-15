@@ -29,10 +29,18 @@
     - Entonces el sitio mostrará el historial de todos los mensajes y permitirá escribir uno nuevo.
 5. Como usuario quiero poder enviar un mensaje para interactuar con un contacto/grupo.
     - Dado un usuario loggeado en la vista de un chat particular.
-    - Cuando el usuario escriba texto o un emoji, o inserte una imagen, y presione "Enviar".
+    - Cuando el usuario escriba texto o un emoji, o inserte una imagen, sobre el campo dedicado y presione "Enviar".
     - Entonces el sitio intentará enviar el mensaje.
         - En caso de éxito, el mensaje se agregará al historial y será visible en el chat.
         - En caso de error, se notificará al usuario que el mensaje no pudo ser enviado.
+6. Como usuario quiero poder editar un mensaje enviado para corregir un error que pude haber cometido.
+    - Dado un usuario loggeado en la vista de un chat particular, que ha enviado un mensaje recientemente.
+    - Cuando el usuario haga click sobre "Editar" en el mensaje más reciente.
+    - Entonces el sitio mostrará un campo dedicado similar al de *enviar un mensaje*.
+    - Cuando el usuario corrija el mensaje y presione "Guardar".
+    - Entonces el sitio intenterá modificar el mensaje enviado.
+        - En caso de éxito, el mensaje será modificado y se marcará como que fue editado.
+        - En caso de error, se notificará al usuario que el mensaje no pudo ser editado.
 
 ## Diagrama Entidad-Relación :scroll:
 <!-- Insertamos la imagen ER-Model.png -->
