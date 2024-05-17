@@ -88,6 +88,36 @@
     - En caso de éxito, la contraseña será actualizada y se notificará al usuario.
     - En caso de error, se notificará al usuario que la contraseña no pudo ser cambiada.
 
+12. Como usuario quiero poder reportar mensajes inapropiados para que los administradores puedan revisarlos.
+
+- Dado un usuario loggeado en la vista de un chat particular.
+- Cuando el usuario seleccione un mensaje y elija "Reportar".
+- Entonces el sitio enviará un reporte a los administradores para su revisión.
+    - En caso de éxito, se notificará al usuario que el reporte fue enviado.
+    - En caso de error, se notificará al usuario que no se pudo enviar el reporte.
+
+13. Como usuario quiero poder buscar mensajes dentro de un chat para encontrar información específica.
+
+- Dado un usuario loggeado en la vista de un chat particular.
+- Cuando el usuario acceda a la función de búsqueda y escriba algo.
+- Entonces el sitio mostrará todos los mensajes de ese chat que coincidan con lo escrito.
+
+14. Como usuario quiero poder silenciar las notificaciones de un chat para no recibir alertas.
+
+- Dado un usuario loggeado en la vista de un chat particular.
+- Cuando el usuario acceda a la configuración del chat y seleccione la opción de "Silenciar Notificaciones".
+- Entonces el sitio silenciará las notificaciones de ese chat.
+    - En caso de éxito, se notificará al usuario que las notificaciones fueron silenciadas.
+    - En caso de error, se notificará al usuario que no se pudo silenciar el chat.
+
+15. Como usuario quiero poder adjuntar archivos en un chat para compartir documentos o imágenes.
+
+- Dado un usuario loggeado en la vista de un chat particular.
+- Cuando el usuario haga click en el icono de "Adjuntar" y seleccione un archivo desde su dispositivo.
+- Entonces el sitio intentará enviar el archivo adjunto.
+    - En caso de éxito, el archivo será enviado y visible en el chat.
+    - En caso de error, se notificará al usuario que el archivo no pudo ser enviado.
+
 
 ## Diagrama Entidad-Relación :scroll:
 <!-- Insertamos la imagen ER-Model.png -->
