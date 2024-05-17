@@ -118,6 +118,13 @@
     - En caso de éxito, el archivo será enviado y visible en el chat.
     - En caso de error, se notificará al usuario que el archivo no pudo ser enviado.
 
+16. Como usuario quiero poder fijar un chat para poder verlos siempre en la parte superior de la lista.
+
+- Dado un usuario loggeado en la vista de Chats.
+- Cuando el usuario selecciona un chat y seleccione la opción de "Fijar chat".
+- Entonces el sitio fijará el chat en la parte superior de los demás chats.
+    - En caso de éxito, el chat aparecerá en la parte superior de la lista y se notificará al usuario.
+    - En caso de error, se notificará al usuario que el chat no pudo ser fijado.
 
 ## Diagrama Entidad-Relación :scroll:
 <!-- Insertamos la imagen ER-Model.png -->
