@@ -6,8 +6,20 @@
 ## Descripción general :thought_balloon:
 
 - ¿De qué se tratará el proyecto?
+
+El proyecto que vamos a desarrollar consiste en sistema de mensajería instantánea llamado "deepspace". En "deepspace" podrás comunicarte con una o muchas personas de manera simple, concisa y rápida. Se implementarán funciones como
+login en la aplicación, crear e interactuar con chats individuales o grupales, recibir notificaciones, reportar mensajes inapropiados, mandar archivos, entre muchas otras cosas. 
+
+También cuidaremos al usuario proporcionando una interfaz simple e intuitiva que además podrán modificar según sus necesidades. En línea con esto, "deepspace" podrá usarse desde un computador, una tableta o un celular, siendo accesible para todos los usuarios.
+
 - ¿Cuál es el fin o la utilidad del proyecto?
+
+El objetivo del proyecto es proporcionar una nueva plataforma de mensajería eficiente y personalizable que facilite la comunicación entre grupos e individuos de persona,s siendo "deepspace" una forma rápida y confiable de mantenerse en contacto, ya sea para fines de ocio, profesionales, comunitarios, etc.
+
 - ¿Quiénes son los usuarios objetivo de su aplicación?
+
+Los usuarios objetivo de "deepspace" son personas interesadas en la comunicación e interacción social. Estos usuarios son indistintos a factores como el género y la ubicación, y deben contar con acceso a internet. Pueden ser profesionales, estudiantes, grupos y organizaciones, personas que buscan su espacio para conversar sobre temas en común, entre muchos otros. 
+
 
 ## Historia de Usuarios :busts_in_silhouette:
 
