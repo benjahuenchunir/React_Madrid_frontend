@@ -42,6 +42,53 @@
         - En caso de éxito, el mensaje será modificado y se marcará como que fue editado.
         - En caso de error, se notificará al usuario que el mensaje no pudo ser editado.
 
+7.  Como usuario quiero poder eliminar un mensaje enviado para evitar que otros lo vean.
+    - Dado un usuario loggeado en la vista de un chat particular, que ha enviado un mensaje recientemente.
+    - Cuando el usuario haga click sobre "Eliminar" en uno de sus mensajes.
+    - Entonces el sitio mostrará una confirmación para la eliminación del mensaje
+    - Cuando el usuario confirme la eliminación.
+    - Entonces el sitio intentará eliminar el mensaje.
+        - En caso de éxito, el mensaje será eliminado y ya no será visible en el chat.
+        - En caso de error, se notificará al usuario que el mensaje no pudo ser eliminado.
+8. Como usuario quiero poder ver y actualizar mi perfil para mantener mi información actualizada.
+    - Dado un usuario loggeado en su cuenta.
+    - Cuando el usuario acceda a "Mi perfil".
+    - Entonces el sitio mostrará la información actual del perfil (nombre, email, teléfono, foto de usuario, etc).
+    - Cuando el usuario edite cualquier campo y presione "Guardar".
+    - Entonces el sitio intentará actualizar la información del perfil.
+        - En caso de éxito, la información será actualizada y se notificará al usuario.
+        - En caso de error, se notificará al usuario que la información no pudo ser actualizada.
+
+9. Como usuario quiero poder recibir notificaciones de mensajes nuevos para estar al tanto de las conversaciones.
+
+- Dado un usuario loggeado.
+- Cuando un nuevo mensaje sea recibido en cualquier chat donde el usuario es integrante.
+- Entonces el sitio mostrará una notificación al usuario indicando el nuevo mensaje.
+- Si el usuario hace click en la notificación.
+- Entonces el sitio redirigirá al usuario al chat correspondiente donde el mensaje fue recibido.
+
+10. Como usuario quiero poder crear un grupo de chat para conversar con múltiples personas a la vez.
+
+- Dado un usuario loggeado.
+- Cuando el usuario acceda a "Nuevo grupo" y especifique los detalles del grupo (nombre del grupo, miembros, foto de grupo).
+- Entonces el sitio intentará crear el grupo de chat.
+    - En caso de éxito, el grupo será creado y los miembros serán notificados.
+    - En caso de error, se notificará al usuario que el grupo no pudo ser creado.
+
+
+11. Como usuario quiero poder cambiar mi contraseña para ingresar a mi cuenta en caso de haberla olvidado.
+
+- Dado un usuario registrado en el sitio con la sesión cerrada.
+- Cuando el usuario intente ingresar a su cuenta y acceda a "Olvide mi contraseña".
+- Entonces el sitio mostrará un campo para ingresar el correo
+- Cuando el usuario ingrese su correo y le de a "Continuar"
+- Entonces se enviara un correo con un link de confirmación para el cambio de contraseña.
+- Cuando el usuario abra este link.
+- Entonces la aplicación permitirá al usuario escribir una nueva contraseña y el sitio intentará cambiarla.
+    - En caso de éxito, la contraseña será actualizada y se notificará al usuario.
+    - En caso de error, se notificará al usuario que la contraseña no pudo ser cambiada.
+
+
 ## Diagrama Entidad-Relación :scroll:
 <!-- Insertamos la imagen ER-Model.png -->
 ![ER-Model](assets/ER-Model.png)
