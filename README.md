@@ -146,28 +146,25 @@ Los usuarios objetivo de "deepspace" son personas interesadas en la comunicació
 
 <!-- Documento de diseño web -->
 ### :art: Documento de diseño
-![Paleta de colores](assets/Design/PrincipalColors.png)
-![Paleta de colores](assets/Design/SecondaryColors.png)
-![Paleta de colores](assets/Design/Typography.png)
+![Doc](assets/Design/doc.png)
 
 
 <!-- Vistas principales -->
 ### :mag: Vistas principales
+
+#### Vista usuario: Chats
+
 ![Paleta de colores](assets/Views/1.png)
 ![Paleta de colores](assets/Views/2.png)
 ![Paleta de colores](assets/Views/3.png)
+
+#### Vista usuario: Crear grupo
 ![Paleta de colores](assets/Views/4.png)
 ![Paleta de colores](assets/Views/5.png)
 ![Paleta de colores](assets/Views/6.png)
+
+
+#### Vista usuario: Chat (singular)
 ![Paleta de colores](assets/Views/7.png)
 ![Paleta de colores](assets/Views/9.png)
 ![Paleta de colores](assets/Views/10.png)
-
-
-<!-- Logo -->
-### :art: Logo
-![Logo](assets/Logo.jpg)
-
-<!-- ejemplo de aplicacion -->
-### :iphone: Ejemplo de aplicación
-![Ejemplo de aplicación](assets/PatternApplication.png)
