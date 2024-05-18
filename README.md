@@ -146,7 +146,7 @@ Los usuarios objetivo de "deepspace" son personas interesadas en la comunicació
 
 <!-- Documento de diseño web -->
 ### :art: Documento de diseño
-![Doc](assets/Design/doc.png)
+![Doc](assets/doc.png)
 
 
 <!-- Vistas principales -->
