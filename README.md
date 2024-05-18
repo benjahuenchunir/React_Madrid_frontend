@@ -153,9 +153,16 @@ Los usuarios objetivo de "deepspace" son personas interesadas en la comunicació
 
 <!-- Vistas principales -->
 ### :mag: Vistas principales
-![Paleta de colores](assets/Views/ResponsiveDesign1.png)
-![Paleta de colores](assets/Views/ResponsiveDesign2.png)
-![Paleta de colores](assets/Views/ResponsiveDesign3.jpg)
+![Paleta de colores](assets/Views/1.png)
+![Paleta de colores](assets/Views/2.png)
+![Paleta de colores](assets/Views/3.png)
+![Paleta de colores](assets/Views/4.png)
+![Paleta de colores](assets/Views/5.png)
+![Paleta de colores](assets/Views/6.png)
+![Paleta de colores](assets/Views/7.png)
+![Paleta de colores](assets/Views/9.png)
+![Paleta de colores](assets/Views/10.png)
+
 
 <!-- Logo -->
 ### :art: Logo
