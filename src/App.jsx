@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import './App.css'
 import { Route, Routes } from 'react-router-dom';
 import Chats from './views/chats/chats';
 
