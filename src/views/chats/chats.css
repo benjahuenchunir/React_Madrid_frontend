@@ -26,7 +26,6 @@
     width: 90%;
 }
 
-
 .chats::-webkit-scrollbar {
     width: 10px;
 }
@@ -42,7 +41,6 @@
 .chats-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     width: 100%;
     background-color: var(--primary-black);
@@ -53,6 +51,7 @@
 .chat-details {
     display: none;
     background-color: var(--primary-blue);
+    padding: 10px;
 }
 
 .fab {

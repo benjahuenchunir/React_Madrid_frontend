@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './chats.css';
 import ChatCard from './components/ChatCard';
+import ChatDetails from './components/ChatDetails';
 
 const Chats = () => {
     const [users, setUsers] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedChat, setSelectedChat] = useState(null);
 
     useEffect(() => {
         fetch('https://randomuser.me/api?results=8')
@@ -17,29 +19,29 @@ const Chats = () => {
     );
 
     return (
-        <div class="main-container">
-            <div class="chats-container">
+        <div className="main-container">
+            <div className="chats-container">
                 <input 
                     type="text" 
                     placeholder="Buscar en mis chats" 
                     onChange={event => setSearchQuery(event.target.value)} 
-                    class="search-input"
+                    className="search-input"
                 />
-                <div class="chats">
+                <div className="chats">
                     {filteredUsers.map((user, index) => (
                         <ChatCard 
                             key={index}
                             profilePic={user.picture.large} 
                             contactName={`${user.name.first} ${user.name.last}`} 
                             lastMessage="Hola!" 
+                            onClick={() => setSelectedChat(user)}
                         />
                     ))}
                 </div>
-                <button class="fab">+</button>
+                <button className="fab">+</button>
             </div>
-            <div class="chat-details">
-                <h1>Detalles del chat</h1>
-                <p>Selecciona un chat para ver los detalles</p>
+            <div className="chat-details">
+                <ChatDetails chat={selectedChat} />
             </div>
         </div>
     );

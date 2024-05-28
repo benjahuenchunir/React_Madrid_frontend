@@ -1,9 +1,9 @@
 import React from 'react';
 import './ChatCard.css';
 
-const ChatCard = ({ profilePic, contactName, lastMessage }) => {
+const ChatCard = ({ profilePic, contactName, lastMessage, onClick }) => {
     return (
-        <div className="chat-card">
+        <div className="chat-card" onClick={onClick}>
             <img src={profilePic} alt="Profile" className="profile-pic" />
             <div className="chat-info">
                 <h2 className="contact-name">{contactName}</h2>
