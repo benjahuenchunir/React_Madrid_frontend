@@ -23,6 +23,7 @@ const Chats = () => {
                     type="text" 
                     placeholder="Buscar en mis chats" 
                     onChange={event => setSearchQuery(event.target.value)} 
+                    class="search-input"
                 />
                 {filteredUsers.map((user, index) => (
                     <ChatCard 
