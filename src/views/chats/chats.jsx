@@ -17,7 +17,7 @@ const Chats = () => {
     );
 
     return (
-        <div>
+        <div class="main-container">
             <div class="chats">
                 <input 
                     type="text" 
@@ -34,7 +34,8 @@ const Chats = () => {
                 ))}
             </div>
             <div class="chat-details">
-                
+                <h1>Detalles del chat</h1>
+                <p>Selecciona un chat para ver los detalles</p>
             </div>
         </div>
     );

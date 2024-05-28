@@ -1,0 +1,38 @@
+.main-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.chats {
+    width: 100%;
+}
+
+.chat-details {
+    display: none;
+}
+
+/* iPad */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+    .chats, .chat-details {
+        width: 50%;
+    }
+
+    .chat-details {
+        display: block;
+    }
+}
+
+/* Laptop and larger */
+@media only screen 
+and (min-width : 1224px) {
+    .chats {
+        width: 40%;
+    }
+
+    .chat-details {
+        width: 60%;
+        display: block;
+    }
+}
