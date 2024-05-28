@@ -1,6 +1,7 @@
 import React from 'react';
+import './ChatDetails.css';
 
-const ChatDetails = ({ chat }) => {
+const ChatDetails = ({ chat, onBack }) => {
     if (chat === null) {
         return <>
             <h1>Detalles del chat</h1>
@@ -9,10 +10,15 @@ const ChatDetails = ({ chat }) => {
     }
 
     return (
-        <div>
-            <h2>Chat Details</h2>
-            <p>Chat Name: {chat.name.first}</p>
-            {/* Add more chat details here */}
+        <div className='chat-details-container'>
+            <div className="chat-info-container">
+                <button onClick={onBack}>Back</button>
+                <img src={chat.picture.large} alt="Profile" className="profile-pic" />
+                <h2>{chat.name.first + " " + chat.name.last}</h2>
+            </div>
+            <div className="chat-container">
+                
+            </div>
         </div>
     );
 };

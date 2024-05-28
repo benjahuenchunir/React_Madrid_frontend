@@ -20,7 +20,7 @@ const Chats = () => {
 
     return (
         <div className="main-container">
-            <div className="chats-container">
+            <div className={`chats-container ${selectedChat && 'hide-on-mobile'}`}>
                 <input 
                     type="text" 
                     placeholder="Buscar en mis chats" 
@@ -40,8 +40,11 @@ const Chats = () => {
                 </div>
                 <button className="fab">+</button>
             </div>
-            <div className="chat-details">
-                <ChatDetails chat={selectedChat} />
+            <div className={`chat-details ${!selectedChat && 'hide-on-mobile'}`}>
+                <ChatDetails
+                    chat={selectedChat}
+                    onBack={() => setSelectedChat(null)}
+                />
             </div>
         </div>
     );
