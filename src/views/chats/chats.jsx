@@ -7,7 +7,7 @@ const Chats = () => {
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        fetch('https://randomuser.me/api?results=5')
+        fetch('https://randomuser.me/api?results=8')
             .then(response => response.json())
             .then(data => setUsers(data.results));
     }, []);
@@ -18,21 +18,23 @@ const Chats = () => {
 
     return (
         <div class="main-container">
-            <div class="chats">
+            <div class="chats-container">
                 <input 
                     type="text" 
                     placeholder="Buscar en mis chats" 
                     onChange={event => setSearchQuery(event.target.value)} 
                     class="search-input"
                 />
-                {filteredUsers.map((user, index) => (
-                    <ChatCard 
-                        key={index}
-                        profilePic={user.picture.large} 
-                        contactName={`${user.name.first} ${user.name.last}`} 
-                        lastMessage="Hola!" 
-                    />
-                ))}
+                <div class="chats">
+                    {filteredUsers.map((user, index) => (
+                        <ChatCard 
+                            key={index}
+                            profilePic={user.picture.large} 
+                            contactName={`${user.name.first} ${user.name.last}`} 
+                            lastMessage="Hola!" 
+                        />
+                    ))}
+                </div>
                 <button class="fab">+</button>
             </div>
             <div class="chat-details">
