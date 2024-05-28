@@ -9,3 +9,22 @@
     background-color: var(--primary-blue);
     height: 100%;
 }
+
+.message {
+    display: flex;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px;
+    position: relative;
+    max-width: 45%;
+}
+
+.received {
+    margin-right: auto;
+    background-color: rgb(161, 155, 148);
+}
+
+.sent {
+    margin-left: auto;
+    background-color: rgb(111, 203, 203);
+}
