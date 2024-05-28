@@ -8,6 +8,8 @@
 .chat-details-container {
     background-color: var(--primary-blue);
     height: 100%;
+    position: relative;
+    
 }
 
 .message {
@@ -27,4 +29,34 @@
 .sent {
     margin-left: auto;
     background-color: rgb(111, 203, 203);
+}
+
+.mobile-only {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-only {
+        display: block;
+    }
+}
+
+.input-container {
+    display: flex;
+    background-color: var(--primary-black);
+    padding: 10px;
+    bottom: 0px;
+    width: 100%;
+    position: absolute;
+    box-sizing: border-box;
+}
+
+.message-input {
+    padding: 10px;
+    border: none;
+    border-radius: 15px;
+    background-color: var(--secondary-black);
+    color: var(--secondary-white);
+    padding-left: 30px;
+    width: 100%;
 }

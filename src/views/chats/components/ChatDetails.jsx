@@ -3,10 +3,10 @@ import './ChatDetails.css';
 
 const ChatDetails = ({ chat, onBack }) => {
     if (chat === null) {
-        return <>
+        return <div className='chat-details-container'>
             <h1>Detalles del chat</h1>
             <p>Selecciona un chat para ver los detalles</p>
-        </>;
+        </div>;
     }
 
     const listA = [
@@ -26,16 +26,20 @@ messages.sort((a, b) => a.date - b.date);
     return (
         <div className='chat-details-container'>
             <div className="chat-info-container">
-                <button onClick={onBack}>Back</button>
+                <button onClick={onBack} className='mobile-only'>Back</button>
                 <img src={chat.picture.large} alt="Profile" className="profile-pic" />
                 <h2>{chat.name.first + " " + chat.name.last}</h2>
             </div>
             <div className="chat-container">
-            {messages.map((msg, index) => (
-                    <p key={index} className={`message ${msg.received ? 'received' : 'sent'}`}>
-                        {msg.text}
-                    </p>
-                ))}
+                {messages.map((msg, index) => (
+                        <p key={index} className={`message ${msg.received ? 'received' : 'sent'}`}>
+                            {msg.text}
+                        </p>
+                    ))}
+            </div>
+            <div className="input-container">
+                <input type="text" placeholder="Escribe un mensaje..." className="message-input" />
+                <button className="send-button">Enviar</button>
             </div>
         </div>
     );
