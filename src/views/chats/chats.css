@@ -10,6 +10,10 @@
     border-radius: 15px;
     background-color: var(--primary-blue);
     color: var(--secondary-white);
+    padding-left: 30px;
+    background-image: url('src/assets/search_icon.svg');
+    background-repeat: no-repeat;
+    background-position: 5px center;
 }
 
 .search-input::placeholder {
@@ -25,6 +29,21 @@
 .chat-details {
     display: none;
     background-color: var(--primary-blue);
+}
+
+.fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 24px;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
 
 /* iPad */

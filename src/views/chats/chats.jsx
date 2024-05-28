@@ -33,6 +33,7 @@ const Chats = () => {
                         lastMessage="Hola!" 
                     />
                 ))}
+                <button class="fab">+</button>
             </div>
             <div class="chat-details">
                 <h1>Detalles del chat</h1>
