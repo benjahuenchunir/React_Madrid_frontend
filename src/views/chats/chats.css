@@ -26,6 +26,19 @@
     width: 90%;
 }
 
+
+.chats::-webkit-scrollbar {
+    width: 10px;
+}
+
+.chats::-webkit-scrollbar-thumb {
+    background: var(--secondary-black); 
+}
+
+.chats::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
 .chats-container {
     display: flex;
     flex-direction: column;
