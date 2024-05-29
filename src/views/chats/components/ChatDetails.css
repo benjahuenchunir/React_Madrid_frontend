@@ -92,3 +92,15 @@
     overflow-y: auto;
     flex: 1;
 }
+
+.chat-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background: inherit; 
+}
+
+.chat-container::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-black); 
+}
