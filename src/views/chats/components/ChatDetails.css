@@ -6,9 +6,10 @@
 }
 
 .chat-details-container {
+    display: flex;
+    flex-direction: column;
     background-color: var(--primary-blue);
     height: 100%;
-    position: relative;
 }
 
 .no-chat-selected {
@@ -52,9 +53,6 @@
     display: flex;
     background-color: var(--primary-black);
     padding: 10px;
-    bottom: 0px;
-    width: 100%;
-    position: absolute;
     box-sizing: border-box;
 }
 
@@ -88,4 +86,9 @@
     background-repeat: no-repeat;
     background-position: center;
     margin-right: 5px;
+}
+
+.chat-container {
+    overflow-y: auto;
+    flex: 1;
 }

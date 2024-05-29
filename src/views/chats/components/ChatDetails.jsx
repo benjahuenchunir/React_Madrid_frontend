@@ -11,6 +11,10 @@ const ChatDetails = ({ chat, onBack }) => {
 
     const listA = [
         { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
+        { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
+        { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
+        { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
+
         { text: 'Hola, cómo estas?', date: new Date('2022-01-01T10:00:00Z') },
         { text: 'Oye, terminaste la tarea de discretas?', date: new Date('2022-01-01T10:05:00Z') },
     ];
