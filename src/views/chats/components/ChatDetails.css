@@ -74,3 +74,8 @@
     width: 100%;
     color: var(--secondary-black);
 }
+
+.day-tag {
+    text-align: center;
+    color: var(--secondary-black);
+}
