@@ -1,5 +1,6 @@
 import React from 'react';
 import './ChatDetails.css';
+import { useEffect, useRef } from 'react';
 
 const ChatDetails = ({ chat, onBack }) => {
     if (chat === null) {
@@ -26,6 +27,15 @@ const ChatDetails = ({ chat, onBack }) => {
 
     const messages = [...listA.map(msg => ({ ...msg, received: true })), ...listB.map(msg => ({ ...msg, received: false }))];
     messages.sort((a, b) => a.date - b.date);
+
+    const chatContainerRef = useRef(null);
+
+    useEffect(() => {
+        const chatContainer = chatContainerRef.current;
+        if (chatContainer) {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    }, [messages]);
     
     function isSameDay(d1, d2) {
         return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
@@ -38,7 +48,7 @@ const ChatDetails = ({ chat, onBack }) => {
                 <img src={chat.picture.large} alt="Profile" className="profile-pic" />
                 <h2>{chat.name.first + " " + chat.name.last}</h2>
             </div>
-            <div className="chat-container">
+            <div className="chat-container" ref={chatContainerRef}>
                 {messages.map((msg, index) => (
                     <>
                         {index === 0 || !isSameDay(messages[index - 1].date, msg.date) ? (
