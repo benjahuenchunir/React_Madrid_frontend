@@ -79,3 +79,13 @@
     text-align: center;
     color: var(--secondary-black);
 }
+
+.file-button {
+    background-color: var(--secondary-black);
+    color: var(--secondary-white);
+    padding: 15px;
+    background-image: url('src/assets/file_icon.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 5px;
+}

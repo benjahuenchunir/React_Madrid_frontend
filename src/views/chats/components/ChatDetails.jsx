@@ -50,6 +50,7 @@ const ChatDetails = ({ chat, onBack }) => {
                 ))}
             </div>
             <div className="input-container">
+                <button className="file-button"></button>
                 <input type="text" placeholder="Escribe un mensaje..." className="message-input" />
                 <button className="send-button">Enviar</button>
             </div>

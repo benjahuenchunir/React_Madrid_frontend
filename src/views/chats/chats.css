@@ -13,8 +13,8 @@
     color: var(--secondary-white);
     padding-left: 30px;
     background-image: url('src/assets/search_icon.svg');
-    background-repeat: no-repeat;
     background-position: 5px center;
+    background-repeat: no-repeat;
 }
 
 .search-input::placeholder {
