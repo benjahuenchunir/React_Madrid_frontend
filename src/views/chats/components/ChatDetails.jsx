@@ -3,7 +3,7 @@ import './ChatDetails.css';
 
 const ChatDetails = ({ chat, onBack }) => {
     if (chat === null) {
-        return <div className='chat-details-container'>
+        return <div className='no-chat-selected'>
             <h1>Detalles del chat</h1>
             <p>Selecciona un chat para ver los detalles</p>
         </div>;

@@ -9,7 +9,13 @@
     background-color: var(--primary-blue);
     height: 100%;
     position: relative;
-    
+}
+
+.no-chat-selected {
+    background-color: var(--primary-blue);
+    height: 100%;
+    padding: 10px;
+    position: relative;
 }
 
 .message {
@@ -40,6 +46,8 @@
         display: block;
     }
 }
+
+
 
 .input-container {
     display: flex;
