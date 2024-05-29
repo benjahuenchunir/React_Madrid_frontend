@@ -9,7 +9,7 @@ const Chats = () => {
     const [selectedChat, setSelectedChat] = useState(null);
 
     useEffect(() => {
-        fetch('https://randomuser.me/api?results=8')
+        fetch('https://randomuser.me/api?results=10')
             .then(response => response.json())
             .then(data => setUsers(data.results));
     }, []);

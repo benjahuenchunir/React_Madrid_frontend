@@ -15,6 +15,7 @@
     background-image: url('src/assets/search_icon.svg');
     background-position: 5px center;
     background-repeat: no-repeat;
+    margin-top: 30px;
 }
 
 .search-input::placeholder {
@@ -23,7 +24,8 @@
 
 .chats {
     overflow-y: auto;
-    width: 90%;
+    width: 100%;
+    height: 100%;
 }
 
 .chats::-webkit-scrollbar {
@@ -39,20 +41,16 @@
 }
 
 .chats-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
     background-color: var(--primary-black);
     padding: 10px;
-    position: relative;
 }
 
 .chat-details {
-    width: 100%;
-}
-
-.chats-container {
     width: 100%;
 }
 
