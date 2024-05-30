@@ -1,13 +1,29 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect, useRef } from 'react';
 import './Navbar.css';
 import CustomNavLink from './CustomNavLink';
 
 function Navbar(): JSX.Element {
     const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLElement | null>(null);
+    const hamburgerRef = useRef<HTMLButtonElement | null>(null);
 
     const closeMenu = () => {
         setIsOpen(false);
     };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target) && event.target !== hamburgerRef.current) {
+                closeMenu();
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     const linkGroups = [
         [
@@ -33,11 +49,11 @@ function Navbar(): JSX.Element {
                         ))}
                     </ul>
                 ))}
-                <button className="hamburger-menu" onClick={() => setIsOpen(!isOpen)}/>
+                <button className="hamburger-menu" onClick={() => setIsOpen(!isOpen)} ref={hamburgerRef}/>
             </nav>
             {
                 isOpen && (
-                    <div className="dropdown-menu">
+                    <div className="dropdown-menu" ref={dropdownRef}>
                         {linkGroups.map((group, groupIndex) => (
                             <Fragment key={groupIndex}>
                                 {group.map((link, linkIndex) => (
