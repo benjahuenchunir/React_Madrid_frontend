@@ -1,17 +1,26 @@
-import { Route, Routes, Link } from 'react-router-dom'; // Import Link
+import { Route, Routes } from 'react-router-dom';
 import Chats from './views/chats/chats';
+import Navbar from './components/Navbar/Navbar';
 
 function App() {
   return (
-    <Routes>
-      <Route path='/' element={
-        <div>
-          <h1>Landing</h1>
-          <Link to="/chats">Ir a chats</Link>
-        </div>
-      } />
-      <Route path='/chats' element={<Chats/>} />
-    </Routes>
+    <>
+      <Navbar/>
+      <Routes>
+        <Route path='/' element={
+          <div>
+            <h1>Landing</h1>
+          </div>
+        } />
+        <Route path='/chats' element={<Chats/>} />
+        <Route path='/about-us' element={<div>
+            <h1>Nosotros</h1>
+          </div>} />
+        <Route path='/docs' element={<div>
+          <h1>Docs</h1>
+        </div>} />
+      </Routes>
+    </>
   )
 }
 
