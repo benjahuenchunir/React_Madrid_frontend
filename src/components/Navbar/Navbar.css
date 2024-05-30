@@ -1,3 +1,4 @@
+/* Navbar.css */
 nav {
     background-color: #333;
     display: flex;
@@ -20,6 +21,7 @@ nav li a {
     padding: 14px 16px;
 }
 
-nav li a:hover {
+nav li a:hover,
+nav li a.active {
     background-color: #111;
 }
