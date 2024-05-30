@@ -14,11 +14,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
@@ -29,3 +24,9 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+
+    - name: Netlify Deploy
+
+    env:
+      NETLIFY_AUTH_TOKEN: nfp_CVvCFK2vwirSDBLLySMByk9wcV74FmHLd3b4
+      NETLIFY_SITE_ID: a6333251-76f5-4e41-bb03-8ebc8c9d590e
