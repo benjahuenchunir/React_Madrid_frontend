@@ -35,8 +35,16 @@ nav li a.active {
     padding: 14px 16px;
   }
 
+.dropdown-menu {
+    display: none;
+    background-color: #333;
+    padding: 10px;
+    list-style-type: none;
+
+}
+
 @media (max-width: 754px) {
-  .hamburger-menu {
+  .hamburger-menu, .dropdown-menu {
     display: block;
   }
 
