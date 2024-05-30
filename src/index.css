@@ -11,6 +11,16 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --primary-black: #0D1117;
+  --primary-blue: #273DB4;
+  --primary-light-blue: #3E81CF;
+  --secondary-black: #232324;
+  --secondary-orange: #EF5F20;
+  --secondary-white: #FFFFFF;
+  --tertiary-green: #0CE885;
+  --tertiary-red: #E10A00;
+  --tertiary-yellow: #FFCF00;
 }
 
 a {
@@ -24,10 +34,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
