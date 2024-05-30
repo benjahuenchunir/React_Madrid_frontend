@@ -25,6 +25,10 @@ nav li a.active {
     background-color: #111;
 }
 
+.dropdown-menu a.active {
+  text-decoration: underline;
+}
+
 .hamburger-menu {
     display: none;
     background: none;
