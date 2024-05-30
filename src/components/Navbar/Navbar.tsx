@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, { Fragment, useState } from 'react';
 import './Navbar.css';
 import CustomNavLink from './CustomNavLink';
 
 function Navbar(): JSX.Element {
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const closeMenu = () => {
         setIsOpen(false);
@@ -23,7 +23,7 @@ function Navbar(): JSX.Element {
 
     return (
         <>
-            <nav>
+            <nav className="navbar">
                 {linkGroups.map((group, groupIndex) => (
                     <ul key={groupIndex}>
                         {group.map((link, linkIndex) => (
@@ -39,14 +39,14 @@ function Navbar(): JSX.Element {
                 isOpen && (
                     <div className="dropdown-menu">
                         {linkGroups.map((group, groupIndex) => (
-                            <React.Fragment key={groupIndex}>
+                            <Fragment key={groupIndex}>
                                 {group.map((link, linkIndex) => (
                                     <CustomNavLink key={linkIndex} to={link.to} onClick={closeMenu}>
                                         {link.text}
                                     </CustomNavLink>
                                 ))}
                                 {groupIndex < linkGroups.length - 1 && <div className="divider"></div>}
-                            </React.Fragment>
+                            </Fragment>
                         ))}
                     </div>
                 )

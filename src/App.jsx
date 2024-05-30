@@ -1,8 +1,25 @@
 import { Route, Routes } from 'react-router-dom';
 import Chats from './views/chats/chats';
+import { useEffect } from 'react';
 import Navbar from './components/Navbar/Navbar';
 
 function App() {
+
+  useEffect(() => {
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                document.documentElement.style.setProperty('--navbar-height', `${entry.target.offsetHeight}px`);
+            }
+        });
+
+        resizeObserver.observe(navbar);
+
+        return () => resizeObserver.unobserve(navbar);
+    }
+}, []);
+
   return (
     <>
       <Navbar/>
