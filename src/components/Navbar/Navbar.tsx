@@ -14,6 +14,7 @@ function Navbar(): JSX.Element {
                 <li><CustomNavLink to="/login">Login</CustomNavLink></li>
                 <li><CustomNavLink to="/register">Register</CustomNavLink></li>
             </ul>
+            <button className="hamburger-menu"/>
         </nav>
     );
 }

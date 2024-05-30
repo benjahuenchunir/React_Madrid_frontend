@@ -25,3 +25,23 @@ nav li a:hover,
 nav li a.active {
     background-color: #111;
 }
+
+.hamburger-menu {
+    display: none;
+    background: none;
+    background-image: url('src/assets/menu_icon.svg');
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    padding: 14px 16px;
+  }
+
+@media (max-width: 754px) {
+  .hamburger-menu {
+    display: block;
+  }
+
+  nav ul {
+    display: none;
+  }
+
+}
