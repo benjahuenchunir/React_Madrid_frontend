@@ -39,7 +39,10 @@ nav li a.active {
     background-color: #333;
     padding: 10px;
     list-style-type: none;
-
+    width: min-content;
+    position: absolute;
+    left: 0;
+    z-index: 1000;
 }
 
 @media (max-width: 754px) {
