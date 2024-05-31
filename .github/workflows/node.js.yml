@@ -1,0 +1,29 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+    - run: yarn install --frozen-lockfile
+    - run: yarn build
+
+    - name: Netlify Deploy
+
+      env:
+        NETLIFY_AUTH_TOKEN: nfp_CVvCFK2vwirSDBLLySMByk9wcV74FmHLd3b4
+        NETLIFY_SITE_ID: a6333251-76f5-4e41-bb03-8ebc8c9d590e
+      run: netlify deploy --prod
