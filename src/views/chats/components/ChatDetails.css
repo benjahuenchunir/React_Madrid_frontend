@@ -29,6 +29,10 @@
     max-width: 45%;
 }
 
+.message-text {
+    word-wrap: break-word;
+}
+
 .received {
     margin-right: auto;
     background-color: rgb(161, 155, 148);
@@ -139,4 +143,10 @@
     background-repeat: no-repeat;
     background-position: center;
     border: none;
+}
+
+.message-file-display {
+    background-color: var(--secondary-black);
+    border-radius: 8px;
+    padding: 10px;
 }
