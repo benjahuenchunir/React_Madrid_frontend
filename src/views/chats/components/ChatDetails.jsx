@@ -95,11 +95,14 @@ const ChatDetails = ({ chat, onBack }) => {
                         <div className="file-name">{selectedFile.name}</div>
                         <div className="file-size">{(selectedFile.size / 1024).toFixed(2)} KB</div>
                     </div>
+                    <button className="remove-file" onClick={() => setSelectedFile(null)} />
                 </div>
             )}            <div className="input-container">
                 <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
-                <input type="file" ref={fileInputRef} className='hidden' onChange={(e) => setSelectedFile(e.target.files[0])} />
-                <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" />
+                <input type="file" ref={fileInputRef} className='hidden' onChange={(e) => {
+                    setSelectedFile(e.target.files[0]);
+                    e.target.value = null;
+                }} />                <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" />
                 <button className="send-button" onClick={() => addMessage()}>Enviar</button>
             </div>
         </div>

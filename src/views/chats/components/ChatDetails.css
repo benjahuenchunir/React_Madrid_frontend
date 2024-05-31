@@ -130,3 +130,13 @@
     font-size: 0.8em;
     color: #666;
 }
+
+.remove-file {
+    color: var(--secondary-white);
+    background-color: inherit;
+    cursor: pointer;
+    background-image: url('src/assets/close_icon.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+}
