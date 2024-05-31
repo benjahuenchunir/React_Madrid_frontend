@@ -83,8 +83,7 @@ const ChatDetails = ({ chat, onBack }) => {
                         ) : null}
                         <div key={index} className={`message ${msg.received ? 'received' : 'sent'}`}>
                             <p>{msg.text}</p>
-                            <span className="message-time">{msg.date.toLocaleTimeString()}</span>
-                        </div>
+                            <span className="message-time">{msg.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>                        </div>
                     </>
                 ))}
             </div>
