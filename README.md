@@ -139,6 +139,7 @@ Los usuarios objetivo de "deepspace" son personas interesadas en la comunicació
     - En caso de éxito, el chat aparecerá en la parte superior de la lista y se notificará al usuario.
     - En caso de error, se notificará al usuario que el chat no pudo ser fijado.
 
+
 ## Diagrama Entidad-Relación :scroll:
 <!-- Insertamos la imagen ER-Model.png -->
 ![ER-Model](assets/ER-Model.png)
