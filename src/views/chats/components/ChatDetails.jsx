@@ -1,34 +1,36 @@
 import React from 'react';
 import './ChatDetails.css';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+const listA = [
+    { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
+    { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
+    { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
+    { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
+
+    { text: 'Hola, cómo estas?', date: new Date('2022-01-01T10:00:00Z') },
+    { text: 'Oye, terminaste la tarea de discretas?', date: new Date('2022-01-01T10:05:00Z') },
+];
+
+const listB = [
+    { text: 'Hola, muy bien, gracias!', date: new Date('2022-01-01T10:02:00Z') },
+    { text: 'Ni entendí el enunciado', date: new Date('2022-01-01T10:07:00Z') },
+];
+
+function createSampleChat() {
+    const messages = [...listA.map(msg => ({ ...msg, received: true })), ...listB.map(msg => ({ ...msg, received: false }))]
+    messages.sort((a, b) => a.date - b.date);
+    return messages;
+}
 
 const ChatDetails = ({ chat, onBack }) => {
-    if (chat === null) {
-        return <div className='no-chat-selected'>
-            <h1>Detalles del chat</h1>
-            <p>Selecciona un chat para ver los detalles</p>
-        </div>;
-    }
-
-    const listA = [
-        { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
-        { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
-        { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
-        { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
-
-        { text: 'Hola, cómo estas?', date: new Date('2022-01-01T10:00:00Z') },
-        { text: 'Oye, terminaste la tarea de discretas?', date: new Date('2022-01-01T10:05:00Z') },
-    ];
-
-    const listB = [
-        { text: 'Hola, muy bien, gracias!', date: new Date('2022-01-01T10:02:00Z') },
-        { text: 'Ni entendí el enunciado', date: new Date('2022-01-01T10:07:00Z') },
-    ];
-
-    const messages = [...listA.map(msg => ({ ...msg, received: true })), ...listB.map(msg => ({ ...msg, received: false }))];
-    messages.sort((a, b) => a.date - b.date);
-
+    const [messages, setMessages] = useState([]);
     const chatContainerRef = useRef(null);
+    
+    useEffect(() => {
+        setMessages(createSampleChat());
+    }
+    , [chat]);
 
     useEffect(() => {
         const chatContainer = chatContainerRef.current;
@@ -39,6 +41,26 @@ const ChatDetails = ({ chat, onBack }) => {
     
     function isSameDay(d1, d2) {
         return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
+    }
+
+    function addMessage() {
+        const message_input = document.querySelector('.message-input');
+        const text = message_input.value;
+        if (!text) return;
+        const newMessage = {
+            text,
+            date: new Date(),
+            received: false,
+        };
+        setMessages([...messages, newMessage]);
+        message_input.value = '';
+    }
+
+    if (chat === null) {
+        return <div className='no-chat-selected'>
+            <h1>Detalles del chat</h1>
+            <p>Selecciona un chat para ver los detalles</p>
+        </div>;
     }
 
     return (
@@ -66,7 +88,7 @@ const ChatDetails = ({ chat, onBack }) => {
             <div className="input-container">
                 <button className="file-button"></button>
                 <input type="text" placeholder="Escribe un mensaje..." className="message-input" />
-                <button className="send-button">Enviar</button>
+                <button className="send-button" onClick={() => addMessage()}>Enviar</button>
             </div>
         </div>
     );
