@@ -26,6 +26,8 @@ function createSampleChat() {
 const ChatDetails = ({ chat, onBack }) => {
     const [messages, setMessages] = useState([]);
     const chatContainerRef = useRef(null);
+    const fileInputRef = useRef(null);
+    const messageInputRef = useRef(null);
     
     useEffect(() => {
         setMessages(createSampleChat());
@@ -44,8 +46,7 @@ const ChatDetails = ({ chat, onBack }) => {
     }
 
     function addMessage() {
-        const message_input = document.querySelector('.message-input');
-        const text = message_input.value;
+        const text = messageInputRef.current.value;
         if (!text) return;
         const newMessage = {
             text,
@@ -53,7 +54,7 @@ const ChatDetails = ({ chat, onBack }) => {
             received: false,
         };
         setMessages([...messages, newMessage]);
-        message_input.value = '';
+        messageInputRef.current.value = '';
     }
 
     if (chat === null) {
@@ -86,8 +87,9 @@ const ChatDetails = ({ chat, onBack }) => {
                 ))}
             </div>
             <div className="input-container">
-                <button className="file-button"></button>
-                <input type="text" placeholder="Escribe un mensaje..." className="message-input" />
+                <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
+                <input type="file" ref={fileInputRef} className='hidden' />
+                <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" />
                 <button className="send-button" onClick={() => addMessage()}>Enviar</button>
             </div>
         </div>
