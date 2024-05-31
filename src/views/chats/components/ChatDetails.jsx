@@ -25,14 +25,15 @@ function createSampleChat() {
 
 const ChatDetails = ({ chat, onBack }) => {
     const [messages, setMessages] = useState([]);
+    const [selectedFile, setSelectedFile] = useState(null);
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
     const messageInputRef = useRef(null);
-    
+
     useEffect(() => {
         setMessages(createSampleChat());
     }
-    , [chat]);
+        , [chat]);
 
     useEffect(() => {
         const chatContainer = chatContainerRef.current;
@@ -40,7 +41,7 @@ const ChatDetails = ({ chat, onBack }) => {
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
     }, [messages]);
-    
+
     function isSameDay(d1, d2) {
         return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
     }
@@ -55,6 +56,7 @@ const ChatDetails = ({ chat, onBack }) => {
         };
         setMessages([...messages, newMessage]);
         messageInputRef.current.value = '';
+        setSelectedFile(null);
     }
 
     if (chat === null) {
@@ -86,9 +88,17 @@ const ChatDetails = ({ chat, onBack }) => {
                     </>
                 ))}
             </div>
-            <div className="input-container">
+            {selectedFile && (
+                <div className="file-display">
+                    <img src="src/assets/file_icon.svg" alt="Archivo" className='file-icon' />
+                    <div className="file-info">
+                        <div className="file-name">{selectedFile.name}</div>
+                        <div className="file-size">{(selectedFile.size / 1024).toFixed(2)} KB</div>
+                    </div>
+                </div>
+            )}            <div className="input-container">
                 <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
-                <input type="file" ref={fileInputRef} className='hidden' />
+                <input type="file" ref={fileInputRef} className='hidden' onChange={(e) => setSelectedFile(e.target.files[0])} />
                 <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" />
                 <button className="send-button" onClick={() => addMessage()}>Enviar</button>
             </div>

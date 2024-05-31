@@ -82,7 +82,7 @@
     background-color: var(--secondary-black);
     color: var(--secondary-white);
     padding: 15px;
-    background-image: url('src/assets/file_icon.svg');
+    background-image: url('src/assets/upload_file_icon.svg');
     background-repeat: no-repeat;
     background-position: center;
     margin-right: 5px;
@@ -103,4 +103,30 @@
 
 .chat-container::-webkit-scrollbar-thumb:hover {
     background: var(--secondary-black); 
+}
+
+.file-display {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: var(--secondary-black);
+    position: absolute;
+    bottom: 60px;
+}
+
+.file-icon {
+    margin-right: 10px;
+    font-size: 1.5em;
+}
+
+.file-name {
+    font-weight: bold;
+}
+
+.file-size {
+    font-size: 0.8em;
+    color: #666;
 }
