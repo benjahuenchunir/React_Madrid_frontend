@@ -3,10 +3,10 @@ import './ChatDetails.css';
 import { useEffect, useRef, useState } from 'react';
 
 const listA = [
-    { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
-    { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
-    { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
-    { text: 'Holaaaa?', date: new Date('2021-01-01T10:00:00Z') },
+    { text: 'Hola', date: new Date('2021-01-01T10:00:00Z') },
+    { text: 'Esta es mi tarea', date: new Date('2021-01-01T10:00:00Z') },
+    { text: 'Holaaaa?', date: new Date('2021-01-01T10:01:00Z') },
+    { text: 'Holaaaa?', date: new Date('2021-01-01T10:05:00Z') },
 
     { text: 'Hola, cómo estas?', date: new Date('2022-01-01T10:00:00Z') },
     { text: 'Oye, terminaste la tarea de discretas?', date: new Date('2022-01-01T10:05:00Z') },
@@ -36,8 +36,10 @@ const ChatDetails = ({ chat, onBack }) => {
 
     useEffect(() => {
         setMessages(createSampleChat());
-    }
-        , [chat]);
+        setSentFiles([
+            { file: { name: 'Tarea1.pdf', size: 1024 }, messageId: 1 },
+        ]);
+    }, [chat]);
 
     useEffect(() => {
         const chatContainer = chatContainerRef.current;

@@ -147,6 +147,7 @@
 }
 
 .message-file-display {
+    display: flex;
     background-color: var(--secondary-black);
     border-radius: 8px;
     padding: 10px;
