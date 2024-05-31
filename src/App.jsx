@@ -1,7 +1,5 @@
-import { Route, Routes } from 'react-router-dom';
-import Chats from './views/chats/chats';
 import { useEffect } from 'react';
-import Navbar from './components/Navbar/Navbar';
+import Routing from './Routing';
 
 function App() {
 
@@ -22,27 +20,7 @@ function App() {
 
   return (
     <>
-      <Navbar/>
-      <Routes>
-        <Route path='/' element={
-          <div>
-            <h1>Landing</h1>
-          </div>
-        } />
-        <Route path='/chats' element={<Chats/>} />
-        <Route path='/about-us' element={<div>
-            <h1>Nosotros</h1>
-          </div>} />
-        <Route path='/docs' element={<div>
-          <h1>Docs</h1>
-        </div>} />
-        <Route path='/login' element={<div>
-          <h1>Login</h1>
-        </div>} />
-        <Route path='/register' element={<div>
-          <h1>Register</h1>
-        </div>} />
-      </Routes>
+      <Routing/>
     </>
   )
 }

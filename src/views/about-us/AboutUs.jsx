@@ -1,9 +1,9 @@
 import React from 'react';
 import './AboutUs.css';
-import Accordion from '../components/Accordion.jsx'
-import yo from '../assets/face-members/pipet.jpg'
-import benja from '../assets/face-members/benja.jpg'
-import pipev from '../assets/face-members/pipev.png'
+import Accordion from '../../components/Accordion';
+import yo from '../../assets/face-members/pipet.jpg'
+import benja from '../../assets/face-members/benja.jpg'
+import pipev from '../../assets/face-members/pipev.png'
 
 
 function AboutUs(){
