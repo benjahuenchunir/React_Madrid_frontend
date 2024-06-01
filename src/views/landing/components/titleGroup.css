@@ -1,0 +1,22 @@
+.title-container {
+    flex: 1;
+    position: relative;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-container .button {
+    flex: 1;
+    margin: 0 10px;
+}
+
+#landing-title {
+    font-size: 8em;
+    margin-top: 0;
+    margin-bottom: 0.1em;
+}
