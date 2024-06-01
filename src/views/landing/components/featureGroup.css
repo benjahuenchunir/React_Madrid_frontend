@@ -1,4 +1,6 @@
-
+.features-container {
+    height: 90vh;
+}
 
 .feature-title {
     display: flex;
@@ -23,26 +25,24 @@
 }
 
 .text-column ul {
-    list-style-type: none;
     padding: 0;
     margin-left: 10%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
+    height: 50%;
 }
 
 .text-column li {
     margin: 0.5em 0;
-    font-size: 1.5em;
-    padding-left: 0;
-    transition: padding-left 0.3s ease, font-size 0.3s ease;
+    font-size: 1.2em;
+    transition: margin-left 0.3s ease, font-size 0.3s ease;
 }
 
 @media (min-width: 1024px) {
     .text-column li:hover {
-        padding-left: 0.3em;
-        font-size: 1.8em;
+        margin-left: 0.8em;
+        font-size: 1.5em;
     }
 }
 
@@ -53,6 +53,7 @@
 }
 
 @media (max-width: 1024px) {
+
     .feature-columns {
         flex-direction: column; /* stack vertically on small screens */
     }
@@ -68,7 +69,6 @@
     }
 
     .text-column ul {
-        list-style-type: initial;
         margin-left: 10%;
         margin-right: 10%;
     }
@@ -79,7 +79,13 @@
     }
 }
 
-.desktop-chat-example {
+@media (max-width: 768px) {
+    .features-container {
+        height: auto;
+    }
+}
+
+.desktop-chat-scroll {
     position: absolute;
     right: -40%; /* Adjust this value as needed */
     transition: right ease-out;
@@ -87,7 +93,19 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
 }
 
-.mobile-chat-example {
+.mobile-chat {
     width: 60vw;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .show-only-tablet {
+        display: block; /* Show the element on tablet devices */
+    }
+}
+
+@media (max-width: 767px), (min-width: 1025px) {
+    .show-only-tablet {
+        display: none; /* Hide the element on non-tablet devices */
+    }
 }

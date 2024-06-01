@@ -1,5 +1,5 @@
 export function handleScroll() {
-  var image = document.querySelector('.desktop-chat-example');
+  var image = document.querySelector('.desktop-chat-scroll');
   var scrollPosition = window.scrollY;
 
   // Calculate the right property based on the scroll position
