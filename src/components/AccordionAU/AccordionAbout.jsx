@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import './Accordion.css';
+import './AccordionAbout.css';
 
-const Accordion = (props) => {
+const AccordionAbout = (props) => {
     const [isActive, setIsActive] = useState(false);
 
     const toggleAccordion = () => {
@@ -26,4 +26,4 @@ const Accordion = (props) => {
     );
 }
 
-export default Accordion;
+export default AccordionAbout;
