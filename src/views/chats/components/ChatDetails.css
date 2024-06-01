@@ -153,6 +153,7 @@
     height: 100%;
     padding: 10px;
     background-color: var(--primary-blue);
+    color: var(--secondary-white);
 }
 
 .background-ship {
