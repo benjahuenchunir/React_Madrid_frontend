@@ -76,3 +76,16 @@ button:focus-visible {
 .hidden {
   display: none;
 }
+
+@font-face {
+  font-family: "29LT Bukra";
+  src: url("29lt-bukra.ttf");
+}
+
+h1, h2 {
+  font-family: "29LT Bukra", sans-serif;
+}
+
+h3, h4, h5, h6, p, a, button {
+  font-family: Open, sans-serif;
+}
