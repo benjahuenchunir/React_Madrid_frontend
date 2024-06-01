@@ -103,7 +103,7 @@ const ChatDetails = ({ chat, onBack }) => {
                                 if (sentFile.messageId === msg.id) {
                                     return (
                                         <div className="message-file-display">
-                                            <img src="src/assets/file_icon.svg" alt="Archivo" className='file-icon' />
+                                            <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
                                             <div className="file-info">
                                                 <div className="file-name">{sentFile.file.name}</div>
                                                 <div className="file-size">{(sentFile.file.size / 1024).toFixed(2)} KB</div>
@@ -121,7 +121,7 @@ const ChatDetails = ({ chat, onBack }) => {
             </div>
             {selectedFile && (
                 <div className="file-display">
-                    <img src="src/assets/file_icon.svg" alt="Archivo" className='file-icon' />
+                    <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
                     <div className="file-info">
                         <div className="file-name">{selectedFile.name}</div>
                         <div className="file-size">{(selectedFile.size / 1024).toFixed(2)} KB</div>

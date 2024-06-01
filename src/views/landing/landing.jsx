@@ -10,7 +10,7 @@ const Landing = () => {
         <div className="hero-container">
           <TitleGroup/>
           <div className="logo-container hide-on-tablet">
-            <img src="src/assets/shipsstatic.svg" alt="Icono"/>
+            <img src="/shipsstatic.svg" alt="Icono"/>
           </div>
         </div>
         <div className="features-container">

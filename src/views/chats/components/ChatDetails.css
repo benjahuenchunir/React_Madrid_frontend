@@ -86,7 +86,7 @@
     background-color: var(--secondary-black);
     color: var(--secondary-white);
     padding: 15px;
-    background-image: url('src/assets/upload_file_icon.svg');
+    background-image: url('/upload_file_icon.svg');
     background-repeat: no-repeat;
     background-position: center;
     margin-right: 5px;
@@ -102,11 +102,11 @@
 }
 
 .chat-container::-webkit-scrollbar-thumb {
-    background: inherit; 
+    background: inherit;
 }
 
 .chat-container::-webkit-scrollbar-thumb:hover {
-    background: var(--secondary-black); 
+    background: var(--secondary-black);
 }
 
 .file-display {
@@ -140,7 +140,7 @@
     color: var(--secondary-white);
     background-color: inherit;
     cursor: pointer;
-    background-image: url('src/assets/close_icon.svg');
+    background-image: url('/close_icon.svg');
     background-repeat: no-repeat;
     background-position: center;
     border: none;
