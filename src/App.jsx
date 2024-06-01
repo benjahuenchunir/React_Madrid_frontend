@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import Chats from './views/chats/chats';
 import { useEffect } from 'react';
 import Navbar from './components/Navbar/Navbar';
+import Landing from "./views/landing/landing.jsx";
 
 function App() {
 
@@ -24,11 +25,7 @@ function App() {
     <>
       <Navbar/>
       <Routes>
-        <Route path='/' element={
-          <div>
-            <h1>Landing</h1>
-          </div>
-        } />
+        <Route path='/' element={<Landing/>} />
         <Route path='/chats' element={<Chats/>} />
         <Route path='/about-us' element={<div>
             <h1>Nosotros</h1>
