@@ -1,12 +1,16 @@
 .landing-container {
     background-image: linear-gradient(var(--primary-blue), var(--primary-light-blue));
-    height: 100vh;
 }
 
 .hero-container {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
+}
+
+.features-container {
+    position: relative;
     height: 100vh;
 }
 
@@ -101,4 +105,10 @@
     .hide-on-tablet {
         display: block;
     }
+}
+
+.fixed-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
 }
