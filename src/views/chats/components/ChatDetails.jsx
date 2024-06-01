@@ -78,8 +78,11 @@ const ChatDetails = ({ chat, onBack }) => {
 
     if (chat === null) {
         return <div className='no-chat-selected'>
-            <h1>Detalles del chat</h1>
-            <p>Selecciona un chat para ver los detalles</p>
+            <div>
+                <h1>Detalles del chat</h1>
+                <p>Selecciona un chat para ver los detalles</p>
+            </div>
+            <img src="/ground_ship.svg" alt="Ship on ground" className='background-ship' />
         </div>;
     }
 

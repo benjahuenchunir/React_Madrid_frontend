@@ -13,14 +13,6 @@
     height: 100%;
 }
 
-.no-chat-selected {
-    background-color: var(--primary-blue);
-    height: 100%;
-    padding: 10px;
-    color: var(--secondary-white);
-    position: relative;
-}
-
 .message {
     display: flex;
     flex-direction: column;
@@ -153,4 +145,18 @@
     background-color: var(--secondary-black);
     border-radius: 8px;
     padding: 10px;
+}
+
+.no-chat-selected {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 10px;
+    background-color: var(--primary-blue);
+    color: var(--secondary-white)
+}
+
+.background-ship {
+    width: 100%;
 }
