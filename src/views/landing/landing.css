@@ -1,6 +1,18 @@
+body {
+    overflow-x: hidden;
+}
+
 .landing-container {
     background-image: linear-gradient(var(--primary-blue), var(--primary-light-blue));
-    height: 100vh;
+    z-index: 0;
+    position: relative;
+}
+
+.landing-container h1, .landing-container h2,
+.landing-container h3, .landing-container h4,
+.landing-container h5, .landing-container h6,
+.landing-container p, .landing-container a {
+    color: var(--secondary-white);
 }
 
 .hero-container {
@@ -8,6 +20,11 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+}
+
+.ship-container {
+    position: relative;
+    height: 50vh;
 }
 
 .logo-container {
@@ -51,47 +68,6 @@
     text-transform: lowercase;
 }
 
-.wave:nth-child(2),
-.wave:nth-child(3) {
-    top: 210px;
-}
-
-.playing .wave {
-    border-radius: 40%;
-    animation: wave 3000ms infinite linear;
-}
-
-.wave {
-    border-radius: 40%;
-    animation: wave 55s infinite linear;
-}
-
-.playing .wave:nth-child(2) {
-    animation-duration: 4000ms;
-}
-
-.wave:nth-child(2) {
-    animation-duration: 50s;
-}
-
-.playing .wave:nth-child(3) {
-    animation-duration: 5000ms;
-}
-
-.wave:nth-child(3) {
-    animation-duration: 45s;
-}
-
-@keyframes wave {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
 .hide-on-tablet {
     display: none;
     overflow: hidden;
@@ -100,5 +76,37 @@
 @media (min-width: 1024px) {
     .hide-on-tablet {
         display: block;
+    }
+}
+
+.fixed-top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%;
+    z-index: -1;
+}
+
+.show-only-mobile {
+    display: none;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .show-only-mobile {
+        display: block;
+    }
+}
+
+.fixed-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+    z-index: -1;
+}
+
+@media (max-width: 1024px) {
+    .ship-container {
+        height: 30vh;
     }
 }
