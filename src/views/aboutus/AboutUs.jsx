@@ -8,7 +8,6 @@ import pipev from '/face-members/pipev.png'
 
 function AboutUs(){
     return (
-      <>
           <div className="about-container">
               <div className="about-content">
                   <h1 className="aboutus-title">Sobre Nosotros</h1>
@@ -41,11 +40,10 @@ function AboutUs(){
                               title="Felipe Vidal"
                               text="Es un estudiante de cuarto año de Ingeniería de Software que se especializa en el desarrollo de software de seguridad y redes. Felipe es reconocido por su habilidad para analizar y mitigar riesgos de seguridad."/>
                   </div>
-  
+
               </div>
           
           </div>
-      </>
     );
   };
 
