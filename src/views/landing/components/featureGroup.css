@@ -6,6 +6,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 10%;
+    margin-bottom: 2%;
 }
 
 .feature-columns {
@@ -23,6 +25,18 @@
 }
 
 .image-column img {
+
+}
+
+.desktop-chat-example {
+    position: absolute;
+    right: -40%; /* Adjust this value as needed */
+    transition: right ease-out;
+    width: 60vw;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+}
+
+.mobile-chat-example {
     position: absolute;
     right: -20%; /* Adjust this value as needed */
     transition: right ease-out;

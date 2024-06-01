@@ -122,6 +122,17 @@ body {
     z-index: -1;
 }
 
+.show-only-mobile {
+    display: none;
+    overflow: hidden;
+}
+
+@media (max-width: 600px) {
+    .show-only-mobile {
+        display: block;
+    }
+}
+
 .fixed-bottom {
     position: absolute;
     bottom: 0;

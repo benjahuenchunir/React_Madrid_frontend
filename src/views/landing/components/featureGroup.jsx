@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { handleScroll } from './scroll.js';
+import { handleScroll as handleDesktopScroll } from './scrollers/desktopScroll.js';
+import { handleScroll as handleMobileScroll } from './scrollers/mobileScroll.js';
 import './featureGroup.css';
 
 const FeatureGroup = () => {
 
   useEffect(() => {
+    const handleScroll = window.innerWidth <= 600 ? handleMobileScroll : handleDesktopScroll;
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -25,7 +27,8 @@ const FeatureGroup = () => {
           </ul>
         </div>
         <div className="image-column">
-          <img src="/chat_example.png" alt="Description of image"/>
+          <img src="/desktop_chat_example.png" alt="Desktop chat example" className="hide-on-mobile desktop-chat-example"/>
+          <img src="/mobile_chat_example.png" alt="Mobile chat example" className="show-only-mobile mobile-chat-example"/>
         </div>
       </div>
     </div>
