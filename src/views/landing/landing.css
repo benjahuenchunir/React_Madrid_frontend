@@ -8,6 +8,13 @@ body {
     position: relative;
 }
 
+.landing-container h1, .landing-container h2,
+.landing-container h3, .landing-container h4,
+.landing-container h5, .landing-container h6,
+.landing-container p, .landing-container a {
+    color: var(--secondary-white);
+}
+
 .hero-container {
     display: flex;
     justify-content: center;
