@@ -27,13 +27,14 @@ function Navbar(): JSX.Element {
 
     const linkGroups = [
         [
-            { to: "/", text: "Home" },
+            { to: "/", text: "Inicio" },
             { to: "/chats", text: "Chats" },
             { to: "/about-us", text: "Nosotros" },
+            { to: "/docs", text: "Página de Instrucciones"},
         ],
         [
-            { to: "/login", text: "Login" },
-            { to: "/register", text: "Register" },
+            { to: "/login", text: "Iniciar Sesión" },
+            { to: "/register", text: "Registrarse" },
         ]
     ];
 

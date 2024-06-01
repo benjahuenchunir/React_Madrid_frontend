@@ -3,6 +3,10 @@ import Chats from './views/chats/chats';
 import { useEffect } from 'react';
 import Navbar from './components/Navbar/Navbar';
 import Landing from "./views/landing/landing.jsx";
+import AboutUs from './views/aboutus/AboutUs';
+import Docs from './views/docs/docs';
+import DocsPage from './views/docs/docs';
+
 
 function App() {
 
@@ -28,10 +32,10 @@ function App() {
         <Route path='/' element={<Landing/>} />
         <Route path='/chats' element={<Chats/>} />
         <Route path='/about-us' element={<div>
-            <h1>Nosotros</h1>
+            <AboutUs/>
           </div>} />
         <Route path='/docs' element={<div>
-          <h1>Docs</h1>
+          <DocsPage/>
         </div>} />
         <Route path='/login' element={<div>
           <h1>Login</h1>
