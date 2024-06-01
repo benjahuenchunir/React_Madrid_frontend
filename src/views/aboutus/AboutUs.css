@@ -8,19 +8,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 800px;
-    justify-content: center;
+    height: calc(100vh - var(--navbar-height));
     background-color: var(--primary-black);
 }
+
 .members {
     justify-content: center;
     display: flex;
     flex-direction: row;
-    flex-grow: 1;
     width: 100%;
     border: 1px solid black;
     background-color: var(--primary-black);
-    margin: 0 2rem 2rem 2rem;  
 }
 
 .member {
