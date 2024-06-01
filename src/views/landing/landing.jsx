@@ -10,9 +10,9 @@ const Landing = () => {
         <div className="hero-container">
           <TitleGroup/>
           <div className="logo-container hide-on-tablet">
-            <img src="/shipsstatic.svg" alt="Ships soaring through sky"/>
           </div>
         </div>
+        <img src="/shipsstatic.svg" alt="Ships soaring through sky" className="fixed-top-right hide-on-tablet"/>
       </div>
       <div className="features-container">
         <img src="/ground_ship.svg" alt="Ship on ground" className="fixed-bottom"/>

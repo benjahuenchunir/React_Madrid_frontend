@@ -107,6 +107,13 @@
     }
 }
 
+.fixed-top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%;
+}
+
 .fixed-bottom {
     position: absolute;
     bottom: 0;
