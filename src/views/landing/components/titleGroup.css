@@ -16,7 +16,11 @@
 }
 
 #landing-title {
-    font-size: 8em;
+    font-size: 6em;
     margin-top: 0;
     margin-bottom: 0.1em;
+}
+
+#landing-subtitle {
+    font-size: 1.5em;
 }
