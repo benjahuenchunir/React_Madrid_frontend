@@ -1,0 +1,31 @@
+.features-container {
+    height: 100vh;
+}
+
+.feature-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-columns {
+    display: flex;
+}
+
+.text-column {
+    flex: 40%;
+    min-width: 40%;
+}
+
+.image-column {
+    flex: 60%;
+    min-width: 60%;
+}
+
+.image-column img {
+    position: absolute;
+    right: -20%; /* Adjust this value as needed */
+    transition: right ease-out;
+    width: 60vw;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+}

@@ -3,7 +3,6 @@
     position: relative;
     padding-left: 10%;
     padding-right: 10%;
-    z-index: 1;
 }
 
 .button-container {
@@ -20,6 +19,12 @@
     font-size: 6em;
     margin-top: 0;
     margin-bottom: 0.1em;
+}
+
+@media screen and (max-width: 600px) {
+    #landing-title {
+        font-size: 4em;
+    }
 }
 
 #landing-subtitle {
