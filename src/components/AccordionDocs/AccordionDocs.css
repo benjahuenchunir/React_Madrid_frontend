@@ -13,6 +13,7 @@
     justify-content: space-between;
     align-items: center;
     transition: background-color 0.3s ease;
+    color: var(--primary-black);
 }
 
 .accordion-header.open {
@@ -36,6 +37,7 @@
     background-color: #fff;
     animation: slideDown 0.3s ease-out;
     font-family: "Codec Pro";
+    color: var(--primary-black);
 }
 
 @keyframes slideDown {

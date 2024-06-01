@@ -2,6 +2,7 @@
     display: flex;
     background-color: var(--primary-black);
     align-items: center;
+    color: var(--secondary-white);
     gap: 10px;
 }
 
@@ -16,6 +17,7 @@
     background-color: var(--primary-blue);
     height: 100%;
     padding: 10px;
+    color: var(--secondary-white);
     position: relative;
 }
 
