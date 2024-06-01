@@ -1,31 +1,82 @@
-.features-container {
-    height: 100vh;
-}
+
 
 .feature-title {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 10%;
-    margin-bottom: 2%;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 20%
 }
 
 .feature-columns {
     display: flex;
+    flex-direction: row;
+    height: 80%;
 }
+
 
 .text-column {
-    flex: 40%;
-    min-width: 40%;
+    flex: 30%;
+    min-width: 30%;
+    height: 100%;
 }
+
+.text-column ul {
+    list-style-type: none;
+    padding: 0;
+    margin-left: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.text-column li {
+    margin: 0.5em 0;
+    font-size: 1.5em;
+    padding-left: 0;
+    transition: padding-left 0.3s ease, font-size 0.3s ease;
+}
+
+@media (min-width: 1024px) {
+    .text-column li:hover {
+        padding-left: 0.3em;
+        font-size: 1.8em;
+    }
+}
+
 
 .image-column {
-    flex: 60%;
-    min-width: 60%;
+    flex: 70%;
+    min-width: 70%;
 }
 
-.image-column img {
+@media (max-width: 1024px) {
+    .feature-columns {
+        flex-direction: column; /* stack vertically on small screens */
+    }
 
+    .image-column {
+        order: -1; /* make the image appear first */
+    }
+
+    .image-column {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .text-column ul {
+        list-style-type: initial;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
+    .text-column li {
+        font-size: 1em;
+        transition: none;
+    }
 }
 
 .desktop-chat-example {
@@ -37,9 +88,6 @@
 }
 
 .mobile-chat-example {
-    position: absolute;
-    right: -20%; /* Adjust this value as needed */
-    transition: right ease-out;
     width: 60vw;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
 }

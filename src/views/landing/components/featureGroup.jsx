@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { handleScroll as handleDesktopScroll } from './scrollers/desktopScroll.js';
-import { handleScroll as handleMobileScroll } from './scrollers/mobileScroll.js';
+import { handleScroll } from './functions/desktopScroll.js';
+import './functions/imgHeightCalculator.js';
 import './featureGroup.css';
+
 
 const FeatureGroup = () => {
 
   useEffect(() => {
-    const handleScroll = window.innerWidth <= 600 ? handleMobileScroll : handleDesktopScroll;
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -21,9 +21,9 @@ const FeatureGroup = () => {
       <div className="feature-columns">
         <div className="text-column">
           <ul>
-            <li>Feature 1</li>
-            <li>Feature 2</li>
-            <li>Feature 3</li>
+            <li>Habla con otros usuarios directamente o crea grupos</li>
+            <li>Comparte lo que quieras, como fotos o archivos pdf</li>
+            <li>Accede desde tu dispositivo favorito</li>
           </ul>
         </div>
         <div className="image-column">
