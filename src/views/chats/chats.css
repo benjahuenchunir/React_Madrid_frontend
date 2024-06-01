@@ -12,7 +12,7 @@
     background-color: var(--primary-blue);
     color: var(--secondary-white);
     padding-left: 30px;
-    background-image: url('src/assets/search_icon.svg');
+    background-image: url('/search_icon.svg');
     background-position: 5px center;
     background-repeat: no-repeat;
     margin-top: 30px;
@@ -33,11 +33,11 @@
 }
 
 .chats::-webkit-scrollbar-thumb {
-    background: var(--secondary-black); 
+    background: var(--secondary-black);
 }
 
 .chats::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+    background: #555;
 }
 
 .chats-container {
@@ -63,9 +63,11 @@
     .hide-on-mobile {
         display: block;
     }
+
     .chats-container {
         width: 40%;
     }
+
     .chat-details {
         width: 60%;
     }
