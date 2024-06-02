@@ -17,7 +17,8 @@
 }
 
 .docs {
-  background-color: var(--primary-black);
+  background: linear-gradient(in oklab, var(--primary-blue), var(--primary-black));
+  min-height: 100vh;
   height: auto;
   padding-top: 50px;
   padding-bottom: 50px;
