@@ -1,0 +1,19 @@
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: var(--secondary-white);
+    background-color: transparent;
+    border: 0.1em solid;
+    border-color: var(--secondary-white);
+    border-radius: 2em;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: var(--secondary-orange);
+    border-color: var(--secondary-orange);
+    color: var(--secondary-white);
+}

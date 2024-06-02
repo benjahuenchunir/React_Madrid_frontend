@@ -1,33 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, Routes } from 'react-router-dom';
+import Chats from './views/chats/chats';
+import { useEffect } from 'react';
+import Navbar from './components/Navbar/Navbar';
+import Landing from "./views/landing/landing.jsx";
+import AboutUs from './views/aboutus/AboutUs';
+import Docs from './views/docs/docs';
+import DocsPage from './views/docs/docs';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                document.documentElement.style.setProperty('--navbar-height', `${entry.target.offsetHeight}px`);
+            }
+        });
+
+        resizeObserver.observe(navbar);
+
+        return () => resizeObserver.unobserve(navbar);
+    }
+}, []);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Navbar/>
+      <Routes>
+        <Route path='/' element={<Landing/>} />
+        <Route path='/chats' element={<Chats/>} />
+        <Route path='/about-us' element={<div>
+            <AboutUs/>
+          </div>} />
+        <Route path='/docs' element={<div>
+          <DocsPage/>
+        </div>} />
+        <Route path='/login' element={<div>
+          <h1>Login</h1>
+        </div>} />
+        <Route path='/register' element={<div>
+          <h1>Register</h1>
+        </div>} />
+      </Routes>
     </>
   )
 }

@@ -1,0 +1,52 @@
+.accordion {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-header {
+    background-color: #f7f7f7;
+    cursor: pointer;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    color: var(--primary-black);
+}
+
+.accordion-header.open {
+    background-color: #e2e2e2;
+}
+
+.accordion-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.accordion-header span {
+    font-size: 1.5em;
+}
+.accordion-title{
+    font-size: 1.2em;
+    font-family: "29LT Bukra";
+}
+.accordion-content {
+    padding: 20px;
+    background-color: #fff;
+    animation: slideDown 0.3s ease-out;
+    font-family: "Codec Pro";
+    color: var(--primary-black);
+}
+
+@keyframes slideDown {
+    from {
+        max-height: 0;
+        opacity: 0;
+    }
+    to {
+        max-height: 200px;
+        opacity: 1;
+    }
+}
