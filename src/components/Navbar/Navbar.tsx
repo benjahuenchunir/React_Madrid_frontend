@@ -30,7 +30,7 @@ function Navbar(): JSX.Element {
             { to: "/", text: "Inicio" },
             { to: "/chats", text: "Chats" },
             { to: "/about-us", text: "Nosotros" },
-            { to: "/docs", text: "Página de Instrucciones"},
+            { to: "/docs", text: "Instrucciones" },
         ],
         [
             { to: "/login", text: "Iniciar Sesión" },
