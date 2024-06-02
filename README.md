@@ -140,6 +140,29 @@ Los usuarios objetivo de "deepspace" son personas interesadas en la comunicació
     - En caso de error, se notificará al usuario que el chat no pudo ser fijado.
 
 
+17. Como administrador de un chat quiero poder eliminar a uno de los participantes para limitar el acceso al chat.
+
+- Dado un usuario loggeado en la vista de un chat particular donde es administrador.
+- Cuando el usuario selecciona uno de los integrantes y selecciona la opción de Eliminar miembro del grupo
+- Entonces el sitio intentará eliminar a la persona del chat.
+    - En caso de éxito se notificará al usuario eliminado y se avisará en el chat que se eliminó a ese usuario.
+    - En caso de error, se notificará al usuario que el miembro no puedo ser eliminado.
+
+18. Como administrador de la página quiero poder ver los reportes que han hecho los usuarios para revisarlos y tomar medidas correspondientes.
+
+- Dado un Usuario loggeado como administrador.
+- Cuando el administrador acceda a Reportes.
+- Entonces se mostrarán todos los reportes hacia mensajes que hayan sucedido.
+
+19. Como administrador de la página quiero expulsar a alguien de la página para mantener las reglas de la página.
+
+- Dado un usuario loggeado como administrador.
+- Cuando el administrador acceda a Usuarios registrados.
+- Entonces se mostrarán todos los usuarios.
+- Cuando seleccione uno y elija la opción de Expulsar Usuario.
+- Entonces se borrará la cuenta del usuario seleccionado.
+
+
 ## Diagrama Entidad-Relación :scroll:
 <!-- Insertamos la imagen ER-Model.png -->
 ![ER-Model](assets/ER-Model.png)
