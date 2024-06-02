@@ -3,6 +3,17 @@
     align-items: center;
     width: 100%;
     cursor: pointer;
+    margin-left: 0;
+    padding-left: 10px;
+    transition: margin-left 0.25s ease, background-color 0.25s ease;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 2em;
+}
+
+.chat-card:hover {
+    margin-left: 20px;
+    background-color: var(--primary-blue);
 }
 
 .profile-pic {
