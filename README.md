@@ -171,7 +171,7 @@ Los usuarios objetivo de "deepspace" son personas interesadas en la comunicació
 
 <!-- Documento de diseño web -->
 ### :art: Documento de diseño
-![Doc](assets/doc.png)
+![Design Docs](assets/deepspace_design_docs.png)
 
 
 <!-- Vistas principales -->
@@ -179,23 +179,23 @@ Los usuarios objetivo de "deepspace" son personas interesadas en la comunicació
 
 #### Vista usuario: Chats
 
-![Paleta de colores](assets/Views/1.png)
-![Paleta de colores](assets/Views/2.png)
-![Paleta de colores](assets/Views/3.png)
+![Vista Chats: Desktop](assets/Views/1.png)
+![Vista Chats: Tablet](assets/Views/2.png)
+![Vista Chats: Mobile](assets/Views/3.png)
 
 #### Vista usuario: Crear grupo
-![Paleta de colores](assets/Views/4.png)
-![Paleta de colores](assets/Views/5.png)
-![Paleta de colores](assets/Views/6.png)
+![Vista Crear Grupo: Desktop](assets/Views/4.png)
+![Vista Crear Grupo: Tablet](assets/Views/5.png)
+![Vista Crear Grupo: Mobile](assets/Views/6.png)
 
 
 #### Vista usuario: Chat (singular)
-![Paleta de colores](assets/Views/7.png)
-![Paleta de colores](assets/Views/9.png)
-![Paleta de colores](assets/Views/10.png)
+![Vista Chat: Desktop](assets/Views/7.png)
+![Vista Chat: Tablet](assets/Views/9.png)
+![Vista Chat: Mobile](assets/Views/10.png)
 
 #### Web icon
-![Web Icon](assets/web-icon.png)
+![Icono del sitio](assets/logo.png)
 
 #### Web URL
-[Visit our website](https://www.example.com)
+[URL al sitio](https://musical-mandazi-5f256e.netlify.app/)
