@@ -1,0 +1,21 @@
+.form-card {
+    width: 40vw;
+    max-width: 40vw;
+    margin-left: 10%;
+    padding: 20px;
+    border-radius: 1.5em;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: var(--primary-black);
+}
+
+.form-card label {
+    color: var(--secondary-white);
+    margin-bottom: 5px;
+    font-size: 1em;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
