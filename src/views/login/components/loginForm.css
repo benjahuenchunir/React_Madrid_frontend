@@ -6,7 +6,7 @@
     border-radius: 1.5em;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
     background-color: var(--primary-black);
-    z-index: 2;
+    z-index: 1000;
 }
 
 .form-card label {
