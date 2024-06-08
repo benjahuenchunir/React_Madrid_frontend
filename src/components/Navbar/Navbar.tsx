@@ -41,20 +41,38 @@ function Navbar(): JSX.Element {
     return (
         <>
             <nav className="navbar">
-                {linkGroups.map((group, groupIndex) => (
-                    <ul key={groupIndex}>
-                        {group.map((link, linkIndex) => (
+                <div className="left-nav-links">
+                    <ul>
+                        {linkGroups[0].map((link, linkIndex) => (
                             <li key={linkIndex}>
                                 <CustomNavLink to={link.to}>{link.text}</CustomNavLink>
                             </li>
                         ))}
                     </ul>
-                ))}
-                <button className="hamburger-menu" onClick={() => setIsOpen(!isOpen)} ref={hamburgerRef}/>
+                </div>
+
+                <h1 className="nav-logo">deepspace</h1>
+
+                <div className="right-nav-links">
+                    <ul>
+                        {linkGroups[1].map((link, linkIndex) => (
+                            <li key={linkIndex}>
+                                <CustomNavLink to={link.to}>{link.text}</CustomNavLink>
+                            </li>
+                        ))}
+                    </ul>
+                    <button className="hamburger-menu" onClick={() => setIsOpen(!isOpen)} ref={hamburgerRef}>
+                        <svg className="menu-icon" xmlns="http://www.w3.org/2000/svg" height="24px"
+                             viewBox="0 -960 960 960"
+                             width="24px">
+                            <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/>
+                        </svg>
+                    </button>
+                </div>
             </nav>
             {
-                isOpen && (
-                    <div className="dropdown-menu" ref={dropdownRef}>
+                (
+                    <div className={`dropdown-menu ${isOpen ? 'show' : ''}`} ref={dropdownRef}>
                         {linkGroups.map((group, groupIndex) => (
                             <Fragment key={groupIndex}>
                                 {group.map((link, linkIndex) => (
