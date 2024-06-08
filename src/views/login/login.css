@@ -1,0 +1,41 @@
+.content {
+    overflow: clip;
+}
+
+.login-container {
+    background-image: linear-gradient(var(--primary-blue), var(--primary-light-blue));
+    z-index: -1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.login-container h1, .login-container h2,
+.login-container h3, .login-container h4,
+.login-container h5, .login-container h6,
+.login-container p, .login-container a {
+    color: var(--secondary-white);
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        align-items: initial;
+    }
+}
+
+.login-fixed-bottom {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 90vh;
+    z-index: 0;
+}
+
+@media (max-width: 1024px) {
+    .login-fixed-bottom {
+        margin: auto;
+        bottom: 0;
+    }
+}
+
+
