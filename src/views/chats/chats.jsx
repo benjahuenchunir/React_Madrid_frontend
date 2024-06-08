@@ -33,7 +33,7 @@ const Chats = () => {
                             key={index}
                             profilePic={chat.image_url}
                             contactName={`${chat.name}`}
-                            lastMessage="Ni entendí el enunciado"
+                            lastMessage={chat.last_message}
                             onClick={() => setSelectedChat(chat)}
                         />
                     ))}

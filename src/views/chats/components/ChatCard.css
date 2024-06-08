@@ -25,12 +25,30 @@
 .chat-info {
     margin-left: 10px;
     color: var(--secondary-white);
+    width: 100%;
 }
 
 .contact-name {
     font-size: 1.2em;
 }
 
+.chat-info-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .last-message {
     color: gray;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 80%;
+}
+
+.last-message-time {
+    color: gray;
+    font-size: 0.8em;
+    text-align: left;
+    margin-right: 20%;
 }
