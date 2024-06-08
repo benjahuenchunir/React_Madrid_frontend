@@ -90,8 +90,8 @@ const ChatDetails = ({ chat, onBack }) => {
         <div className='chat-details-container'>
             <div className="chat-info-container">
                 <button onClick={onBack} className='mobile-only'>Back</button>
-                <img src={chat.picture.large} alt="Profile" className="profile-pic" />
-                <h2>{chat.name.first + " " + chat.name.last}</h2>
+                <img src={chat.image_url} alt="Profile" className="profile-pic" />
+                <h2>{chat.name}</h2>
             </div>
             <div className="chat-container" ref={chatContainerRef}>
                 {messages.map((msg, index) => (

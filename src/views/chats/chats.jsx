@@ -1,40 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './chats.css';
 import ChatCard from './components/ChatCard';
 import ChatDetails from './components/ChatDetails';
 
 const Chats = () => {
-    const [users, setUsers] = useState([]);
+    const [chats, setChats] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedChat, setSelectedChat] = useState(null);
 
     useEffect(() => {
-        fetch('https://randomuser.me/api?results=10')
+        fetch(import.meta.env.VITE_BACKEND_URL + '/chats?userId=1') // TODO use actual user id
             .then(response => response.json())
-            .then(data => setUsers(data.results));
+            .then(data => setChats(data));
     }, []);
 
-    const filteredUsers = users.filter(user =>
-        `${user.name.first} ${user.name.last}`.toLowerCase().includes(searchQuery.toLowerCase())
+    const filteredChats = chats.filter(chat =>
+        `${chat.name}`.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
         <div className="main-container">
             <div className={`chats-container ${selectedChat && 'hide-on-mobile'}`}>
-                <input 
-                    type="text" 
-                    placeholder="Buscar en mis chats" 
-                    onChange={event => setSearchQuery(event.target.value)} 
+                <input
+                    type="text"
+                    placeholder="Buscar en mis chats"
+                    onChange={event => setSearchQuery(event.target.value)}
                     className="search-input"
                 />
                 <div className="chats">
-                    {filteredUsers.map((user, index) => (
-                        <ChatCard 
+                    {filteredChats.map((chat, index) => (
+                        <ChatCard
                             key={index}
-                            profilePic={user.picture.large} 
-                            contactName={`${user.name.first} ${user.name.last}`} 
-                            lastMessage="Ni entendí el enunciado" 
-                            onClick={() => setSelectedChat(user)}
+                            profilePic={chat.image_url}
+                            contactName={`${chat.name}`}
+                            lastMessage="Ni entendí el enunciado"
+                            onClick={() => setSelectedChat(chat)}
                         />
                     ))}
                 </div>
