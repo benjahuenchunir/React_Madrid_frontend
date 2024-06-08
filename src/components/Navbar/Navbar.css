@@ -125,6 +125,8 @@ nav li a.active {
   .nav-logo {
     display: flex;
     justify-content: flex-start;
+    font-size: 2em;
+    margin: auto 10px;
   }
 
   nav {
@@ -152,4 +154,13 @@ nav li a.active {
   background-color: var(--secondary-black);
   margin: 5px 0;
   width: 100vw;
+}
+
+@media (max-width: 768px) {
+  .nav-logo {
+    display: flex;
+    justify-content: flex-start;
+    font-size: 1.5em;
+    margin: auto 10px;
+  }
 }
