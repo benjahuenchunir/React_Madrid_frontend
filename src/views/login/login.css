@@ -12,3 +12,9 @@
 .login-container p, .login-container a {
     color: var(--secondary-white);
 }
+
+@media (max-width: 768px) {
+    .login-container {
+        align-items: initial;
+    }
+}
