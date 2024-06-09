@@ -1,30 +1,7 @@
-import React from 'react';
 import './ChatDetails.css';
 import { useEffect, useRef, useState } from 'react';
 
-const listA = [
-    { text: 'Hola', date: new Date('2021-01-01T10:00:00Z') },
-    { text: 'Esta es mi tarea', date: new Date('2021-01-01T10:00:00Z') },
-    { text: 'Holaaaa?', date: new Date('2021-01-01T10:01:00Z') },
-    { text: 'Holaaaa?', date: new Date('2021-01-01T10:05:00Z') },
-
-    { text: 'Hola, cómo estas?', date: new Date('2022-01-01T10:00:00Z') },
-    { text: 'Oye, terminaste la tarea de discretas?', date: new Date('2022-01-01T10:05:00Z') },
-];
-
-const listB = [
-    { text: 'Hola, muy bien, gracias!', date: new Date('2022-01-01T10:02:00Z') },
-    { text: 'Ni entendí el enunciado', date: new Date('2022-01-01T10:07:00Z') },
-];
-
-function createSampleChat() {
-    const messages = [
-        ...listA.map((msg, index) => ({ ...msg, received: true, id: index })),
-        ...listB.map((msg, index) => ({ ...msg, received: false, id: index + listA.length }))
-    ];
-    messages.sort((a, b) => a.date - b.date);
-    return messages;
-}
+const current_user_id = 1; // TODO use actual user id
 
 const ChatDetails = ({ chat, onBack }) => {
     const [messages, setMessages] = useState([]);
@@ -35,10 +12,11 @@ const ChatDetails = ({ chat, onBack }) => {
     const messageInputRef = useRef(null);
 
     useEffect(() => {
-        setMessages(createSampleChat());
-        setSentFiles([
-            { file: { name: 'Tarea1.pdf', size: 1024 }, messageId: 1 },
-        ]);
+        if (!chat) return;
+        fetch(import.meta.env.VITE_BACKEND_URL + '/chats/' + chat.id)
+            .then(response => response.json())
+            .then(data => setMessages(data))
+            .catch(error => console.error('Error:', error));
     }, [chat]);
 
     useEffect(() => {
@@ -96,14 +74,14 @@ const ChatDetails = ({ chat, onBack }) => {
             <div className="chat-container" ref={chatContainerRef}>
                 {messages.map((msg, index) => (
                     <>
-                        {index === 0 || !isSameDay(messages[index - 1].date, msg.date) ? (
+                        {index === 0 || !isSameDay(new Date(messages[index - 1].time), new Date(msg.time)) ? (
                             <div key={`day-tag-${index}`} className="day-tag">
-                                {msg.date.toLocaleDateString()}
+                                {new Date(msg.time).toLocaleDateString()}
                             </div>
                         ) : null}
-                        <div key={msg.id} className={`message ${msg.received ? 'received' : 'sent'}`}>
+                        <div key={msg.id} className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
                             {sentFiles.map((sentFile) => {
-                                if (sentFile.messageId === msg.id) {
+                                if (sentFile.messag_Id === msg.id && msg.user.id === current_user_id) {
                                     return (
                                         <div className="message-file-display">
                                             <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
@@ -116,8 +94,8 @@ const ChatDetails = ({ chat, onBack }) => {
                                 }
                                 return null;
                             })}
-                            {msg.text && <p className='message-text'>{msg.text}</p>}
-                            <span className="message-time">{msg.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                            {msg.message && <p className='message-text'>{msg.message}</p>}
+                            <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
                         </div>
                     </>
                 ))}
