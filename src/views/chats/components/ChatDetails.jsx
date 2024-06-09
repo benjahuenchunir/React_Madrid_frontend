@@ -98,24 +98,31 @@ const ChatDetails = ({ chat, onBack }) => {
                                 {new Date(msg.time).toLocaleDateString()}
                             </div>
                         ) : null}
-                        <div className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
-                            {shouldDisplayUser(msg, messages[index - 1]) && <div className="user-name">{msg.user.name}</div>}
-                            {sentFiles.map((sentFile, index) => {
-                                if (sentFile.messageId === msg.id && msg.user.id === current_user_id) {
-                                    return (
-                                        <div key={index} className="message-file-display">
-                                            <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
-                                            <div className="file-info">
-                                                <div className="file-name">{sentFile.file.name}</div>
-                                                <div className="file-size">{(sentFile.file.size / 1024).toFixed(2)} KB</div>
+                        <div className="message-container">
+                            {shouldDisplayUser(msg, messages[index - 1]) ? (
+                                <img src={msg.user.profilePictureUrl} alt="User" className="profile-picture" />
+                            ) : (
+                                !chat.isDm && <div className="profile-picture-placeholder"></div>
+                            )}
+                            <div className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
+                                {shouldDisplayUser(msg, messages[index - 1]) && <div className="user-name">{msg.user.name}</div>}
+                                {sentFiles.map((sentFile, index) => {
+                                    if (sentFile.messageId === msg.id && msg.user.id === current_user_id) {
+                                        return (
+                                            <div key={index} className="message-file-display">
+                                                <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
+                                                <div className="file-info">
+                                                    <div className="file-name">{sentFile.file.name}</div>
+                                                    <div className="file-size">{(sentFile.file.size / 1024).toFixed(2)} KB</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    );
-                                }
-                                return null;
-                            })}
-                            {msg.message && <p className='message-text'>{msg.message}</p>}
-                            <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                                        );
+                                    }
+                                    return null;
+                                })}
+                                {msg.message && <p className='message-text'>{msg.message}</p>}
+                                <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                            </div>
                         </div>
                     </React.Fragment>
                 ))}
