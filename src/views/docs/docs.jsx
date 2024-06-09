@@ -1,10 +1,9 @@
-import React from 'react';
 import AccordionDocs from '../../components/AccordionDocs/AccordionDocs.jsx';
-import './docs.css';
+import './docs.scss';
 
 function DocsPage(){
     return (
-        <div className="docs">
+        <div id="docs-container">
             <div className="instructions-page">
                 <h1>Funcionalidades de la Aplicación</h1>
                 <AccordionDocs 

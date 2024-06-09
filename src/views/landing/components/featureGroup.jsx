@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { handleScroll } from './functions/desktopScroll.js';
-import './featureGroup.css';
+import './featureGroup.scss';
 
 
 const FeatureGroup = () => {
@@ -13,7 +13,7 @@ const FeatureGroup = () => {
   }, []);
 
   return (
-    <div className="features-container">
+    <div id="features-container">
       <div className="feature-title">
         <h2 id="features-title">Todo lo que necesitas en una interfaz sencilla</h2>
       </div>

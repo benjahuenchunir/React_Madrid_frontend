@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './button.css';
 
 
 function Button({ text, to }) {
   return (
-    <Link to={to} className="button">
-      {text}
-    </Link>
+      <Link to={to} className="button">
+        {text}
+      </Link>
   );
 }
 

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import './login.css';
+import { useEffect, useRef } from 'react';
+import './login.scss';
 import LoginForm from "./components/loginForm.jsx";
 
 const Login = () => {
@@ -33,10 +33,12 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="content">
-      <div className="login-container" ref={loginContainerRef}>
-        <LoginForm/>
-        <img src="/ship_with_stars.svg" alt="Ship on ground" className="login-fixed-bottom"/>
+    <div id="login-container">
+      <div className="content">
+        <div className="login-container" ref={loginContainerRef}>
+          <LoginForm/>
+          <img src="/ship_with_stars.svg" alt="Ship on ground" className="login-fixed-bottom"/>
+        </div>
       </div>
     </div>
   )

@@ -1,0 +1,111 @@
+#features-container {
+    height: 90vh;
+
+    .feature-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10%;
+        margin-right: 10%;
+        height: 20%
+    }
+
+    .feature-columns {
+        display: flex;
+        flex-direction: row;
+        height: 80%;
+    }
+
+
+    .text-column {
+        flex: 30%;
+        min-width: 30%;
+        height: 100%;
+    }
+
+    .text-column ul {
+        padding: 0;
+        margin-left: 10%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 50%;
+    }
+
+    .text-column li {
+        margin: 0.5em 0;
+        font-size: 1.2em;
+        transition: margin-left 0.3s ease, font-size 0.3s ease;
+    }
+
+    @media (min-width: 1024px) {
+        .text-column li:hover {
+            margin-left: 0.8em;
+            font-size: 1.5em;
+        }
+    }
+
+
+    .image-column {
+        flex: 70%;
+        min-width: 70%;
+    }
+
+    @media (max-width: 1024px) {
+
+        .feature-columns {
+            flex-direction: column; /* stack vertically on small screens */
+        }
+
+        .image-column {
+            order: -1; /* make the image appear first */
+        }
+
+        .image-column {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .text-column ul {
+            margin-left: 10%;
+            margin-right: 10%;
+        }
+
+        .text-column li {
+            font-size: 1em;
+            transition: none;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .features-container {
+            height: auto;
+        }
+    }
+
+    .desktop-chat-scroll {
+        position: absolute;
+        right: -40%; /* Adjust this value as needed */
+        transition: right ease-out;
+        width: 60vw;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+    }
+
+    .mobile-chat {
+        width: 60vw;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+    }
+
+    @media (min-width: 768px) and (max-width: 1024px) {
+        .show-only-tablet {
+            display: block; /* Show the element on tablet devices */
+        }
+    }
+
+    @media (max-width: 767px), (min-width: 1025px) {
+        .show-only-tablet {
+            display: none; /* Hide the element on non-tablet devices */
+        }
+    }
+}
