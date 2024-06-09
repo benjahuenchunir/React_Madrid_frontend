@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { handleScroll } from './functions/desktopScroll.js';
 import './featureGroup.scss';
 

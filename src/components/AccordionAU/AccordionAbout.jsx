@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import PropTypes from 'prop-types';
 import './AccordionAbout.css';
 
 const AccordionAbout = (props) => {
@@ -25,5 +26,10 @@ const AccordionAbout = (props) => {
         </>
     );
 }
+
+AccordionAbout.propTypes = {
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+};
 
 export default AccordionAbout;

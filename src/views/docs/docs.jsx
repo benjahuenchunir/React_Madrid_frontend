@@ -32,6 +32,6 @@ function DocsPage(){
             </div>
         </div>
     );
-};
+}
 
 export default DocsPage;

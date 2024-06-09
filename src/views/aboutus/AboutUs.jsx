@@ -10,7 +10,7 @@ function AboutUs(){
           <div id="about-container">
               <div className="about-content">
                   <h1 className="aboutus-title">Sobre Nosotros</h1>
-                  <p className="aboutus-text">Nuestra misión es  proporcionar una nueva plataforma de mensajería eficiente y personalizable que facilite la comunicación entre grupos e individuos de personas siendo "deepspace" una forma rápida y confiable de mantenerse en contacto, ya sea para fines de ocio, profesionales, comunitarios, entre otros. Aquí te presentamos a nuestro querido equipo, ¡puedes saber más sobre ellos haciendo click en alguno de sus nombres!</p>
+                  <p className="aboutus-text">Nuestra misión es  proporcionar una nueva plataforma de mensajería eficiente y personalizable que facilite la comunicación entre grupos e individuos de personas siendo &quot;deepspace&quot; una forma rápida y confiable de mantenerse en contacto, ya sea para fines de ocio, profesionales, comunitarios, entre otros. Aquí te presentamos a nuestro querido equipo, ¡puedes saber más sobre ellos haciendo click en alguno de sus nombres!</p>
               </div>
               <div className="members">
                   <div className="member">
