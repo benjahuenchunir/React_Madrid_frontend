@@ -1,5 +1,6 @@
 import './ChatDetails.css';
 import { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 
 const current_user_id = 1; // TODO use actual user id
 
@@ -34,10 +35,13 @@ const ChatDetails = ({ chat, onBack }) => {
         const text = messageInputRef.current.value;
         if (!text && !selectedFile) return;
         const newMessage = {
-            id: messages.length,
-            text,
-            date: new Date(),
-            received: false,
+            id: messages.length + 1,
+            message: text,
+            time: new Date(),
+            user: {
+                id: current_user_id,
+                name: 'Yo'
+            }
         };
         setMessages([...messages, newMessage]);
 
@@ -80,10 +84,10 @@ const ChatDetails = ({ chat, onBack }) => {
                             </div>
                         ) : null}
                         <div key={msg.id} className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
-                            {sentFiles.map((sentFile) => {
-                                if (sentFile.messag_Id === msg.id && msg.user.id === current_user_id) {
+                            {sentFiles.map((sentFile, index) => {
+                                if (sentFile.messageId === msg.id && msg.user.id === current_user_id) {
                                     return (
-                                        <div className="message-file-display">
+                                        <div key={index} className="message-file-display">
                                             <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
                                             <div className="file-info">
                                                 <div className="file-name">{sentFile.file.name}</div>
@@ -119,6 +123,15 @@ const ChatDetails = ({ chat, onBack }) => {
             </div>
         </div>
     );
+};
+
+ChatDetails.propTypes = {
+    chat: PropTypes.shape({
+        id: PropTypes.number,
+        image_url: PropTypes.string,
+        name: PropTypes.string,
+    }),
+    onBack: PropTypes.func,
 };
 
 export default ChatDetails;
