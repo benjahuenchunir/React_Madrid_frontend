@@ -19,10 +19,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
     - run: yarn install --frozen-lockfile
-    - run: yarn build
+    - run: VITE_BACKEND_URL=https://react-madrid-backend.onrender.com yarn build
 
     - name: Netlify Deploy
-
       env:
         NETLIFY_AUTH_TOKEN: nfp_CVvCFK2vwirSDBLLySMByk9wcV74FmHLd3b4
         NETLIFY_SITE_ID: a6333251-76f5-4e41-bb03-8ebc8c9d590e
