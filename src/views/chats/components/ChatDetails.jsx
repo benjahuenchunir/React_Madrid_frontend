@@ -1,24 +1,19 @@
 import './ChatDetails.scss';
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { isSameDay } from './utils';
+import { shouldDisplayUser } from './utils';
+import { useFetchChat } from './api';
 
 const current_user_id = 1; // TODO use actual user id
 
 const ChatDetails = ({ chat, onBack }) => {
-    const [messages, setMessages] = useState([]);
+    const [messages, addMessage] = useFetchChat(chat);
     const [selectedFile, setSelectedFile] = useState(null);
     const [sentFiles, setSentFiles] = useState([]);
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
     const messageInputRef = useRef(null);
-
-    useEffect(() => {
-        if (!chat) return;
-        fetch(import.meta.env.VITE_BACKEND_URL + '/chats/' + chat.id)
-            .then(response => response.json())
-            .then(data => setMessages(data))
-            .catch(error => console.error('Error:', error));
-    }, [chat]);
 
     useEffect(() => {
         const chatContainer = chatContainerRef.current;
@@ -27,24 +22,11 @@ const ChatDetails = ({ chat, onBack }) => {
         }
     }, [messages]);
 
-    function isSameDay(d1, d2) {
-        return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
-    }
-
-    function addMessage() {
+    function addMessageToChat() {
         const text = messageInputRef.current.value;
         if (!text && !selectedFile) return;
-        const newMessage = {
-            id: messages.length + 1,
-            message: text,
-            time: new Date(),
-            user: {
-                id: current_user_id,
-                name: 'Yo'
-            }
-        };
-        setMessages([...messages, newMessage]);
-
+        addMessage(current_user_id, chat.id, text, messageInputRef);
+        return 
         if (selectedFile) {
             const newSentFile = {
                 file: selectedFile,
@@ -62,13 +44,6 @@ const ChatDetails = ({ chat, onBack }) => {
         setSelectedFile(e.target.files[0]);
         e.target.value = null;
     };
-
-    function shouldDisplayUser(message, prevMessage) {
-        if (chat.isDm) return false;
-        if (message.user.id === current_user_id) return false;
-        if (prevMessage && prevMessage.user.id === message.user.id) return false;
-        return true;
-    }
 
     if (chat === null) {
         return <div className='chat-details-container'>
@@ -99,13 +74,13 @@ const ChatDetails = ({ chat, onBack }) => {
                             </div>
                         ) : null}
                         <div className="message-container">
-                            {shouldDisplayUser(msg, messages[index - 1]) ? (
+                            {shouldDisplayUser(chat, msg, messages[index - 1], current_user_id) ? (
                                 <img src={msg.user.profilePictureUrl} alt="User" className="profile-picture" />
                             ) : (
                                 !chat.isDm && <div className="profile-picture-placeholder"></div>
                             )}
                             <div className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
-                                {shouldDisplayUser(msg, messages[index - 1]) && <div className="user-name">{msg.user.name}</div>}
+                                {shouldDisplayUser(chat, msg, messages[index - 1], current_user_id) && <div className="user-name">{msg.user.name}</div>}
                                 {sentFiles.map((sentFile, index) => {
                                     if (sentFile.messageId === msg.id && msg.user.id === current_user_id) {
                                         return (
@@ -140,7 +115,7 @@ const ChatDetails = ({ chat, onBack }) => {
                 <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
                 <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} />
                 <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" />
-                <button className="send-button" onClick={() => addMessage()}>Enviar</button>
+                <button className="send-button" onClick={() => addMessageToChat()}>Enviar</button>
             </div>
         </div>
     );
