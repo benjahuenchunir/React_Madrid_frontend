@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './chats.css';
+import './chats.scss';
 import ChatCard from './components/ChatCard';
 import ChatDetails from './components/ChatDetails';
 
@@ -19,7 +19,7 @@ const Chats = () => {
     );
 
     return (
-        <div className="main-container">
+        <div id="chats-container">
             <div className={`chats-container ${selectedChat && 'hide-on-mobile'}`}>
                 <input
                     type="text"
