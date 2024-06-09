@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import Navbar from './components/Navbar/Navbar';
 import Landing from "./views/landing/landing.jsx";
 import AboutUs from './views/aboutus/AboutUs';
-import Docs from './views/docs/docs';
 import DocsPage from './views/docs/docs';
 import Login from './views/login/login.jsx';
 

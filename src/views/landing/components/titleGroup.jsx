@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import './titleGroup.css';
+import './titleGroup.scss';
 import Button from "./button.jsx";
 
 
 const TitleGroup = () => {
 
   return (
-    <div className="title-container">
+    <div id="title-container">
       <h1 id="landing-title">deepspace</h1>
       <h2 id="landing-subtitle">La única aplicación de mensajería que necesitas</h2>
       <div className="button-container">

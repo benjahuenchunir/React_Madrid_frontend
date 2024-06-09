@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 import './AccordionDocs.css';
 
 const AccordionDocs = ({ title, content }) => {
@@ -17,6 +18,11 @@ const AccordionDocs = ({ title, content }) => {
             {isOpen && <div className="accordion-content">{content}</div>}
         </div>
     );
+};
+
+AccordionDocs.propTypes = {
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
 };
 
 export default AccordionDocs;
