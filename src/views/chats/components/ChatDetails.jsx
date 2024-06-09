@@ -1,5 +1,5 @@
-import './ChatDetails.css';
-import { useEffect, useRef, useState } from 'react';
+import './ChatDetails.scss';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const current_user_id = 1; // TODO use actual user id
@@ -58,32 +58,48 @@ const ChatDetails = ({ chat, onBack }) => {
         setSelectedFile(null);
     }
 
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
+        e.target.value = null;
+    };
+
+    function shouldDisplayUser(message, prevMessage) {
+        if (chat.isDm) return false;
+        if (message.user.id === current_user_id) return false;
+        if (prevMessage && prevMessage.user.id === message.user.id) return false;
+        return true;
+    }
+
     if (chat === null) {
-        return <div className='no-chat-selected'>
-            <div>
-                <h1>Detalles del chat</h1>
-                <p>Selecciona un chat para ver los detalles</p>
+        return <div className='chat-details-container'>
+            <div className='no-chat-selected'>
+                <div>
+                    <h1>Detalles del chat</h1>
+                    <p>Selecciona un chat para ver los detalles</p>
+                </div>
+                <img src="/ground_ship.svg" alt="Ship on ground" className='background-ship' />
             </div>
-            <img src="/ground_ship.svg" alt="Ship on ground" className='background-ship' />
         </div>;
     }
+
 
     return (
         <div className='chat-details-container'>
             <div className="chat-info-container">
                 <button onClick={onBack} className='mobile-only'>Back</button>
-                <img src={chat.image_url} alt="Profile" className="profile-pic" />
+                <img src={chat.imageUrl} alt="Profile" className="profile-pic" />
                 <h2>{chat.name}</h2>
             </div>
             <div className="chat-container" ref={chatContainerRef}>
                 {messages.map((msg, index) => (
-                    <>
+                    <React.Fragment key={msg.id}>
                         {index === 0 || !isSameDay(new Date(messages[index - 1].time), new Date(msg.time)) ? (
                             <div key={`day-tag-${index}`} className="day-tag">
                                 {new Date(msg.time).toLocaleDateString()}
                             </div>
                         ) : null}
-                        <div key={msg.id} className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
+                        <div className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
+                            {shouldDisplayUser(msg, messages[index - 1]) && <div className="user-name">{msg.user.name}</div>}
                             {sentFiles.map((sentFile, index) => {
                                 if (sentFile.messageId === msg.id && msg.user.id === current_user_id) {
                                     return (
@@ -101,7 +117,7 @@ const ChatDetails = ({ chat, onBack }) => {
                             {msg.message && <p className='message-text'>{msg.message}</p>}
                             <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
                         </div>
-                    </>
+                    </React.Fragment>
                 ))}
             </div>
             {selectedFile && (
@@ -115,10 +131,8 @@ const ChatDetails = ({ chat, onBack }) => {
                 </div>
             )}            <div className="input-container">
                 <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
-                <input type="file" ref={fileInputRef} className='hidden' onChange={(e) => {
-                    setSelectedFile(e.target.files[0]);
-                    e.target.value = null;
-                }} />                <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" />
+                <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} />
+                <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" />
                 <button className="send-button" onClick={() => addMessage()}>Enviar</button>
             </div>
         </div>
@@ -128,8 +142,9 @@ const ChatDetails = ({ chat, onBack }) => {
 ChatDetails.propTypes = {
     chat: PropTypes.shape({
         id: PropTypes.number,
-        image_url: PropTypes.string,
+        imageUrl: PropTypes.string,
         name: PropTypes.string,
+        isDm: PropTypes.bool,
     }),
     onBack: PropTypes.func,
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import './ChatCard.css';
 
 const ChatCard = ({ profilePic, contactName, lastMessage, onClick }) => {
@@ -26,6 +26,16 @@ const ChatCard = ({ profilePic, contactName, lastMessage, onClick }) => {
             </div>
         </div>
     );
+};
+
+ChatCard.propTypes = {
+    profilePic: PropTypes.string.isRequired,
+    contactName: PropTypes.string.isRequired,
+    lastMessage: PropTypes.shape({
+        time: PropTypes.string.isRequired,
+        message: PropTypes.string.isRequired,
+    }).isRequired,
+    onClick: PropTypes.func.isRequired,
 };
 
 export default ChatCard;

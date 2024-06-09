@@ -31,9 +31,9 @@ const Chats = () => {
                     {filteredChats.map((chat, index) => (
                         <ChatCard
                             key={index}
-                            profilePic={chat.image_url}
+                            profilePic={chat.imageUrl}
                             contactName={`${chat.name}`}
-                            lastMessage={chat.last_message}
+                            lastMessage={chat.lastMessage}
                             onClick={() => setSelectedChat(chat)}
                         />
                     ))}
