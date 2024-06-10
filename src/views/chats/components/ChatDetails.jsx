@@ -5,6 +5,7 @@ import { isSameDay } from './utils';
 import { shouldDisplayUser } from './utils';
 import { useFetchChat } from './api';
 import MessageOptionsMenu from './MessageOptionsMenu';
+import FileDisplay from './FileDisplay';
 
 
 const current_user_id = 1; // TODO use actual user id
@@ -87,15 +88,10 @@ const ChatDetails = ({ chat, onBack }) => {
                             )}
                             <div className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
                                 {shouldDisplayUser(chat, msg, messages[index - 1], current_user_id) && <div className="user-name">{msg.user.name}</div>}
+                                
                                 {msg.files.map((sentFile, index) => {
                                     return (
-                                        <div key={index} className="message-file-display">
-                                            <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
-                                            <div className="file-info">
-                                                <div className="file-name">{sentFile.name}</div>
-                                                <div className="file-size">{(sentFile.size / 1024).toFixed(2)} KB</div>
-                                            </div>
-                                        </div>
+                                        <FileDisplay key={index} containerClass="message-file-display" file={sentFile} />
                                     );
                                 })}
                                 {msg.message && <p className='message-text'>{msg.message}</p>}
@@ -108,14 +104,7 @@ const ChatDetails = ({ chat, onBack }) => {
             </div>
             <div className="selected-files-container">
                 {selectedFiles.map((file, index) => (
-                    <div key={index} className="file-display">
-                        <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
-                        <div className="file-info">
-                            <div className="file-name">{file.name}</div>
-                            <div className="file-size">{(file.size / 1024).toFixed(2)} KB</div>
-                        </div>
-                        <button className="remove-file" onClick={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))} />
-                    </div>
+                    <FileDisplay key={index} containerClass="file-display" file={file} onRemove={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))} />
                 ))}
             </div>
             <div className="input-container">
@@ -128,13 +117,7 @@ const ChatDetails = ({ chat, onBack }) => {
                                     {msg.message && <p className='message-preview'>{msg.message}</p>}
                                 </div>
                                 {msg.files.map((file, index) => (
-                                    <div key={index} className="file-preview">
-                                        <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
-                                        <div className="file-info">
-                                            <div className="file-name">{file.name}</div>
-                                            <div className="file-size">{(file.size / 1024).toFixed(2)} KB</div>
-                                        </div>
-                                    </div>
+                                    <FileDisplay key={index} containerClass="file-preview" file={file} />
                                 ))}
                             </div>
                         ))}
