@@ -10,7 +10,6 @@ const current_user_id = 1; // TODO use actual user id
 const ChatDetails = ({ chat, onBack }) => {
     const [messages, addMessage] = useFetchChat(chat);
     const [selectedFiles, setSelectedFiles] = useState([]);
-    const [sentFiles, setSentFiles] = useState([]);
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
     const messageInputRef = useRef(null);
@@ -25,19 +24,7 @@ const ChatDetails = ({ chat, onBack }) => {
     function addMessageToChat() {
         const text = messageInputRef.current.value;
         if (!text && selectedFiles.length === 0) return;
-        addMessage(current_user_id, chat.id, text, messageInputRef);
-        return
-        if (selectedFile) {
-            const newSentFile = {
-                file: selectedFile,
-                messageId: newMessage.id
-            };
-            setSentFiles([...sentFiles, newSentFile]);
-            setSelectedFile(null);
-        }
-
-        messageInputRef.current.value = '';
-        setSelectedFile(null);
+        addMessage(current_user_id, chat.id, text, messageInputRef, selectedFiles, setSelectedFiles);
     }
 
     const handleFileChange = (e) => {
@@ -81,19 +68,16 @@ const ChatDetails = ({ chat, onBack }) => {
                             )}
                             <div className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
                                 {shouldDisplayUser(chat, msg, messages[index - 1], current_user_id) && <div className="user-name">{msg.user.name}</div>}
-                                {sentFiles.map((sentFile, index) => {
-                                    if (sentFile.messageId === msg.id && msg.user.id === current_user_id) {
-                                        return (
-                                            <div key={index} className="message-file-display">
-                                                <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
-                                                <div className="file-info">
-                                                    <div className="file-name">{sentFile.file.name}</div>
-                                                    <div className="file-size">{(sentFile.file.size / 1024).toFixed(2)} KB</div>
-                                                </div>
+                                {msg.files.map((sentFile, index) => {
+                                    return (
+                                        <div key={index} className="message-file-display">
+                                            <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
+                                            <div className="file-info">
+                                                <div className="file-name">{sentFile.name}</div>
+                                                <div className="file-size">{(sentFile.size / 1024).toFixed(2)} KB</div>
                                             </div>
-                                        );
-                                    }
-                                    return null;
+                                        </div>
+                                    );
                                 })}
                                 {msg.message && <p className='message-text'>{msg.message}</p>}
                                 <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>

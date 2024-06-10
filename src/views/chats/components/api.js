@@ -8,23 +8,28 @@ async function fetchData(url, options) {
     return response.json();
 }
 
-export async function addMessageToApi(idUser, idChat, message, pinned = false, deletesAt = null, forwarded = false, respondingTo = null) {
+export async function addMessageToApi(idUser, idChat, message, selectedFiles, pinned = false, deletesAt = null, forwarded = false, respondingTo = null) {
     try {
+        const formData = new FormData();
+        formData.append('idUser', idUser);
+        formData.append('idChat', idChat);
+        formData.append('message', message);
+        formData.append('pinned', pinned);
+        if (deletesAt) formData.append('deletesAt', deletesAt);
+        formData.append('forwarded', forwarded);
+        if (respondingTo) formData.append('respondingTo', respondingTo);
+
+        selectedFiles.forEach((file) => {
+            formData.append('files', file);
+        });
+
+        console.log('formData', formData);
+
         const data = await fetchData(import.meta.env.VITE_BACKEND_URL + '/messages', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                idUser,
-                idChat,
-                message,
-                pinned,
-                deletesAt,
-                forwarded,
-                respondingTo,
-            }),
+            body: formData,
         });
+
         return data;
     } catch (error) {
         console.error('Error:', error);
@@ -48,9 +53,11 @@ export const useFetchChat = (chat) => {
         fetchChat();
     }, [chat]);
 
-    const addMessage = async (idUser, idChat, message, messageInputRef, pinned = false, deletesAt = null, forwarded = false, respondingTo = null) => {
-        const newMessage = await addMessageToApi(idUser, idChat, message, pinned, deletesAt, forwarded, respondingTo);
+    const addMessage = async (idUser, idChat, message, messageInputRef, selectedFiles, setSelectedFiles, pinned = false, deletesAt = null, forwarded = false, respondingTo = null) => {
+        const newMessage = await addMessageToApi(idUser, idChat, message, selectedFiles, pinned, deletesAt, forwarded, respondingTo);
+        if (!newMessage) return; // TODO display error that message could not be sent
         messageInputRef.current.value = '';
+        setSelectedFiles([]);
         setMessages(prevMessages => [...prevMessages, newMessage]);
     };
 
