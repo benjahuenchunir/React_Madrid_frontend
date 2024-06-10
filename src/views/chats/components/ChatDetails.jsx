@@ -9,7 +9,7 @@ const current_user_id = 1; // TODO use actual user id
 
 const ChatDetails = ({ chat, onBack }) => {
     const [messages, addMessage] = useFetchChat(chat);
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([]);
     const [sentFiles, setSentFiles] = useState([]);
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
@@ -24,9 +24,9 @@ const ChatDetails = ({ chat, onBack }) => {
 
     function addMessageToChat() {
         const text = messageInputRef.current.value;
-        if (!text && !selectedFile) return;
+        if (!text && selectedFiles.length === 0) return;
         addMessage(current_user_id, chat.id, text, messageInputRef);
-        return 
+        return
         if (selectedFile) {
             const newSentFile = {
                 file: selectedFile,
@@ -41,7 +41,7 @@ const ChatDetails = ({ chat, onBack }) => {
     }
 
     const handleFileChange = (e) => {
-        setSelectedFile(e.target.files[0]);
+        setSelectedFiles([...e.target.files]);
         e.target.value = null;
     };
 
@@ -102,18 +102,21 @@ const ChatDetails = ({ chat, onBack }) => {
                     </React.Fragment>
                 ))}
             </div>
-            {selectedFile && (
-                <div className="file-display">
-                    <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
-                    <div className="file-info">
-                        <div className="file-name">{selectedFile.name}</div>
-                        <div className="file-size">{(selectedFile.size / 1024).toFixed(2)} KB</div>
+            <div className="selected-files-container">
+                {selectedFiles.map((file, index) => (
+                    <div key={index} className="file-display">
+                        <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
+                        <div className="file-info">
+                            <div className="file-name">{file.name}</div>
+                            <div className="file-size">{(file.size / 1024).toFixed(2)} KB</div>
+                        </div>
+                        <button className="remove-file" onClick={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))} />
                     </div>
-                    <button className="remove-file" onClick={() => setSelectedFile(null)} />
-                </div>
-            )}            <div className="input-container">
+                ))}     
+            </div>      
+            <div className="input-container">
                 <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
-                <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} />
+                <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} multiple />
                 <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" />
                 <button className="send-button" onClick={() => addMessageToChat()}>Enviar</button>
             </div>
