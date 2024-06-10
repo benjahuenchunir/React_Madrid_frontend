@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 async function fetchData(url, options) {
     const response = await fetch(url, options);
@@ -44,7 +44,8 @@ export const useFetchChat = (chat) => {
             if (!chat) return;
             try {
                 const data = await fetchData(import.meta.env.VITE_BACKEND_URL + '/chats/' + chat.id);
-                setMessages(data);
+                const messagesWithRefs = data.map(msg => ({ ...msg, ref: React.createRef() }));
+                setMessages(messagesWithRefs);
             } catch (error) {
                 console.error('Error:', error);
             }

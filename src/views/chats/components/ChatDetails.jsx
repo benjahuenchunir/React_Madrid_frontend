@@ -1,5 +1,5 @@
 import './ChatDetails.scss';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { isSameDay } from './utils';
 import { shouldDisplayUser } from './utils';
@@ -74,7 +74,7 @@ const ChatDetails = ({ chat, onBack }) => {
             </div>
             <div className="chat-container" ref={chatContainerRef}>
                 {messages.map((msg, index) => (
-                    <React.Fragment key={msg.id}>
+                    <div key={msg.id}  ref={msg.ref}>
                         {index === 0 || !isSameDay(new Date(messages[index - 1].time), new Date(msg.time)) ? (
                             <div key={`day-tag-${index}`} className="day-tag">
                                 {new Date(msg.time).toLocaleDateString()}
@@ -104,7 +104,7 @@ const ChatDetails = ({ chat, onBack }) => {
                                 <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} messageId={msg.id} />
                             </div>
                         </div>
-                    </React.Fragment>
+                    </div>
                 ))}
             </div>
             <div className="selected-files-container">

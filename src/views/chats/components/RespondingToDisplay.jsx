@@ -2,9 +2,16 @@ import PropTypes from 'prop-types';
 import FileDisplay from './FileDisplay';
 
 const RespondingToDisplay = ({ messages, respondingTo, current_user_id, containerClass, onCancelCliked }) => {
+    const handleClick = () => {
+        const message = messages.find(msg => msg.id === respondingTo);
+        message.ref.current.scrollIntoView({
+            behavior: 'smooth'
+        });
+    };
+
     return (
         respondingTo && (
-            <div className={containerClass}>
+            <div className={containerClass} onClick={handleClick}>
                 {messages.filter(msg => msg.id === respondingTo).map((msg, index) => (
                     <div className='responding-to-content' key={index}>
                         <div>
@@ -24,9 +31,8 @@ const RespondingToDisplay = ({ messages, respondingTo, current_user_id, containe
 
 RespondingToDisplay.propTypes = {
     messages: PropTypes.array.isRequired,
-    respondingTo: PropTypes.string,
-    current_user_id: PropTypes.string.isRequired,
-    setRespondingTo: PropTypes.func.isRequired,
+    respondingTo: PropTypes.number,
+    current_user_id: PropTypes.number.isRequired,
     containerClass: PropTypes.string,
     onCancelCliked: PropTypes.func,
 };

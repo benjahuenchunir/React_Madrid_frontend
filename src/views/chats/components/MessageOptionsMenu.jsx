@@ -54,7 +54,7 @@ const MessageOptionsMenu = ({ onOptionClick, messageId }) => {
 
 MessageOptionsMenu.propTypes = {
     onOptionClick: PropTypes.func.isRequired,
-    messageId: PropTypes.string.isRequired,
+    messageId: PropTypes.number.isRequired,
 };
 
 export default MessageOptionsMenu;
