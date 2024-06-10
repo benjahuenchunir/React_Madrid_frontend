@@ -96,13 +96,19 @@ const ChatDetails = ({ chat, onBack }) => {
                         </div>
                         <button className="remove-file" onClick={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))} />
                     </div>
-                ))}     
-            </div>      
+                ))}
+            </div>
             <div className="input-container">
-                <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
-                <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} multiple />
-                <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" />
-                <button className="send-button" onClick={() => addMessageToChat()}>Enviar</button>
+                {chat.canSendMessage ? (
+                    <>
+                        <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
+                        <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} multiple />
+                        <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" />
+                        <button className="send-button" onClick={() => addMessageToChat()}>Enviar</button>
+                    </>
+                ) : (
+                    <p>No tienes permisos para escribir en este chat</p>
+                )}
             </div>
         </div>
     );
@@ -113,6 +119,7 @@ ChatDetails.propTypes = {
         id: PropTypes.number,
         imageUrl: PropTypes.string,
         name: PropTypes.string,
+        canSendMessage: PropTypes.bool,
         isDm: PropTypes.bool,
     }),
     onBack: PropTypes.func,
