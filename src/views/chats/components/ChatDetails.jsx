@@ -6,7 +6,7 @@ import { shouldDisplayUser } from './utils';
 import { useFetchChat } from './api';
 import MessageOptionsMenu from './MessageOptionsMenu';
 import FileDisplay from './FileDisplay';
-
+import RespondingToDisplay from './RespondingToDisplay';
 
 const current_user_id = 1; // TODO use actual user id
 
@@ -88,7 +88,12 @@ const ChatDetails = ({ chat, onBack }) => {
                             )}
                             <div className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
                                 {shouldDisplayUser(chat, msg, messages[index - 1], current_user_id) && <div className="user-name">{msg.user.name}</div>}
-                                
+                                <RespondingToDisplay 
+                                    messages={messages} 
+                                    respondingTo={msg.respondingTo} 
+                                    current_user_id={current_user_id} 
+                                    containerClass="responding-to-display"
+                                />
                                 {msg.files.map((sentFile, index) => {
                                     return (
                                         <FileDisplay key={index} containerClass="message-file-display" file={sentFile} />
@@ -108,22 +113,13 @@ const ChatDetails = ({ chat, onBack }) => {
                 ))}
             </div>
             <div className="input-container">
-                {respondingTo && (
-                    <div className="responding-to">
-                        {messages.filter(msg => msg.id === respondingTo).map((msg, index) => (
-                            <div className='responding-to-content' key={index}>
-                                <div>
-                                    <p className='sender-name'>{msg.user.id === current_user_id ? 'Yo' : msg.user.name}</p>
-                                    {msg.message && <p className='message-preview'>{msg.message}</p>}
-                                </div>
-                                {msg.files.map((file, index) => (
-                                    <FileDisplay key={index} containerClass="file-preview" file={file} />
-                                ))}
-                            </div>
-                        ))}
-                        <button className="cancel-reply" onClick={() => setRespondingTo(null)} />
-                    </div>
-                )}
+                <RespondingToDisplay 
+                    messages={messages} 
+                    respondingTo={respondingTo} 
+                    current_user_id={current_user_id} 
+                    containerClass="responding-to-preview" 
+                    onCancelCliked={() => setRespondingTo(null)}
+                />
                 <div className={`input-wrapper ${respondingTo ? 'straight-top' : ''}`}>
                     {chat.canSendMessage ? (
                         <>
