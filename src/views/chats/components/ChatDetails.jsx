@@ -12,6 +12,7 @@ const current_user_id = 1; // TODO use actual user id
 const ChatDetails = ({ chat, onBack }) => {
     const [messages, addMessage] = useFetchChat(chat);
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [respondingTo, setRespondingTo] = useState(null)
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
     const messageInputRef = useRef(null);
@@ -26,12 +27,28 @@ const ChatDetails = ({ chat, onBack }) => {
     function addMessageToChat() {
         const text = messageInputRef.current.value;
         if (!text && selectedFiles.length === 0) return;
-        addMessage(current_user_id, chat.id, text, messageInputRef, selectedFiles, setSelectedFiles);
+        addMessage(current_user_id, chat.id, text, messageInputRef, selectedFiles, setSelectedFiles, respondingTo, setRespondingTo);
     }
 
     const handleFileChange = (e) => {
         setSelectedFiles([...e.target.files]);
         e.target.value = null;
+    };
+
+    const handleMessageOptionClicked = (option, messageId) => {
+        switch (option) {
+            case 'Responder':
+                setRespondingTo(messageId);
+                break;
+            case 'Reenviar':
+                console.log('Reenviar');
+                break;
+            case 'Fijar':
+                console.log('Fijar');
+                break;
+            default:
+                break;
+        }
     };
 
     if (chat === null) {
@@ -83,7 +100,7 @@ const ChatDetails = ({ chat, onBack }) => {
                                 })}
                                 {msg.message && <p className='message-text'>{msg.message}</p>}
                                 <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
-                                <MessageOptionsMenu onOptionClick={(option) => console.log(option)} />
+                                <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} messageId={msg.id} />
                             </div>
                         </div>
                     </React.Fragment>
@@ -102,7 +119,29 @@ const ChatDetails = ({ chat, onBack }) => {
                 ))}
             </div>
             <div className="input-container">
-                <div className="input-wrapper">
+                {respondingTo && (
+                    <div className="responding-to">
+                        {messages.filter(msg => msg.id === respondingTo).map((msg, index) => (
+                            <div className='responding-to-content' key={index}>
+                                <div>
+                                    <p className='sender-name'>{msg.user.id === current_user_id ? 'Yo' : msg.user.name}</p>
+                                    {msg.message && <p className='message-preview'>{msg.message}</p>}
+                                </div>
+                                {msg.files.map((file, index) => (
+                                    <div key={index} className="file-preview">
+                                        <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
+                                        <div className="file-info">
+                                            <div className="file-name">{file.name}</div>
+                                            <div className="file-size">{(file.size / 1024).toFixed(2)} KB</div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                        <button className="cancel-reply" onClick={() => setRespondingTo(null)} />
+                    </div>
+                )}
+                <div className={`input-wrapper ${respondingTo ? 'straight-top' : ''}`}>
                     {chat.canSendMessage ? (
                         <>
                             <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} multiple />

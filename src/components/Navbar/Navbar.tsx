@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useEffect, useRef } from 'react';
-import './Navbar.css';
+import './Navbar.scss';
 import CustomNavLink from './CustomNavLink';
 
 function Navbar(): JSX.Element {
     const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef<HTMLElement | null>(null);
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
     const hamburgerRef = useRef<HTMLButtonElement | null>(null);
 
     const closeMenu = () => {
@@ -12,8 +12,8 @@ function Navbar(): JSX.Element {
     };
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target) && event.target !== hamburgerRef.current) {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node) && event.target !== hamburgerRef.current) {
                 closeMenu();
             }
         }

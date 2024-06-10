@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-const MessageOptionsMenu = ({ onOptionClick }) => {
+const MessageOptionsMenu = ({ onOptionClick, messageId }) => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef();
     const buttonRef = useRef();
 
     const options = [
-        { label: 'Responder', onClick: () => onOptionClick('Responder') },
-        { label: 'Reenviar', onClick: () => onOptionClick('Reenviar') },
-        { label: 'Fijar', onClick: () => onOptionClick('Fijar') },
+        { label: 'Responder', onClick: () => onOptionClick('Responder', messageId) },
+        { label: 'Reenviar', onClick: () => onOptionClick('Reenviar', messageId) },
+        { label: 'Fijar', onClick: () => onOptionClick('Fijar', messageId) },
     ];
 
     const handleOptionClick = (option) => {
@@ -54,6 +54,7 @@ const MessageOptionsMenu = ({ onOptionClick }) => {
 
 MessageOptionsMenu.propTypes = {
     onOptionClick: PropTypes.func.isRequired,
+    messageId: PropTypes.string.isRequired,
 };
 
 export default MessageOptionsMenu;

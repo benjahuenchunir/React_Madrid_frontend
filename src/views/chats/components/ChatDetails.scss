@@ -87,9 +87,9 @@
     }
 
     .input-container {
-        display: flex;
         padding: 10px;
-        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
     }
 
     .input-wrapper {
@@ -137,6 +137,64 @@
         }
     }
 
+    .responding-to {
+        background-color: var(--secondary-black);
+        z-index: 1;
+        border-radius: 10px 10px 0 0;
+        padding: 10px;
+    }
+
+    .responding-to {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.8em;
+
+        .responding-to-content {
+            background-color: #666;
+            width: 100%;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+        }
+
+        .message-preview {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-preview {
+            background-color: var(--secondary-black);
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+        }
+
+        .sender-name {
+            font-weight: bold;
+        }
+
+        .cancel-reply {
+            margin-left: auto;
+            color: var(--secondary-white);
+            background-color: inherit;
+            cursor: pointer;
+            background-image: url('/close_icon.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none;
+        }
+    }
+
+    .input-wrapper.straight-top {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
     .message-time {
         text-align: right;
         font-size: 0.8em;
@@ -179,6 +237,7 @@
         border-radius: 5px;
         width: 80%;
         min-width: fit-content;
+        background-color: var(--secondary-black);
     }
 
     .file-icon {
