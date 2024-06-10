@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { isSameDay } from './utils';
 import { shouldDisplayUser } from './utils';
 import { useFetchChat } from './api';
+import MessageOptionsMenu from './MessageOptionsMenu';
+
 
 const current_user_id = 1; // TODO use actual user id
 
@@ -81,7 +83,7 @@ const ChatDetails = ({ chat, onBack }) => {
                                 })}
                                 {msg.message && <p className='message-text'>{msg.message}</p>}
                                 <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
-                                <button className="message-options-button">&#x25BC;</button>
+                                <MessageOptionsMenu onOptionClick={(option) => console.log(option)} />
                             </div>
                         </div>
                     </React.Fragment>
@@ -111,7 +113,7 @@ const ChatDetails = ({ chat, onBack }) => {
                                     addMessageToChat();
                                 }
                             }} />
-                        <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
+                            <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
                         </>
                     ) : (
                         <p className="no-permissions-message">No tienes permisos para escribir en este chat</p>
