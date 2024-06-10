@@ -32,6 +32,28 @@
         margin: 10px;
         position: relative;
         max-width: 45%;
+
+        &:hover .message-options-button {
+            display: block;
+        }
+    }
+
+    .message-options-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: inherit;
+        border: none;
+        border-radius: 50%;
+        padding: 0px;
+        margin-right: 10px;
+        margin-top: 8px;
+        display: none;
+
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
     }
 
     .message-text {
@@ -40,12 +62,17 @@
 
     .received {
         margin-right: auto;
-        background-color: rgb(161, 155, 148);
+        background-color: var(--secondary-black);
     }
 
     .sent {
         margin-left: auto;
-        background-color: rgb(111, 203, 203);
+        background-color: var(--secondary-orange);
+    }
+
+    .back-button {
+        font-weight: bold;
+        font-size: 1.5rem;
     }
 
     .mobile-only {
@@ -60,41 +87,64 @@
 
     .input-container {
         display: flex;
-        background-color: var(--primary-black);
         padding: 10px;
         box-sizing: border-box;
     }
 
-    .message-input {
-        padding: 10px;
+    .input-wrapper {
+        display: flex;
+        align-items: center;
+        width: 100%;
         border: none;
         border-radius: 15px;
         background-color: var(--secondary-black);
-        color: var(--secondary-white);
-        padding-left: 30px;
-        width: 100%;
+
+        .emoji-button, .file-button {
+            position: absolute;
+            border: none;
+
+            &:focus {
+                outline: none;
+                box-shadow: none;
+            }
+        }
+
+        .message-input {
+            flex-grow: 1;
+            border: none;
+            outline: none;
+            padding: 10px;
+            background-color: var(--secondary-black);
+            margin-left: 30px;
+            margin-right: 30px;
+        }
+
+        .file-button {
+            background-color: var(--secondary-black);
+            background-image: url('/upload_file_icon.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+            right: 10px;
+        }
+
+        .emoji-button {
+            background-color: var(--secondary-black);
+            background-image: url('/emoji_icon.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+        }
     }
 
     .message-time {
         text-align: right;
         font-size: 0.8em;
         width: 100%;
-        color: var(--secondary-black);
+        color: #c9c9c9;
     }
 
     .day-tag {
         text-align: center;
-        color: var(--secondary-black);
-    }
-
-    .file-button {
-        background-color: var(--secondary-black);
-        color: var(--secondary-white);
-        padding: 15px;
-        background-image: url('/upload_file_icon.svg');
-        background-repeat: no-repeat;
-        background-position: center;
-        margin-right: 5px;
+        color: #c0c0c0;
     }
 
     .chat-container {
@@ -120,14 +170,12 @@
     }
 
     .file-display {
-        margin-left: 10px;
+        margin: 0 0 10px 10px;
         display: flex;
         align-items: center;
         padding: 10px;
-        margin-bottom: 10px;
         border-radius: 5px;
-        background-color: var(--secondary-black);
-        max-width: 80%;
+        width: 80%;
         min-width: fit-content;
     }
 
@@ -164,6 +212,14 @@
         padding: 10px;
     }
 
+    .sent .message-file-display {
+        background-color: var(--secondary-black);
+    }
+
+    .received .message-file-display {
+        background-color: var(--secondary-orange);
+    }
+
     .user-name {
         font-weight: bold;
     }
@@ -181,5 +237,12 @@
 
     .background-ship {
         width: 100%;
+    }
+
+    .no-permissions-message {
+        margin: 0;
+        margin-left: 10px;
+        padding: 8px;
+        font-size: 0.8rem;
     }
 }

@@ -48,7 +48,7 @@ const ChatDetails = ({ chat, onBack }) => {
     return (
         <div className='chat-details-container'>
             <div className="chat-info-container">
-                <button onClick={onBack} className='mobile-only'>Back</button>
+                <button onClick={onBack} className='back-button mobile-only'>&larr;</button>
                 <img src={chat.imageUrl} alt="Profile" className="profile-pic" />
                 <h2>{chat.name}</h2>
             </div>
@@ -81,6 +81,7 @@ const ChatDetails = ({ chat, onBack }) => {
                                 })}
                                 {msg.message && <p className='message-text'>{msg.message}</p>}
                                 <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                                <button className="message-options-button">&#x25BC;</button>
                             </div>
                         </div>
                     </React.Fragment>
@@ -99,16 +100,23 @@ const ChatDetails = ({ chat, onBack }) => {
                 ))}
             </div>
             <div className="input-container">
-                {chat.canSendMessage ? (
-                    <>
+                <div className="input-wrapper">
+                    {chat.canSendMessage ? (
+                        <>
+                            <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} multiple />
+                            <button className="emoji-button"></button>
+                            <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" onKeyPress={event => {
+                                if (event.key === 'Enter') {
+                                    event.preventDefault();
+                                    addMessageToChat();
+                                }
+                            }} />
                         <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
-                        <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} multiple />
-                        <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" />
-                        <button className="send-button" onClick={() => addMessageToChat()}>Enviar</button>
-                    </>
-                ) : (
-                    <p>No tienes permisos para escribir en este chat</p>
-                )}
+                        </>
+                    ) : (
+                        <p className="no-permissions-message">No tienes permisos para escribir en este chat</p>
+                    )}
+                </div>
             </div>
         </div>
     );
