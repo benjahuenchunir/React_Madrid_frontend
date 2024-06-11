@@ -5,6 +5,7 @@ nav {
   align-items: center;
   background-color: var(--primary-black);
   z-index: 2;
+  position: relative;
 }
 
 .left-nav-links {
