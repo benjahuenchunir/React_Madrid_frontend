@@ -101,7 +101,7 @@ const ChatDetails = ({ chat, onBack }) => {
                                 })}
                                 {msg.message && <p className='message-text'>{msg.message}</p>}
                                 <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
-                                <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} messageId={msg.id} />
+                                <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} messageId={msg.id} canSendMessage={chat.canSendMessage} />
                             </div>
                         </div>
                     </div>
