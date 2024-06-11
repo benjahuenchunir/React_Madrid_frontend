@@ -18,26 +18,17 @@
     .login-container p, .login-container a {
         color: var(--secondary-white);
     }
-    
-    @media (max-width: 768px) {
-        .login-container {
-            align-items: initial;
-        }
-    }
-    
+
     .login-fixed-bottom {
         position: absolute;
         bottom: 0;
-        right: 0;
         height: 90vh;
         z-index: 0;
     }
-    
-    @media (max-width: 1024px) {
-        .login-fixed-bottom {
-            margin: auto;
-            bottom: 0;
-            z-index: 0;
+
+    @media (max-width: 768px) {
+        .login-container {
+            align-items: initial;
         }
     }
 }
