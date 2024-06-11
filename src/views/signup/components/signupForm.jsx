@@ -1,6 +1,15 @@
 import './signupForm.scss';
+import React, {useRef, useState} from "react";
 
 const SignupForm = () => {
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+    e.target.value = null;
+  };
 
   return (
     <div id="signup-form-container">  
@@ -31,10 +40,23 @@ const SignupForm = () => {
             <input type="tel" id="phone" name="phone" required/>
           </div>
           <h2>Foto de perfil</h2>
-          <div className="form-group">
-            <label htmlFor="profile-picture">Seleccionar archivo</label>
-            <input type="file" id="profile-picture" name="profile-picture" accept="image/*"/>
+          {selectedFile && (
+            <div className="file-display">
+              <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
+              <div className="file-info">
+                <div className="file-name">{selectedFile.name}</div>
+                <div className="file-size">{(selectedFile.size / 1024).toFixed(2)} KB</div>
+              </div>
+              <button className="remove-file" onClick={() => setSelectedFile(null)} />
+            </div>
+          )}
+          <div className="input-container">
+            <label htmlFor="profile-picture">Seleccione un archivo:</label>
+            <button id="profile-picture" type="button" className="file-button"
+                    onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
+            <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange}/>
           </div>
+
           <button type="submit">Registrarse</button>
         </form>
       </div>
