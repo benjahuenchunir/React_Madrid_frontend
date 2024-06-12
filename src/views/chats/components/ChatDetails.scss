@@ -236,6 +236,32 @@
         background: var(--secondary-black);
     }
 
+    .pinned-message-container {
+        position: sticky;
+        top: 0;
+        z-index: 9999;
+        background-color: #c9c9c9;
+        padding: 10px;
+        font-size: 0.6em;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.3);
+
+        .pinned-message-header-container {
+            display: flex;
+        }
+
+        .pinned-message-header {
+            font-weight: bold;
+            margin-top: 0;
+            color: var(--secondary-black);
+            margin-right: auto;
+        }
+
+        .icon {
+            color: var(--secondary-black);
+            margin-bottom: 5px;
+        }
+    }
+
     .selected-files-container {
         position: absolute;
         bottom: 60px;

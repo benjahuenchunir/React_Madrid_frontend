@@ -73,8 +73,20 @@ const ChatDetails = ({ chat, onBack }) => {
                 <h2>{chat.name}</h2>
             </div>
             <div className="chat-container" ref={chatContainerRef}>
+                <div className='pinned-message-container'>
+                    <div className='pinned-message-header-container'>
+                        <p className='pinned-message-header'>Mensaje pinneado</p>
+                        <img src='pin_icon.svg' className='icon'/>
+                    </div>
+                    <RespondingToDisplay
+                        messages={messages}
+                        respondingTo={1}
+                        current_user_id={current_user_id}
+                        containerClass="responding-to-display"
+                    />
+                </div>
                 {messages.map((msg, index) => (
-                    <div key={msg.id}  ref={msg.ref}>
+                    <div key={msg.id} ref={msg.ref}>
                         {index === 0 || !isSameDay(new Date(messages[index - 1].time), new Date(msg.time)) ? (
                             <div key={`day-tag-${index}`} className="day-tag">
                                 {new Date(msg.time).toLocaleDateString()}
@@ -88,10 +100,10 @@ const ChatDetails = ({ chat, onBack }) => {
                             )}
                             <div className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
                                 {shouldDisplayUser(chat, msg, messages[index - 1], current_user_id) && <div className="user-name">{msg.user.name}</div>}
-                                <RespondingToDisplay 
-                                    messages={messages} 
-                                    respondingTo={msg.respondingTo} 
-                                    current_user_id={current_user_id} 
+                                <RespondingToDisplay
+                                    messages={messages}
+                                    respondingTo={msg.respondingTo}
+                                    current_user_id={current_user_id}
                                     containerClass="responding-to-display"
                                 />
                                 {msg.files.map((sentFile, index) => {
@@ -113,11 +125,11 @@ const ChatDetails = ({ chat, onBack }) => {
                 ))}
             </div>
             <div className="input-container">
-                <RespondingToDisplay 
-                    messages={messages} 
-                    respondingTo={respondingTo} 
-                    current_user_id={current_user_id} 
-                    containerClass="responding-to-preview" 
+                <RespondingToDisplay
+                    messages={messages}
+                    respondingTo={respondingTo}
+                    current_user_id={current_user_id}
+                    containerClass="responding-to-preview"
                     onCancelCliked={() => setRespondingTo(null)}
                 />
                 <div className={`input-wrapper ${respondingTo ? 'straight-top' : ''}`}>
