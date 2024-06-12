@@ -20,7 +20,7 @@
     }
 
     .login-fixed-bottom {
-        position: absolute;
+        position: fixed;
         bottom: 0;
         height: 90vh;
         z-index: 0;
@@ -29,6 +29,10 @@
     @media (max-width: 768px) {
         .login-container {
             align-items: initial;
+        }
+
+        .login-fixed-bottom {
+            display: none;
         }
     }
 }
