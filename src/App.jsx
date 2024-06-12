@@ -6,6 +6,7 @@ import Landing from "./views/landing/landing.jsx";
 import AboutUs from './views/aboutus/AboutUs';
 import DocsPage from './views/docs/docs';
 import Login from './views/login/login.jsx';
+import Signup from "./views/signup/signup.jsx";
 
 
 function App() {
@@ -38,9 +39,7 @@ function App() {
           <DocsPage/>
         </div>} />
         <Route path='/login' element={<Login/>} />
-        <Route path='/register' element={<div>
-          <h1>Register</h1>
-        </div>} />
+        <Route path='/register' element={<Signup/>} />
       </Routes>
     </>
   )
