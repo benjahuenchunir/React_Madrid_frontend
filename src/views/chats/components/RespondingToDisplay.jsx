@@ -14,7 +14,7 @@ const RespondingToDisplay = ({ messages, respondingTo, current_user_id, containe
             <div className={containerClass} onClick={handleClick}>
                 {messages.filter(msg => msg.id === respondingTo).map((msg, index) => (
                     <div className='responding-to-content' key={index}>
-                        <div>
+                        <div className='message-preview-parent'>
                             <p className='sender-name'>{msg.user.id === current_user_id ? 'Yo' : msg.user.name}</p>
                             {msg.message && <p className='message-preview'>{msg.message}</p>}
                         </div>

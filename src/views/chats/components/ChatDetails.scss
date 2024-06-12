@@ -88,8 +88,10 @@
 
     .input-container {
         padding: 10px;
-        display: flex;
-        flex-direction: column;
+
+        .responding-to-content {
+            width: calc(100% - 60px);
+        }
     }
 
     .input-wrapper {
@@ -145,6 +147,7 @@
         font-size: 0.8em;
         background-color: var(--secondary-black);
         z-index: 1;
+        box-sizing: border-box;
         border-radius: 10px 10px 0 0;
         padding: 10px;
     }
@@ -160,9 +163,14 @@
         width: 100%;
         padding: 10px;
         display: flex;
+        gap: 10px;
         justify-content: space-between;
         align-items: center;
         border-radius: 5px;
+    }
+
+    .message-preview-parent {
+        min-width: 0;
     }
 
     .message-preview {
@@ -196,6 +204,7 @@
     .input-wrapper.straight-top {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
+        box-shadow: 0px 8px 16px -16px rgba(0,0,0,0.2);
     }
 
     .message-time {
