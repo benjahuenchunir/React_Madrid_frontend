@@ -30,7 +30,7 @@ Los usuarios objetivo de "deepspace" son personas interesadas en la comunicació
     - Entonces el sitio lo registrará para acceso posterior.
 2. Como usuario quiero poder ingresar para acceder a las funcionalidades del sitio que me corresponden.
     - Dado un usuario registrado en el sitio.
-    - Cuando el usuario acceda a "Login" e ingrese sus credenciales válidas.
+    - Cuando el usuario acceda a "Signup" e ingrese sus credenciales válidas.
     - Entonces el sitio le dará la bienvenida al usuario y desbloquerá las funcionalidades del sitio a las que el usuario tiene acceso.
 3. Como usuario quiero poder visualizar los chats para ver las interacciones más recientes con mis contactos.
     - Dado un usuario loggeado en el sitio.
