@@ -3,8 +3,13 @@
     .content {
         overflow: clip;
     }
+
+    h2 {
+        margin-top: 1.6em;
+    }
     
     .signup-container {
+        width: 100%;
         background-image: linear-gradient(var(--primary-blue), var(--primary-light-blue));
         z-index: -1;
         display: flex;
@@ -29,6 +34,10 @@
     @media (max-width: 768px) {
         .signup-container {
             align-items: initial;
+        }
+
+        .signup-fixed-bottom {
+            display: none;
         }
     }
 }
