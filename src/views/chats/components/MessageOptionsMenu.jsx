@@ -1,16 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-const MessageOptionsMenu = ({ onOptionClick, messageId, canSendMessage }) => {
+const MessageOptionsMenu = ({ onOptionClick, messageId, pinned, canSendMessage }) => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef();
     const buttonRef = useRef();
 
     const allOptions = [
-        { label: 'Responder', onClick: () => onOptionClick('Responder', messageId), needsSendMessage: true},
-        { label: 'Reenviar', onClick: () => onOptionClick('Reenviar', messageId), needsSendMessage: false},
-        { label: 'Fijar', onClick: () => onOptionClick('Fijar', messageId), needsSendMessage: true},
-    ];
+        { label: 'Responder', onClick: () => onOptionClick('Responder', messageId), needsSendMessage: true },
+        { label: 'Reenviar', onClick: () => onOptionClick('Reenviar', messageId), needsSendMessage: false },
+        { label: (pinned ? 'Desfijar' : 'Fijar'), onClick: () => onOptionClick(pinned ? 'Desfijar' : 'Fijar', messageId), needsSendMessage: true },];
 
     const options = allOptions.filter(option => !option.needsSendMessage || canSendMessage);
 

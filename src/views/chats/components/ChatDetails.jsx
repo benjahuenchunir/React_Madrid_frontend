@@ -11,7 +11,7 @@ import RespondingToDisplay from './RespondingToDisplay';
 const current_user_id = 1; // TODO use actual user id
 
 const ChatDetails = ({ chat, onBack }) => {
-    const [messages, addMessage] = useFetchChat(chat);
+    const [messages, addMessage, updateMessage] = useFetchChat(chat);
     const [pinnedMessageId, setPinnedMessageId] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [respondingTo, setRespondingTo] = useState(null)
@@ -71,7 +71,10 @@ const ChatDetails = ({ chat, onBack }) => {
                 console.log('Reenviar');
                 break;
             case 'Fijar':
-                console.log('Fijar');
+                updateMessage(messageId, { pinned: true });
+                break;
+            case 'Desfijar':
+                updateMessage(messageId, { pinned: false });
                 break;
             default:
                 break;
@@ -141,7 +144,7 @@ const ChatDetails = ({ chat, onBack }) => {
                                 })}
                                 {msg.message && <p className='message-text'>{msg.message}</p>}
                                 <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
-                                <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} messageId={msg.id} canSendMessage={chat.canSendMessage} />
+                                <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} messageId={msg.id} canSendMessage={chat.canSendMessage} pinned={msg.pinned} />
                             </div>
                         </div>
                     </div>

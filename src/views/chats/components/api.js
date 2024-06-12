@@ -36,6 +36,21 @@ export async function addMessageToApi(idUser, idChat, message, selectedFiles, pi
     }
 }
 
+export async function updateMessageInApi(idMessage, attributes) {
+    try {
+        const data = await fetchData(import.meta.env.VITE_BACKEND_URL + '/messages/' + idMessage, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(attributes),
+        });
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
 export const useFetchChat = (chat) => {
     const [messages, setMessages] = useState([]);
 
@@ -60,8 +75,23 @@ export const useFetchChat = (chat) => {
         messageInputRef.current.value = '';
         setSelectedFiles([]);
         setRespondingTo(null);
+        newMessage.ref = React.createRef();
         setMessages(prevMessages => [...prevMessages, newMessage]);
     };
 
-    return [messages, addMessage];
+    const updateMessage = async (idMessage, attributes) => {
+        const updatedMessage = await updateMessageInApi(idMessage, attributes);
+        if (!updatedMessage) return; // TODO display error that message could not be updated
+
+        setMessages(prevMessages => prevMessages.map(msg => {
+            if (msg.id === idMessage) {
+                updatedMessage.ref = msg.ref;
+                return updatedMessage;
+            } else {
+                return msg;
+            }
+        }));
+    };
+
+    return [messages, addMessage, updateMessage];
 };
