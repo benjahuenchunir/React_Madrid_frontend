@@ -40,24 +40,32 @@ const SignupForm = () => {
             <input type="tel" id="phone" name="phone" required/>
           </div>
           <h2>Foto de perfil</h2>
-          {selectedFile && (
-            <div className="file-display">
-              <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
-              <div className="file-info">
-                <div className="file-name">{selectedFile.name}</div>
-                <div className="file-size">{(selectedFile.size / 1024).toFixed(2)} KB</div>
-              </div>
-              <button className="remove-file" onClick={() => setSelectedFile(null)} />
-            </div>
-          )}
           <div className="input-container">
-            <label htmlFor="profile-picture">Seleccione un archivo:</label>
-            <button id="profile-picture" type="button" className="file-button"
-                    onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
-            <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange}/>
+            {!selectedFile &&
+              <>
+                <button id="file-button" type="button" className="file-button"
+                        onClick={() => fileInputRef.current && fileInputRef.current.click()}>
+                  Seleccione un archivo
+                </button>
+                <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange}/>
+              </>
+            }
+            {selectedFile && (
+              <div className="file-display">
+                <div className="file-display-left-items">
+                  <img src="/file_icon.svg" alt="Archivo" className='file-icon'/>
+                  <div className="file-info">
+                    <div className="file-name">{selectedFile.name}</div>
+                    <div className="file-size">{(selectedFile.size / 1024).toFixed(2)} KB</div>
+                  </div>
+                </div>
+                <div className="file-display-right-items">
+                  <button id="remove-file-button" className="remove-file" onClick={() => setSelectedFile(null)}/>
+                </div>
+              </div>
+            )}
           </div>
-
-          <button type="submit">Registrarse</button>
+          <button id="submit-button" type="submit">Registrarse</button>
         </form>
       </div>
     </div>

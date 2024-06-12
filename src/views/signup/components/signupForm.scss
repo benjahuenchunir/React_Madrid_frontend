@@ -56,12 +56,10 @@
     }
     
     .form-card button {
-        margin-top: 40px;
         display: inline-block;
         padding: 10px 20px;
         font-size: 1em;
         background-color: var(--secondary-black);
-        border: 0.1em solid var(--secondary-white);
         color: var(--secondary-white);
         border-radius: 2em;
         text-decoration: none;
@@ -70,10 +68,15 @@
         width: 100%;
     }
     
-    .form-card button:hover {
+    #submit-button:hover {
         background-color: var(--secondary-orange);
         border-color: var(--secondary-orange);
         color: var(--secondary-white);
+    }
+
+    #submit-button {
+        border: 0.1em solid var(--secondary-white);
+        margin-top: 40px;
     }
     
     @media (min-width: 769px) {
@@ -92,25 +95,29 @@
         }
     }
 
-    .file-button {
-        background-color: var(--secondary-black);
-        color: var(--secondary-white);
-        padding: 15px;
+    #file-button {
+        border: 0.1em solid var(--primary-light-blue);
+        height: 50px;
         background-image: url('/upload_file_icon.svg');
         background-repeat: no-repeat;
-        background-position: center;
+        background-position: 20px;
         margin-right: 5px;
     }
 
+    #file-button:hover {
+        background-color: var(--primary-light-blue);
+        border-color: var(--primary-light-blue);
+    }
+
     .file-display {
-        margin-left: 10px;
+        height: 50px;
+        width: 100%;
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 5px;
+        padding: 10px 20px;
+        border-radius: 2em;
         background-color: var(--secondary-black);
-        bottom: 60px;
     }
 
     .file-icon {
@@ -126,5 +133,38 @@
     .file-size {
         font-size: 0.8em;
         color: #666;
+    }
+
+    #remove-file-button {
+        width: 50px;
+        height: 50px;
+        color: var(--secondary-white);
+        background-color: inherit;
+        cursor: pointer;
+        background-image: url('/close_icon.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        border: 0.1em solid var(--tertiary-red);
+    }
+
+    #remove-file-button:hover {
+        background-color: var(--tertiary-red);
+        border-color: var(--tertiary-red);
+    }
+
+    .input-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .file-display-left-items {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .file-display-right-items {
+        display: flex;
+        justify-content: flex-end;
     }
 }
