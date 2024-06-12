@@ -12,16 +12,42 @@ const current_user_id = 1; // TODO use actual user id
 
 const ChatDetails = ({ chat, onBack }) => {
     const [messages, addMessage] = useFetchChat(chat);
+    const [pinnedMessageId, setPinnedMessageId] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [respondingTo, setRespondingTo] = useState(null)
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
     const messageInputRef = useRef(null);
+    const pinnedMessages = messages.filter(msg => msg.pinned);
+    const pinnedMessageIndex = pinnedMessages.findIndex(msg => msg.id === pinnedMessageId) + 1;
 
     useEffect(() => {
         const chatContainer = chatContainerRef.current;
         if (chatContainer) {
             chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            const handleScroll = () => {
+                let wasLoopBroken = false;
+                for (let i = messages.length - 1; i >= 0; i--) {
+                    const msg = messages[i];
+                    const offset = i === 0 ? 0 : 100;
+                    if (msg.pinned && msg.ref.current && msg.ref.current.offsetTop - offset < chatContainer.scrollTop ) {
+                        setPinnedMessageId(msg.id);
+                        wasLoopBroken = true;
+                        break;
+                    }
+                }
+
+                if (!wasLoopBroken) {
+                    setPinnedMessageId(null)
+                }
+            };
+
+            chatContainer.addEventListener('scroll', handleScroll);
+
+            return () => {
+                chatContainer.removeEventListener('scroll', handleScroll);
+            };
         }
     }, [messages]);
 
@@ -73,18 +99,20 @@ const ChatDetails = ({ chat, onBack }) => {
                 <h2>{chat.name}</h2>
             </div>
             <div className="chat-container" ref={chatContainerRef}>
-                <div className='pinned-message-container'>
-                    <div className='pinned-message-header-container'>
-                        <p className='pinned-message-header'>Mensaje pinneado</p>
-                        <img src='pin_icon.svg' className='icon'/>
+                {pinnedMessageId && (
+                    <div className='pinned-message-container'>
+                        <div className='pinned-message-header-container'>
+                            <p className='pinned-message-header'>Mensaje pinneado #{pinnedMessageIndex}</p>
+                            <img src='pin_icon.svg' className='icon' />
+                        </div>
+                        <RespondingToDisplay
+                            messages={messages}
+                            respondingTo={pinnedMessageId}
+                            current_user_id={current_user_id}
+                            containerClass="responding-to-display"
+                        />
                     </div>
-                    <RespondingToDisplay
-                        messages={messages}
-                        respondingTo={1}
-                        current_user_id={current_user_id}
-                        containerClass="responding-to-display"
-                    />
-                </div>
+                )}
                 {messages.map((msg, index) => (
                     <div key={msg.id} ref={msg.ref}>
                         {index === 0 || !isSameDay(new Date(messages[index - 1].time), new Date(msg.time)) ? (
