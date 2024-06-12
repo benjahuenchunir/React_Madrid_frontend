@@ -106,7 +106,7 @@ const ChatDetails = ({ chat, onBack }) => {
                     <div className='pinned-message-container'>
                         <div className='pinned-message-header-container'>
                             <p className='pinned-message-header'>Mensaje pinneado #{pinnedMessageIndex}</p>
-                            <img src='pin_icon.svg' className='icon' />
+                            <img src='pin_icon_dark.svg' className='icon' />
                         </div>
                         <RespondingToDisplay
                             messages={messages}
@@ -143,7 +143,11 @@ const ChatDetails = ({ chat, onBack }) => {
                                     );
                                 })}
                                 {msg.message && <p className='message-text'>{msg.message}</p>}
-                                <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                                <div className="message-info-container">
+                                    {msg.pinned && <img src='pin_icon.svg' className='icon' />}
+                                    {msg.lastEditDate && <span>Editado</span>}
+                                    <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                                </div>
                                 <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} messageId={msg.id} canSendMessage={chat.canSendMessage} pinned={msg.pinned} />
                             </div>
                         </div>

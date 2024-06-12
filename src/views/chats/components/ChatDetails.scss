@@ -15,6 +15,22 @@
     .message-container {
         display: flex;
         width: 100%;
+
+        .message-info-container {
+            display: flex;
+            justify-content: end;
+            gap: 10px;
+            font-size: 0.8em;
+
+            .message-time {
+                text-align: right;
+                color: #c9c9c9;
+            }
+
+            .pinned-icon {
+                color: var(--secondary-black);
+            }
+        }
     }
 
     .profile-picture-placeholder, .profile-picture {
@@ -59,6 +75,7 @@
 
     .message-text {
         word-wrap: break-word;
+        white-space: pre-line;
     }
 
     .received {
@@ -207,13 +224,6 @@
         box-shadow: 0px 8px 16px -16px rgba(0,0,0,0.2);
     }
 
-    .message-time {
-        text-align: right;
-        font-size: 0.8em;
-        width: 100%;
-        color: #c9c9c9;
-    }
-
     .day-tag {
         text-align: center;
         color: #c0c0c0;
@@ -259,7 +269,6 @@
         }
 
         .icon {
-            color: var(--secondary-black);
             margin-bottom: 5px;
         }
     }
