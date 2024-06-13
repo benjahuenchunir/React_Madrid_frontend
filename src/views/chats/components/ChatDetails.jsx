@@ -182,6 +182,7 @@ const ChatDetails = ({ chat, onBack }) => {
                                     {msg.pinned && <img src='pin_icon.svg' className='icon' />}
                                     {msg.lastEditDate && <span>Editado</span>}
                                     <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                                    {msg.user.id === current_user_id && <img src='single_check_icon.svg' className='icon' />} {/* TODO actually implement status */}       
                                 </div>
                                 <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} idUser={current_user_id} message={msg} canSendMessage={chat.canSendMessage} />
                             </div>
