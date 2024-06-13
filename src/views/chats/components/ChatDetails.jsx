@@ -17,7 +17,7 @@ const InputMode = {
 };
 
 const ChatDetails = ({ chat, onBack }) => {
-    const [messages, addMessage, updateMessage] = useFetchChat(chat);
+    const [messages, addMessage, updateMessage, deleteMessage] = useFetchChat(chat);
     const [pinnedMessageId, setPinnedMessageId] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedMessageId, setSelectedMessageId] = useState(null)
@@ -92,6 +92,9 @@ const ChatDetails = ({ chat, onBack }) => {
                 messageInputRef.current.value = messages.find(msg => msg.id === messageId).message;
                 setSelectedMessageId(messageId);
                 setInputMode(InputMode.EDIT);
+                break;
+            case 'Eliminar':
+                deleteMessage(messageId);
                 break;
             default:
                 break;

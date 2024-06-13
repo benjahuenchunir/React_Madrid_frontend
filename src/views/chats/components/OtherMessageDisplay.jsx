@@ -4,25 +4,27 @@ import FileDisplay from './FileDisplay';
 const OtherMessageDisplay = ({ messages, otherMessageId, current_user_id, containerClass, onCancelCliked }) => {
     const handleClick = () => {
         const message = messages.find(msg => msg.id === otherMessageId);
-        message.ref.current.scrollIntoView({
-            behavior: 'smooth'
-        });
+        if (message) {
+            message.ref.current.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
     };
+
+    const msg = messages.find(msg => msg.id === otherMessageId);
 
     return (
         otherMessageId && (
             <div className={containerClass} onClick={handleClick}>
-                {messages.filter(msg => msg.id === otherMessageId).map((msg, index) => (
-                    <div className='responding-to-content' key={index}>
-                        <div className='message-preview-parent'>
-                            <p className='sender-name'>{msg.user.id === current_user_id ? 'Yo' : msg.user.name}</p>
-                            {msg.message && <p className='message-preview'>{msg.message}</p>}
-                        </div>
-                        {msg.files.map((file, index) => (
-                            <FileDisplay key={index} containerClass="file-preview" file={file} />
-                        ))}
+                <div className='responding-to-content'>
+                    <div className='message-preview-parent'>
+                        <p className='sender-name'>{msg && msg.user.id === current_user_id ? 'Yo' : msg ? msg.user.name : ''}</p>
+                        <p className='message-preview'>{msg ? msg.message : 'El mensaje fue eliminado'}</p>
                     </div>
-                ))}
+                    {msg && msg.files.map((file, index) => (
+                        <FileDisplay key={index} containerClass="file-preview" file={file} />
+                    ))}
+                </div>
                 {onCancelCliked && <button className="cancel-reply" onClick={onCancelCliked} />}
             </div>
         )

@@ -1,7 +1,7 @@
 .chat-details-container {
     display: flex;
     flex-direction: column;
-    background-color: var(--primary-blue);
+    background-image: linear-gradient(var(--primary-blue), var(--primary-light-blue));
     height: 100%;
 
     .chat-info-container {
@@ -96,7 +96,9 @@
     }
 
     .input-container {
-        padding: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-bottom: 10px;
 
         .responding-to-content {
             width: calc(100% - 60px);
@@ -110,7 +112,7 @@
         border: none;
         border-radius: 15px;
         background-color: var(--secondary-black);
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.3);
 
         .emoji-button, .file-button {
             position: absolute;
@@ -332,7 +334,6 @@
         justify-content: space-between;
         height: 100%;
         padding: 10px;
-        background-color: var(--primary-blue);
         color: var(--secondary-white);
 
     }
