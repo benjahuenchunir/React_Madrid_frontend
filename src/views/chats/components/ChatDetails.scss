@@ -10,6 +10,12 @@
         align-items: center;
         color: var(--secondary-white);
         gap: 10px;
+
+        .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
     }
 
     .message-container {
@@ -97,8 +103,9 @@
 
     .chat-container {
         overflow-y: auto;
+        flex: 1;
     }
-    
+
     .input-container {
         margin-left: 10px;
         margin-right: 10px;

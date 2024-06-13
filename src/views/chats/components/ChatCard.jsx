@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import './ChatCard.css';
+import './ChatCard.scss';
 
 const ChatCard = ({ profilePic, contactName, lastMessage, onClick }) => {
     return (
-        <div className="chat-card" onClick={onClick}>
+        <div id="chat-card" onClick={onClick}>
             <img src={profilePic} alt="Profile" className="profile-pic" />
             <div className="chat-info">
                 <div className="chat-info-top">
