@@ -1,7 +1,7 @@
 .chat-details-container {
     display: flex;
     flex-direction: column;
-    background-color: var(--primary-blue);
+    background-image: linear-gradient(var(--primary-blue), var(--primary-light-blue));
     height: 100%;
 
     .chat-info-container {
@@ -10,6 +10,12 @@
         align-items: center;
         color: var(--secondary-white);
         gap: 10px;
+
+        .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
     }
 
     .message-container {
@@ -21,15 +27,7 @@
             justify-content: end;
             gap: 10px;
             font-size: 0.8em;
-
-            .message-time {
-                text-align: right;
-                color: #c9c9c9;
-            }
-
-            .pinned-icon {
-                color: var(--secondary-black);
-            }
+            color: #c9c9c9;
         }
     }
 
@@ -103,14 +101,29 @@
         }
     }
 
+    .chat-container {
+        overflow-y: auto;
+        flex: 1;
+    }
+
     .input-container {
-        padding: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding-bottom: 10px;
+        position: relative;
+        width: calc(100% - 20px);
 
         .responding-to-content {
             width: calc(100% - 60px);
         }
-    }
 
+        .selected-files-container {
+            position: absolute;
+            bottom: 100%;
+            display: flex;
+            flex-direction: column-reverse;
+        }
+    }
     .input-wrapper {
         display: flex;
         align-items: center;
@@ -118,7 +131,7 @@
         border: none;
         border-radius: 15px;
         background-color: var(--secondary-black);
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.3);
 
         .emoji-button, .file-button {
             position: absolute;
@@ -229,10 +242,7 @@
         color: #c0c0c0;
     }
 
-    .chat-container {
-        overflow-y: auto;
-        flex: 1;
-    }
+    
 
     .chat-container::-webkit-scrollbar {
         width: 10px;
@@ -273,20 +283,18 @@
         }
     }
 
-    .selected-files-container {
-        position: absolute;
-        bottom: 60px;
-    }
-
     .file-display {
         margin: 0 0 10px 10px;
         display: flex;
         align-items: center;
         padding: 10px;
         border-radius: 5px;
-        width: 80%;
-        min-width: fit-content;
+        max-width: 60%;
         background-color: var(--secondary-black);
+    }
+
+    .file-info {
+        min-width: 0;
     }
 
     .file-icon {
@@ -340,9 +348,7 @@
         justify-content: space-between;
         height: 100%;
         padding: 10px;
-        background-color: var(--primary-blue);
         color: var(--secondary-white);
-
     }
 
     .background-ship {

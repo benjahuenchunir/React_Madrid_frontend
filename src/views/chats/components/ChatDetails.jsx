@@ -6,15 +6,22 @@ import { shouldDisplayUser } from './utils';
 import { useFetchChat } from './api';
 import MessageOptionsMenu from './MessageOptionsMenu';
 import FileDisplay from './FileDisplay';
-import RespondingToDisplay from './RespondingToDisplay';
+import OtherMessageDisplay from './OtherMessageDisplay';
 
 const current_user_id = 1; // TODO use actual user id
+const InputMode = {
+    NORMAL: 'normal',
+    RESPONDING_TO: 'responding_to',
+    EDIT: 'edit',
+    REPLY: 'reply'
+};
 
 const ChatDetails = ({ chat, onBack }) => {
-    const [messages, addMessage, updateMessage] = useFetchChat(chat);
+    const [messages, addMessage, updateMessage, deleteMessage] = useFetchChat(chat);
     const [pinnedMessageId, setPinnedMessageId] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
-    const [respondingTo, setRespondingTo] = useState(null)
+    const [selectedMessageId, setSelectedMessageId] = useState(null)
+    const [inputMode, setInputMode] = useState(InputMode.NORMAL);
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
     const messageInputRef = useRef(null);
@@ -31,7 +38,7 @@ const ChatDetails = ({ chat, onBack }) => {
                 for (let i = messages.length - 1; i >= 0; i--) {
                     const msg = messages[i];
                     const offset = i === 0 ? 0 : 100;
-                    if (msg.pinned && msg.ref.current && msg.ref.current.offsetTop - offset < chatContainer.scrollTop ) {
+                    if (msg.pinned && msg.ref.current && msg.ref.current.offsetTop - offset < chatContainer.scrollTop) {
                         setPinnedMessageId(msg.id);
                         wasLoopBroken = true;
                         break;
@@ -51,10 +58,14 @@ const ChatDetails = ({ chat, onBack }) => {
         }
     }, [messages]);
 
-    function addMessageToChat() {
-        const text = messageInputRef.current.value;
-        if (!text && selectedFiles.length === 0) return;
-        addMessage(current_user_id, chat.id, text, messageInputRef, selectedFiles, setSelectedFiles, respondingTo, setRespondingTo);
+    function handleSendClicked() {
+        const text = messageInputRef.current.value
+        if (inputMode === InputMode.RESPONDING_TO || inputMode === InputMode.NORMAL) {
+            if (!text && selectedFiles.length === 0) return;
+            addMessage(current_user_id, chat.id, text, selectedFiles, selectedMessageId, handleSuccessfullSend);
+        } else if (inputMode === InputMode.EDIT) {
+            updateMessage(selectedMessageId, { message: text }, handleSuccessfullSend);
+        }
     }
 
     const handleFileChange = (e) => {
@@ -65,7 +76,8 @@ const ChatDetails = ({ chat, onBack }) => {
     const handleMessageOptionClicked = (option, messageId) => {
         switch (option) {
             case 'Responder':
-                setRespondingTo(messageId);
+                setSelectedMessageId(messageId);
+                setInputMode(InputMode.RESPONDING_TO);
                 break;
             case 'Reenviar':
                 console.log('Reenviar');
@@ -76,10 +88,33 @@ const ChatDetails = ({ chat, onBack }) => {
             case 'Desfijar':
                 updateMessage(messageId, { pinned: false });
                 break;
+            case 'Editar':
+                messageInputRef.current.value = messages.find(msg => msg.id === messageId).message;
+                setSelectedMessageId(messageId);
+                setInputMode(InputMode.EDIT);
+                break;
+            case 'Eliminar':
+                deleteMessage(messageId);
+                break;
             default:
                 break;
         }
     };
+
+    const handleSuccessfullSend = () => {
+        setSelectedFiles([]);
+        setSelectedMessageId(null)
+        messageInputRef.current.value = '';
+        setInputMode(InputMode.NORMAL);
+    }
+
+    const handleCancelClicked = () => {
+        setSelectedMessageId(null)
+        if (inputMode === InputMode.EDIT) {
+            messageInputRef.current.value = '';
+        }
+        setInputMode(InputMode.NORMAL);
+    }
 
     if (chat === null) {
         return <div className='chat-details-container'>
@@ -108,9 +143,9 @@ const ChatDetails = ({ chat, onBack }) => {
                             <p className='pinned-message-header'>Mensaje pinneado #{pinnedMessageIndex}</p>
                             <img src='pin_icon_dark.svg' className='icon' />
                         </div>
-                        <RespondingToDisplay
+                        <OtherMessageDisplay
                             messages={messages}
-                            respondingTo={pinnedMessageId}
+                            otherMessageId={pinnedMessageId}
                             current_user_id={current_user_id}
                             containerClass="responding-to-display"
                         />
@@ -131,9 +166,9 @@ const ChatDetails = ({ chat, onBack }) => {
                             )}
                             <div className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
                                 {shouldDisplayUser(chat, msg, messages[index - 1], current_user_id) && <div className="user-name">{msg.user.name}</div>}
-                                <RespondingToDisplay
+                                <OtherMessageDisplay
                                     messages={messages}
-                                    respondingTo={msg.respondingTo}
+                                    otherMessageId={msg.respondingTo}
                                     current_user_id={current_user_id}
                                     containerClass="responding-to-display"
                                 />
@@ -147,27 +182,28 @@ const ChatDetails = ({ chat, onBack }) => {
                                     {msg.pinned && <img src='pin_icon.svg' className='icon' />}
                                     {msg.lastEditDate && <span>Editado</span>}
                                     <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                                    {msg.user.id === current_user_id && <img src='single_check_icon.svg' className='icon' />} {/* TODO actually implement status */}
                                 </div>
-                                <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} messageId={msg.id} canSendMessage={chat.canSendMessage} pinned={msg.pinned} />
+                                <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} idUser={current_user_id} message={msg} canSendMessage={chat.canSendMessage} />
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
-            <div className="selected-files-container">
-                {selectedFiles.map((file, index) => (
-                    <FileDisplay key={index} containerClass="file-display" file={file} onRemove={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))} />
-                ))}
-            </div>
             <div className="input-container">
-                <RespondingToDisplay
+                <div className="selected-files-container">
+                    {selectedFiles.map((file, index) => (
+                        <FileDisplay key={index} containerClass="file-display" file={file} onRemove={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))} />
+                    ))}
+                </div>
+                <OtherMessageDisplay
                     messages={messages}
-                    respondingTo={respondingTo}
+                    otherMessageId={selectedMessageId}
                     current_user_id={current_user_id}
                     containerClass="responding-to-preview"
-                    onCancelCliked={() => setRespondingTo(null)}
+                    onCancelCliked={handleCancelClicked}
                 />
-                <div className={`input-wrapper ${respondingTo ? 'straight-top' : ''}`}>
+                <div className={`input-wrapper ${selectedMessageId ? 'straight-top' : ''}`}>
                     {chat.canSendMessage ? (
                         <>
                             <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} multiple />
@@ -175,7 +211,7 @@ const ChatDetails = ({ chat, onBack }) => {
                             <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" onKeyPress={event => {
                                 if (event.key === 'Enter') {
                                     event.preventDefault();
-                                    addMessageToChat();
+                                    handleSendClicked();
                                 }
                             }} />
                             <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
@@ -189,15 +225,15 @@ const ChatDetails = ({ chat, onBack }) => {
     );
 };
 
-ChatDetails.propTypes = {
-    chat: PropTypes.shape({
-        id: PropTypes.number,
-        imageUrl: PropTypes.string,
-        name: PropTypes.string,
-        canSendMessage: PropTypes.bool,
-        isDm: PropTypes.bool,
+            ChatDetails.propTypes = {
+                chat: PropTypes.shape({
+                id: PropTypes.number,
+            imageUrl: PropTypes.string,
+            name: PropTypes.string,
+            canSendMessage: PropTypes.bool,
+            isDm: PropTypes.bool,
     }),
-    onBack: PropTypes.func,
+            onBack: PropTypes.func,
 };
 
-export default ChatDetails;
+            export default ChatDetails;

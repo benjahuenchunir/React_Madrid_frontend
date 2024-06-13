@@ -1,17 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-const MessageOptionsMenu = ({ onOptionClick, messageId, pinned, canSendMessage }) => {
+const MessageOptionsMenu = ({ onOptionClick, idUser, message, canSendMessage }) => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef();
     const buttonRef = useRef();
 
     const allOptions = [
-        { label: 'Responder', onClick: () => onOptionClick('Responder', messageId), needsSendMessage: true },
-        { label: 'Reenviar', onClick: () => onOptionClick('Reenviar', messageId), needsSendMessage: false },
-        { label: (pinned ? 'Desfijar' : 'Fijar'), onClick: () => onOptionClick(pinned ? 'Desfijar' : 'Fijar', messageId), needsSendMessage: true },];
+        { label: 'Responder', onClick: () => onOptionClick('Responder', message.id), needsSendMessage: true, hasToBeHisMessage: false },
+        { label: 'Reenviar', onClick: () => onOptionClick('Reenviar', message.id), needsSendMessage: false, hasToBeHisMessage: false },
+        { label: (message.pinned ? 'Desfijar' : 'Fijar'), onClick: () => onOptionClick(message.pinned ? 'Desfijar' : 'Fijar', message.id), needsSendMessage: true, hasToBeHisMessage: false }, // TODO maybe this needs to be admin only
+        { label: 'Editar', onClick: () => onOptionClick('Editar', message.id), needsSendMessage: true, hasToBeHisMessage: true },
+        { label: 'Eliminar', onClick: () => onOptionClick('Eliminar', message.id), needsSendMessage: true, hasToBeHisMessage: true }, // TODO this could also be a admin feature if its not his message
+    ]; 
 
-    const options = allOptions.filter(option => !option.needsSendMessage || canSendMessage);
+    const options = allOptions.filter(option => (!option.needsSendMessage || canSendMessage) && (!option.hasToBeHisMessage || message.idUser === idUser));
 
     const handleOptionClick = (option) => {
         setIsOpen(false);
@@ -55,7 +58,8 @@ const MessageOptionsMenu = ({ onOptionClick, messageId, pinned, canSendMessage }
 
 MessageOptionsMenu.propTypes = {
     onOptionClick: PropTypes.func.isRequired,
-    messageId: PropTypes.number.isRequired,
+    idUser: PropTypes.number.isRequired,
+    message: PropTypes.object.isRequired,
     canSendMessage: PropTypes.bool.isRequired,
 };
 

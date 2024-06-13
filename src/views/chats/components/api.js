@@ -8,7 +8,7 @@ async function fetchData(url, options) {
     return response.json();
 }
 
-export async function addMessageToApi(idUser, idChat, message, selectedFiles, pinned = false, deletesAt = null, forwarded = false, respondingTo = null) {
+async function addMessageToApi(idUser, idChat, message, selectedFiles, pinned = false, deletesAt = null, forwarded = false, respondingTo = null) {
     try {
         const formData = new FormData();
         formData.append('idUser', idUser);
@@ -36,7 +36,7 @@ export async function addMessageToApi(idUser, idChat, message, selectedFiles, pi
     }
 }
 
-export async function updateMessageInApi(idMessage, attributes) {
+async function updateMessageInApi(idMessage, attributes) {
     try {
         const data = await fetchData(import.meta.env.VITE_BACKEND_URL + '/messages/' + idMessage, {
             method: 'PATCH',
@@ -44,6 +44,20 @@ export async function updateMessageInApi(idMessage, attributes) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(attributes),
+        });
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function deleteMessageFromApi(idMessage) {
+    try {
+        const data = await fetchData(import.meta.env.VITE_BACKEND_URL + '/messages/' + idMessage, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
         return data;
     } catch (error) {
@@ -69,18 +83,17 @@ export const useFetchChat = (chat) => {
         fetchChat();
     }, [chat]);
 
-    const addMessage = async (idUser, idChat, message, messageInputRef, selectedFiles, setSelectedFiles, respondingTo, setRespondingTo, pinned = false, deletesAt = null, forwarded = false) => {
+    const addMessage = async (idUser, idChat, message, selectedFiles, respondingTo, onSuccess, pinned = false, deletesAt = null, forwarded = false) => {
         const newMessage = await addMessageToApi(idUser, idChat, message, selectedFiles, pinned, deletesAt, forwarded, respondingTo);
         if (!newMessage) return; // TODO display error that message could not be sent
-        messageInputRef.current.value = '';
-        setSelectedFiles([]);
-        setRespondingTo(null);
         newMessage.ref = React.createRef();
         setMessages(prevMessages => [...prevMessages, newMessage]);
+
+        onSuccess();
     };
 
-    const updateMessage = async (idMessage, attributes) => {
-        const updatedMessage = await updateMessageInApi(idMessage, attributes);
+    const updateMessage = async (idMessage, attributes, onSuccess) => {
+        const updatedMessage = await updateMessageInApi(idMessage, attributes)
         if (!updatedMessage) return; // TODO display error that message could not be updated
 
         setMessages(prevMessages => prevMessages.map(msg => {
@@ -91,7 +104,16 @@ export const useFetchChat = (chat) => {
                 return msg;
             }
         }));
+
+        onSuccess();
     };
 
-    return [messages, addMessage, updateMessage];
+    const deleteMessage = async (idMessage) => {
+        const deletedMessage = await deleteMessageFromApi(idMessage);
+        if (!deletedMessage) return; // TODO display error that message could not be deleted
+
+        setMessages(prevMessages => prevMessages.filter(msg => msg.id !== idMessage));
+    };
+
+    return [messages, addMessage, updateMessage, deleteMessage];
 };
