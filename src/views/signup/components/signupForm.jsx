@@ -1,10 +1,13 @@
 import './signupForm.scss';
 import React, {useRef, useState} from "react";
 import { useFetchUser } from './api';
+import Notification from '../../../components/Notification/notification';
 
 const SignupForm = () => {
   const [addUser] = useFetchUser();
   const [selectedFile, setSelectedFile] = useState(null);
+  const [notification, setNotification] = useState({ message: null, type: null});
+  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
@@ -14,12 +17,22 @@ const SignupForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    addUser(event.target, selectedFile);
+    let submitResult = await addUser(event.target, selectedFile);
+    console.log(submitResult)
+    if(submitResult) {
+      event.target.reset();
+      setSelectedFile(null);
+    } else {
+      console.error('Error al registrarse');
+      setNotification({ message: 'Error al registrarse', type: 'error' });
+      setIsNotificationVisible(true);
+    }
   }
 
   return (
     <div id="signup-form-container">  
       <div className="form-card">
+        {isNotificationVisible && <Notification message={notification.message} type={notification.type} onClose={() => setIsNotificationVisible(false)}/>}
         <form onSubmit={handleSubmit}>
           <h1>Registrarse</h1>
           <div className="form-group">
