@@ -38,7 +38,7 @@ const ChatDetails = ({ chat, onBack }) => {
                 for (let i = messages.length - 1; i >= 0; i--) {
                     const msg = messages[i];
                     const offset = i === 0 ? 0 : 100;
-                    if (msg.pinned && msg.ref.current && msg.ref.current.offsetTop - offset < chatContainer.scrollTop ) {
+                    if (msg.pinned && msg.ref.current && msg.ref.current.offsetTop - offset < chatContainer.scrollTop) {
                         setPinnedMessageId(msg.id);
                         wasLoopBroken = true;
                         break;
@@ -58,7 +58,7 @@ const ChatDetails = ({ chat, onBack }) => {
         }
     }, [messages]);
 
-    function handleSendClicked () {
+    function handleSendClicked() {
         const text = messageInputRef.current.value
         if (inputMode === InputMode.RESPONDING_TO || inputMode === InputMode.NORMAL) {
             if (!text && selectedFiles.length === 0) return;
@@ -182,7 +182,7 @@ const ChatDetails = ({ chat, onBack }) => {
                                     {msg.pinned && <img src='pin_icon.svg' className='icon' />}
                                     {msg.lastEditDate && <span>Editado</span>}
                                     <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
-                                    {msg.user.id === current_user_id && <img src='single_check_icon.svg' className='icon' />} {/* TODO actually implement status */}       
+                                    {msg.user.id === current_user_id && <img src='single_check_icon.svg' className='icon' />} {/* TODO actually implement status */}
                                 </div>
                                 <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} idUser={current_user_id} message={msg} canSendMessage={chat.canSendMessage} />
                             </div>
@@ -190,12 +190,12 @@ const ChatDetails = ({ chat, onBack }) => {
                     </div>
                 ))}
             </div>
-            <div className="selected-files-container">
-                {selectedFiles.map((file, index) => (
-                    <FileDisplay key={index} containerClass="file-display" file={file} onRemove={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))} />
-                ))}
-            </div>
             <div className="input-container">
+                <div className="selected-files-container">
+                    {selectedFiles.map((file, index) => (
+                        <FileDisplay key={index} containerClass="file-display" file={file} onRemove={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))} />
+                    ))}
+                </div>
                 <OtherMessageDisplay
                     messages={messages}
                     otherMessageId={selectedMessageId}
@@ -225,15 +225,15 @@ const ChatDetails = ({ chat, onBack }) => {
     );
 };
 
-ChatDetails.propTypes = {
-    chat: PropTypes.shape({
-        id: PropTypes.number,
-        imageUrl: PropTypes.string,
-        name: PropTypes.string,
-        canSendMessage: PropTypes.bool,
-        isDm: PropTypes.bool,
+            ChatDetails.propTypes = {
+                chat: PropTypes.shape({
+                id: PropTypes.number,
+            imageUrl: PropTypes.string,
+            name: PropTypes.string,
+            canSendMessage: PropTypes.bool,
+            isDm: PropTypes.bool,
     }),
-    onBack: PropTypes.func,
+            onBack: PropTypes.func,
 };
 
-export default ChatDetails;
+            export default ChatDetails;

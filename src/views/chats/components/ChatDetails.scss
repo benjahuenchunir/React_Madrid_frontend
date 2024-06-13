@@ -95,16 +95,28 @@
         }
     }
 
+    .chat-container {
+        overflow-y: auto;
+    }
+    
     .input-container {
         margin-left: 10px;
         margin-right: 10px;
-        margin-bottom: 10px;
+        padding-bottom: 10px;
+        position: relative;
+        width: calc(100% - 20px);
 
         .responding-to-content {
             width: calc(100% - 60px);
         }
-    }
 
+        .selected-files-container {
+            position: absolute;
+            bottom: 100%;
+            display: flex;
+            flex-direction: column-reverse;
+        }
+    }
     .input-wrapper {
         display: flex;
         align-items: center;
@@ -223,10 +235,7 @@
         color: #c0c0c0;
     }
 
-    .chat-container {
-        overflow-y: auto;
-        flex: 1;
-    }
+    
 
     .chat-container::-webkit-scrollbar {
         width: 10px;
@@ -267,20 +276,18 @@
         }
     }
 
-    .selected-files-container {
-        position: absolute;
-        bottom: 60px;
-    }
-
     .file-display {
         margin: 0 0 10px 10px;
         display: flex;
         align-items: center;
         padding: 10px;
         border-radius: 5px;
-        width: 80%;
-        min-width: fit-content;
+        max-width: 60%;
         background-color: var(--secondary-black);
+    }
+
+    .file-info {
+        min-width: 0;
     }
 
     .file-icon {
@@ -335,7 +342,6 @@
         height: 100%;
         padding: 10px;
         color: var(--secondary-white);
-
     }
 
     .background-ship {
