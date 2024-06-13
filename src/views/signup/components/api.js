@@ -31,6 +31,7 @@ export async function addUserToApi(form, selectedFile) {
   
     } catch (error) {
         console.error('Error al registrarse', error);
+        return null;
     }
 }
 
@@ -39,6 +40,7 @@ export const useFetchUser = () => {
 
     const addUser = async (form, selectedFile) => {
         const newUser = await addUserToApi(form, selectedFile);
+        console.log(newUser);
         if (!newUser) return; // TODO display error that user could not be created
     };
 
