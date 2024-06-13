@@ -1,8 +1,9 @@
 import './signupForm.scss';
 import React, {useRef, useState} from "react";
+import { useFetchUser } from './api';
 
 const SignupForm = () => {
-
+  const [addUser] = useFetchUser();
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -11,10 +12,15 @@ const SignupForm = () => {
     e.target.value = null;
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    addUser(event.target, selectedFile);
+  }
+
   return (
     <div id="signup-form-container">  
       <div className="form-card">
-        <form>
+        <form onSubmit={handleSubmit}>
           <h1>Registrarse</h1>
           <div className="form-group">
             <label htmlFor="email">Email</label>
