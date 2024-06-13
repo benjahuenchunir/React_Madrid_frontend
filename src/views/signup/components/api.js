@@ -39,7 +39,7 @@ export const useFetchUser = () => {
 
     const addUser = async (form, selectedFile) => {
         const newUser = await addUserToApi(form, selectedFile);
-        if (!newUser) return; // TODO display error that message could not be sent
+        if (!newUser) return; // TODO display error that user could not be created
     };
 
     return [addUser];
