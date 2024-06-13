@@ -1,6 +1,5 @@
 import './signupForm.scss';
 import React, {useRef, useState} from "react";
-import axios from 'axios';
 import { useFetchUser } from './api';
 
 const SignupForm = () => {
