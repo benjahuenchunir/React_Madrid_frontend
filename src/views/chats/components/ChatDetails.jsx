@@ -6,7 +6,7 @@ import { shouldDisplayUser } from './utils';
 import { useFetchChat } from './api';
 import MessageOptionsMenu from './MessageOptionsMenu';
 import FileDisplay from './FileDisplay';
-import RespondingToDisplay from './RespondingToDisplay';
+import OtherMessageDisplay from './OtherMessageDisplay';
 
 const current_user_id = 1; // TODO use actual user id
 const InputMode = {
@@ -140,9 +140,9 @@ const ChatDetails = ({ chat, onBack }) => {
                             <p className='pinned-message-header'>Mensaje pinneado #{pinnedMessageIndex}</p>
                             <img src='pin_icon_dark.svg' className='icon' />
                         </div>
-                        <RespondingToDisplay
+                        <OtherMessageDisplay
                             messages={messages}
-                            respondingTo={pinnedMessageId}
+                            otherMessageId={pinnedMessageId}
                             current_user_id={current_user_id}
                             containerClass="responding-to-display"
                         />
@@ -163,9 +163,9 @@ const ChatDetails = ({ chat, onBack }) => {
                             )}
                             <div className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
                                 {shouldDisplayUser(chat, msg, messages[index - 1], current_user_id) && <div className="user-name">{msg.user.name}</div>}
-                                <RespondingToDisplay
+                                <OtherMessageDisplay
                                     messages={messages}
-                                    respondingTo={msg.respondingTo}
+                                    otherMessageId={msg.respondingTo}
                                     current_user_id={current_user_id}
                                     containerClass="responding-to-display"
                                 />
@@ -192,9 +192,9 @@ const ChatDetails = ({ chat, onBack }) => {
                 ))}
             </div>
             <div className="input-container">
-                <RespondingToDisplay
+                <OtherMessageDisplay
                     messages={messages}
-                    respondingTo={selectedMessageId}
+                    otherMessageId={selectedMessageId}
                     current_user_id={current_user_id}
                     containerClass="responding-to-preview"
                     onCancelCliked={handleCancelClicked}

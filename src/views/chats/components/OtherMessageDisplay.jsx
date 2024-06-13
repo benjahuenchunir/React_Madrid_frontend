@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
 import FileDisplay from './FileDisplay';
 
-const RespondingToDisplay = ({ messages, respondingTo, current_user_id, containerClass, onCancelCliked }) => {
+const OtherMessageDisplay = ({ messages, otherMessageId, current_user_id, containerClass, onCancelCliked }) => {
     const handleClick = () => {
-        const message = messages.find(msg => msg.id === respondingTo);
+        const message = messages.find(msg => msg.id === otherMessageId);
         message.ref.current.scrollIntoView({
             behavior: 'smooth'
         });
     };
 
     return (
-        respondingTo && (
+        otherMessageId && (
             <div className={containerClass} onClick={handleClick}>
-                {messages.filter(msg => msg.id === respondingTo).map((msg, index) => (
+                {messages.filter(msg => msg.id === otherMessageId).map((msg, index) => (
                     <div className='responding-to-content' key={index}>
                         <div className='message-preview-parent'>
                             <p className='sender-name'>{msg.user.id === current_user_id ? 'Yo' : msg.user.name}</p>
@@ -29,12 +29,12 @@ const RespondingToDisplay = ({ messages, respondingTo, current_user_id, containe
     );
 };
 
-RespondingToDisplay.propTypes = {
+OtherMessageDisplay.propTypes = {
     messages: PropTypes.array.isRequired,
-    respondingTo: PropTypes.number,
+    otherMessageId: PropTypes.number,
     current_user_id: PropTypes.number.isRequired,
     containerClass: PropTypes.string,
     onCancelCliked: PropTypes.func,
 };
 
-export default RespondingToDisplay;
+export default OtherMessageDisplay;
