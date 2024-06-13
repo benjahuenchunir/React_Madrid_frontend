@@ -69,18 +69,17 @@ export const useFetchChat = (chat) => {
         fetchChat();
     }, [chat]);
 
-    const addMessage = async (idUser, idChat, message, messageInputRef, selectedFiles, setSelectedFiles, respondingTo, setRespondingTo, pinned = false, deletesAt = null, forwarded = false) => {
+    const addMessage = async (idUser, idChat, message, selectedFiles, respondingTo, onSuccess, pinned = false, deletesAt = null, forwarded = false) => {
         const newMessage = await addMessageToApi(idUser, idChat, message, selectedFiles, pinned, deletesAt, forwarded, respondingTo);
         if (!newMessage) return; // TODO display error that message could not be sent
-        messageInputRef.current.value = '';
-        setSelectedFiles([]);
-        setRespondingTo(null);
         newMessage.ref = React.createRef();
         setMessages(prevMessages => [...prevMessages, newMessage]);
+
+        onSuccess();
     };
 
-    const updateMessage = async (idMessage, attributes) => {
-        const updatedMessage = await updateMessageInApi(idMessage, attributes);
+    const updateMessage = async (idMessage, attributes, onSuccess) => {
+        const updatedMessage = await updateMessageInApi(idMessage, attributes)
         if (!updatedMessage) return; // TODO display error that message could not be updated
 
         setMessages(prevMessages => prevMessages.map(msg => {
@@ -91,6 +90,8 @@ export const useFetchChat = (chat) => {
                 return msg;
             }
         }));
+
+        onSuccess();
     };
 
     return [messages, addMessage, updateMessage];

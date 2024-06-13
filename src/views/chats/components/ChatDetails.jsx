@@ -9,12 +9,19 @@ import FileDisplay from './FileDisplay';
 import RespondingToDisplay from './RespondingToDisplay';
 
 const current_user_id = 1; // TODO use actual user id
+const InputMode = {
+    NORMAL: 'normal',
+    RESPONDING_TO: 'responding_to',
+    EDIT: 'edit',
+    REPLY: 'reply'
+};
 
 const ChatDetails = ({ chat, onBack }) => {
     const [messages, addMessage, updateMessage] = useFetchChat(chat);
     const [pinnedMessageId, setPinnedMessageId] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
-    const [respondingTo, setRespondingTo] = useState(null)
+    const [selectedMessageId, setSelectedMessageId] = useState(null)
+    const [inputMode, setInputMode] = useState(InputMode.NORMAL);
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
     const messageInputRef = useRef(null);
@@ -51,10 +58,14 @@ const ChatDetails = ({ chat, onBack }) => {
         }
     }, [messages]);
 
-    function addMessageToChat() {
-        const text = messageInputRef.current.value;
-        if (!text && selectedFiles.length === 0) return;
-        addMessage(current_user_id, chat.id, text, messageInputRef, selectedFiles, setSelectedFiles, respondingTo, setRespondingTo);
+    function handleSendClicked () {
+        const text = messageInputRef.current.value
+        if (inputMode === InputMode.RESPONDING_TO || inputMode === InputMode.NORMAL) {
+            if (!text && selectedFiles.length === 0) return;
+            addMessage(current_user_id, chat.id, text, selectedFiles, selectedMessageId, handleSuccessfullSend);
+        } else if (inputMode === InputMode.EDIT) {
+            updateMessage(selectedMessageId, { message: text }, handleSuccessfullSend);
+        }
     }
 
     const handleFileChange = (e) => {
@@ -65,7 +76,8 @@ const ChatDetails = ({ chat, onBack }) => {
     const handleMessageOptionClicked = (option, messageId) => {
         switch (option) {
             case 'Responder':
-                setRespondingTo(messageId);
+                setSelectedMessageId(messageId);
+                setInputMode(InputMode.RESPONDING_TO);
                 break;
             case 'Reenviar':
                 console.log('Reenviar');
@@ -76,10 +88,30 @@ const ChatDetails = ({ chat, onBack }) => {
             case 'Desfijar':
                 updateMessage(messageId, { pinned: false });
                 break;
+            case 'Editar':
+                messageInputRef.current.value = messages.find(msg => msg.id === messageId).message;
+                setSelectedMessageId(messageId);
+                setInputMode(InputMode.EDIT);
+                break;
             default:
                 break;
         }
     };
+
+    const handleSuccessfullSend = () => {
+        setSelectedFiles([]);
+        setSelectedMessageId(null)
+        messageInputRef.current.value = '';
+        setInputMode(InputMode.NORMAL);
+    }
+
+    const handleCancelClicked = () => {
+        setSelectedMessageId(null)
+        if (inputMode === InputMode.EDIT) {
+            messageInputRef.current.value = '';
+        }
+        setInputMode(InputMode.NORMAL);
+    }
 
     if (chat === null) {
         return <div className='chat-details-container'>
@@ -148,7 +180,7 @@ const ChatDetails = ({ chat, onBack }) => {
                                     {msg.lastEditDate && <span>Editado</span>}
                                     <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
                                 </div>
-                                <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} messageId={msg.id} canSendMessage={chat.canSendMessage} pinned={msg.pinned} />
+                                <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} idUser={current_user_id} message={msg} canSendMessage={chat.canSendMessage} />
                             </div>
                         </div>
                     </div>
@@ -162,12 +194,12 @@ const ChatDetails = ({ chat, onBack }) => {
             <div className="input-container">
                 <RespondingToDisplay
                     messages={messages}
-                    respondingTo={respondingTo}
+                    respondingTo={selectedMessageId}
                     current_user_id={current_user_id}
                     containerClass="responding-to-preview"
-                    onCancelCliked={() => setRespondingTo(null)}
+                    onCancelCliked={handleCancelClicked}
                 />
-                <div className={`input-wrapper ${respondingTo ? 'straight-top' : ''}`}>
+                <div className={`input-wrapper ${selectedMessageId ? 'straight-top' : ''}`}>
                     {chat.canSendMessage ? (
                         <>
                             <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} multiple />
@@ -175,7 +207,7 @@ const ChatDetails = ({ chat, onBack }) => {
                             <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" onKeyPress={event => {
                                 if (event.key === 'Enter') {
                                     event.preventDefault();
-                                    addMessageToChat();
+                                    handleSendClicked();
                                 }
                             }} />
                             <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
