@@ -17,14 +17,26 @@ const SignupForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let submitResult = await addUser(event.target, selectedFile);
-    console.log(submitResult)
-    if(submitResult) {
+    let response = await addUser(event.target, selectedFile);
+    let { status, data } = response;
+    console.log(status)
+    console.log(data)
+
+    let message = "";
+    if (typeof data === 'string') {
+      message = data;
+    } else {
+      message = data.message;
+    }
+  
+    if(status >= 200 && status < 300) {
       event.target.reset();
       setSelectedFile(null);
+      setNotification({ message: message, type: 'success' });
+      setIsNotificationVisible(true);
     } else {
       console.error('Error al registrarse');
-      setNotification({ message: 'Error al registrarse', type: 'error' });
+      setNotification({ message: `Error al registrarse: ${message}`, type: 'error' });
       setIsNotificationVisible(true);
     }
   }
