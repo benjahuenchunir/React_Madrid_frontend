@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import './chats.scss';
 import ChatCard from './components/ChatCard';
 import ChatDetails from './components/ChatDetails';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { AuthContext } from '../../auth/authContext';
 
@@ -14,25 +14,34 @@ const Chats = () => {
     const [selectedChat, setSelectedChat] = useState(null);
 
     useEffect(() => {
-        let userId = 1;
-        if (token) {
+        let userId = null;
+        console.log("token:")
+        console.log(token);
+        console.log(typeof token);
+        if (!(token == "null" || token == null)) {
             const decodedToken = jwtDecode(token);
             userId = decodedToken.sub;
-        }
-        config = {
-            method: 'get',
-            url: import.meta.env.VITE_BACKEND_URL + `/chats?userId=${userId}`,
-            headers: {
-                'Authorization': `Bearer ${token}`
+
+            let config = {
+                method: 'get',
+                url: import.meta.env.VITE_BACKEND_URL + `chats?userId=${userId}`,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             }
+            axios(config)
+                .then(response => {
+                    console.log('data', response.data);
+                    setChats(response.data);
+                })
+                .catch(error => {
+                    console.log('error', error)
+                    setIsAuthorized(false);
+                });
+        } else {
+            setIsAuthorized(false);
         }
-        axios(config)
-            .then(response => response.json())
-            .then(data => setChats(data))
-            .catch(error => {
-                console.log('error', error)
-                setIsAuthorized(false);
-            });
+        
     }, []);
 
     if (!isAuthorized) {
