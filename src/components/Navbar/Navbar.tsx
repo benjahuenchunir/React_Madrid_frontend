@@ -1,8 +1,13 @@
-import React, { Fragment, useState, useEffect, useRef } from 'react';
+import React, { Fragment, useState, useEffect, useRef, useContext } from 'react';
 import './Navbar.scss';
 import CustomNavLink from './CustomNavLink';
+import jwtDecode from 'jwt-decode';
+import axios from 'axios';
+import { AuthContext } from '../../auth/authContext';
 
 function Navbar(): JSX.Element {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const {token} = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const hamburgerRef = useRef<HTMLButtonElement | null>(null);
@@ -10,6 +15,13 @@ function Navbar(): JSX.Element {
     const closeMenu = () => {
         setIsOpen(false);
     };
+
+    useEffect(() => {
+        // Check if the user is logged in by checking if a token is stored
+        if (token) {
+            setIsLoggedIn(true);
+        }
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -35,6 +47,9 @@ function Navbar(): JSX.Element {
         [
             { to: "/login", text: "Iniciar Sesión" },
             { to: "/register", text: "Registrarse" },
+        ],
+        [
+            { to: "/profile", text: "Mi perfil" },
         ]
     ];
 
@@ -54,8 +69,14 @@ function Navbar(): JSX.Element {
                 <h1 className="nav-logo">deepspace</h1>
 
                 <div className="right-nav-links">
+                    
                     <ul>
-                        {linkGroups[1].map((link, linkIndex) => (
+                        {!isLoggedIn && linkGroups[1].map((link, linkIndex) => (
+                            <li key={linkIndex}>
+                                <CustomNavLink to={link.to}>{link.text}</CustomNavLink>
+                            </li>
+                        ))}
+                        {isLoggedIn && linkGroups[2].map((link, linkIndex) => (
                             <li key={linkIndex}>
                                 <CustomNavLink to={link.to}>{link.text}</CustomNavLink>
                             </li>
