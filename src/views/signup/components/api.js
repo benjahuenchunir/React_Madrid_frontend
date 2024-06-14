@@ -30,7 +30,7 @@ export async function addUserToApi(form, selectedFile) {
         console.log(pair[0]+ ', '+ pair[1]); 
     }
 
-    const response = await fetchData(import.meta.env.VITE_BACKEND_URL + '/auth/signup', {
+    const response = await fetchData(import.meta.env.VITE_BACKEND_URL + 'auth/signup', {
         method: 'POST',
         body: formData,
     });
