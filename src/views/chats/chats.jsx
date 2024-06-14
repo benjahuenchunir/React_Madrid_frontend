@@ -4,15 +4,16 @@ import ChatCard from './components/ChatCard';
 import ChatDetails from './components/ChatDetails';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
+import { AuthContext } from '../../auth/authContext';
 
 const Chats = () => {
+    const { token } = useContext(AuthContext);
     const [isAuthorized, setIsAuthorized] = useState(true);
     const [chats, setChats] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedChat, setSelectedChat] = useState(null);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
         let userId = 1;
         if (token) {
             const decodedToken = jwtDecode(token);
