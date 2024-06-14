@@ -34,7 +34,7 @@ export async function loginToApi(form) {
         console.log(pair[0]+ ', '+ pair[1]); 
     }
 
-    const response = await fetchData(import.meta.env.VITE_BACKEND_URL + 'auth/login', {
+    const response = await fetchData(import.meta.env.VITE_BACKEND_URL + '/auth/login', {
         method: 'POST',
         body: formData,
     });
