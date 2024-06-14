@@ -1,10 +1,12 @@
 import './loginForm.scss';
-import React, {useRef, useState} from "react";
+import React, {useContext, useRef, useState} from "react";
 import { useFetchLogin } from './api';
 import Notification from '../../../components/Notification/notification';
+import { AuthContext } from '../../../auth/authContext';
 
 
 const LoginForm = () => {
+  const { token, setToken } = useContext(AuthContext);
   const [login] = useFetchLogin();
   const [notification, setNotification] = useState({ message: null, type: null});
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
@@ -28,8 +30,8 @@ const LoginForm = () => {
       setNotification({ message: message, type: 'success' });
       setIsNotificationVisible(true);
 
-      const token = data.access_token;
-      localStorage.setItem('token', token);
+      const access_token = data.access_token;
+      setToken(access_token);
 
     } else {
       console.error('Error al ingresar');
