@@ -35,6 +35,7 @@ export async function loginToApi(form) {
     }
 
     const response = await fetchData(import.meta.env.VITE_BACKEND_URL + '/auth/login', {
+        //
         method: 'POST',
         body: formData,
     });
