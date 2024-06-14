@@ -1,11 +1,48 @@
 import './loginForm.scss';
+import React, {useRef, useState} from "react";
+import { useFetchLogin } from './api';
+import Notification from '../../../components/Notification/notification';
+
 
 const LoginForm = () => {
+  const [login] = useFetchLogin();
+  const [notification, setNotification] = useState({ message: null, type: null});
+  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    let response = await login(event.target);
+    let { status, data } = response;
+    console.log(status)
+    console.log(data)
+
+    let message = "";
+    if (typeof data === 'string') {
+      message = data;
+    } else {
+      message = data.message;
+    }
+
+    if(status >= 200 && status < 300) {
+      event.target.reset();
+      setNotification({ message: message, type: 'success' });
+      setIsNotificationVisible(true);
+
+      const token = data.access_token;
+      localStorage.setItem('token', token);
+
+    } else {
+      console.error('Error al ingresar');
+      setNotification({ message: `Error al ingresar: ${message}`, type: 'error' });
+      setIsNotificationVisible(true);
+    }
+  }
 
   return (
     <div id="login-form-container">  
       <div className="form-card">
-        <form>
+      {isNotificationVisible && <Notification message={notification.message} type={notification.type} onClose={() => setIsNotificationVisible(false)}/>}
+        <form onSubmit={handleSubmit}>
           <h1>Iniciar sesión</h1>
           <div className="form-group">
             <label htmlFor="email">Email</label>
