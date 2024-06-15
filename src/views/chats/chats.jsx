@@ -18,7 +18,7 @@ const Chats = () => {
         console.log("token:")
         console.log(token);
         console.log(typeof token);
-        if (!(token == "null" || token == null)) {
+        if (token != "null" && token != null && token != "" && token != undefined && token != "undefined") {
             const decodedToken = jwtDecode(token);
             userId = decodedToken.sub;
 
