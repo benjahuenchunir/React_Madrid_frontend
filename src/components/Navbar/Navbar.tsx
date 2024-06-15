@@ -18,10 +18,11 @@ function Navbar(): JSX.Element {
 
     useEffect(() => {
         // Check if the user is logged in by checking if a token is stored
-        if (token) {
+        if (token != null && token != "null") {
+            console.log(token);
             setIsLoggedIn(true);
         }
-    }, []);
+    }, [token]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -94,16 +95,34 @@ function Navbar(): JSX.Element {
             {
                 (
                     <div className={`dropdown-menu ${isOpen ? 'show' : ''}`} ref={dropdownRef}>
-                        {linkGroups.map((group, groupIndex) => (
-                            <Fragment key={groupIndex}>
-                                {group.map((link, linkIndex) => (
-                                    <CustomNavLink key={linkIndex} to={link.to} onClick={closeMenu}>
-                                        {link.text}
-                                    </CustomNavLink>
-                                ))}
-                                {groupIndex < linkGroups.length - 1 && <div className="divider"></div>}
-                            </Fragment>
-                        ))}
+                        {linkGroups.map((group, groupIndex) => {
+                            // If user is logged in, only render groups at index 0 and 2
+                            if (isLoggedIn && (groupIndex === 0 || groupIndex === 2)) {
+                                return (
+                                    <Fragment key={groupIndex}>
+                                        {group.map((link, linkIndex) => (
+                                            <CustomNavLink key={linkIndex} to={link.to} onClick={closeMenu}>
+                                                {link.text}
+                                            </CustomNavLink>
+                                        ))}
+                                        {groupIndex < linkGroups.length - 1 && <div className="divider"></div>}
+                                    </Fragment>
+                                );
+                            }
+                            // If user is not logged in, only render groups at index 0 and 1
+                            else if (!isLoggedIn && (groupIndex === 0 || groupIndex === 1)) {
+                                return (
+                                    <Fragment key={groupIndex}>
+                                        {group.map((link, linkIndex) => (
+                                            <CustomNavLink key={linkIndex} to={link.to} onClick={closeMenu}>
+                                                {link.text}
+                                            </CustomNavLink>
+                                        ))}
+                                        {groupIndex < linkGroups.length - 1 && <div className="divider"></div>}
+                                    </Fragment>
+                                );
+                            }
+                        })}
                     </div>
                 )
             }
