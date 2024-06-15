@@ -35,6 +35,7 @@ function Navbar(): JSX.Element {
         [
             { to: "/login", text: "Iniciar Sesión" },
             { to: "/register", text: "Registrarse" },
+            { to: "/profile", text: "Perfil" },
         ]
     ];
 
