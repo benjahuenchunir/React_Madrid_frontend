@@ -24,19 +24,19 @@ async function fetchData(url, options) {
 }
 
 export async function loginToApi(form) {
+    const body = {
+        email: form.email.value,
+        password: form.password.value
+    };
 
-    const formData = new FormData();
-    formData.append('email', form.email.value);
-    formData.append('password', form.password.value);
-
-
-    for(let pair of formData.entries()) {
-        console.log(pair[0]+ ', '+ pair[1]); 
-    }
+    console.log(body);
 
     const response = await fetchData(import.meta.env.VITE_BACKEND_URL + '/auth/login', {
         method: 'POST',
-        body: formData,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body),
     });
 
     return response;
