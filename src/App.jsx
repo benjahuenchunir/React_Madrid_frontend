@@ -7,10 +7,14 @@ import AboutUs from './views/aboutus/AboutUs';
 import DocsPage from './views/docs/docs';
 import Login from './views/login/login.jsx';
 import Signup from "./views/signup/signup.jsx";
+import Profile from './views/profile.jsx';
+import { AuthContext } from './auth/authContext';
+import { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
 
 
 function App() {
-
+  const { token } = useContext(AuthContext);
   useEffect(() => {
     const navbar = document.querySelector('.navbar');
     if (navbar) {
@@ -40,6 +44,7 @@ function App() {
         </div>} />
         <Route path='/login' element={<Login/>} />
         <Route path='/register' element={<Signup/>} />
+        <Route path='/profile' element={token ? <Profile /> : <Navigate to='/login' />} />
       </Routes>
     </>
   )
