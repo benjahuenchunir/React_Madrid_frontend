@@ -18,13 +18,13 @@ const Chats = () => {
         console.log("token:")
         console.log(token);
         console.log(typeof token);
-        if (!(token == "null" || token == null)) {
+        if (token != "null" && token != null && token != "" && token != undefined && token != "undefined") {
             const decodedToken = jwtDecode(token);
             userId = decodedToken.sub;
 
             let config = {
                 method: 'get',
-                url: import.meta.env.VITE_BACKEND_URL + `chats?userId=${userId}`,
+                url: import.meta.env.VITE_BACKEND_URL + `/chats?userId=${userId}`,
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
