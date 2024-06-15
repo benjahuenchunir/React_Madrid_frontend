@@ -18,7 +18,7 @@ function Navbar(): JSX.Element {
 
     useEffect(() => {
         // Check if the user is logged in by checking if a token is stored
-        if (token != null && token != "null") {
+        if (token != null && token != "null" && token != undefined && token != "" && token != "undefined") {
             console.log(token);
             setIsLoggedIn(true);
         }
