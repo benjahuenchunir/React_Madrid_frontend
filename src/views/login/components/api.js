@@ -1,20 +1,27 @@
 async function fetchData(url, options) {
-    const response = await fetch(url, options);  
-    const clone = response.clone();
-
-    let data;
     try {
-        data = await response.json();
+        const response = await fetch(url, options);
+        const clone = response.clone();
+
+        let data;
+        try {
+            data = await response.json();
+        } catch (error) {
+            data = await clone.text();
+        }
+
+        return {
+            status: response.status,
+            data: data
+        };
     } catch (error) {
-        data = await clone.text();
+        console.error('Fetch error:', error);
+        return {
+            status: 'network_error',
+            data: error.message
+        };
     }
-
-    return {
-        status: response.status,
-        data: data
-    };
 }
-
 
 export async function loginToApi(form) {
 
@@ -38,8 +45,8 @@ export async function loginToApi(form) {
 
 export const useFetchLogin = () => {
 
-    const login = async (form, selectedFile) => {
-        const response = await loginToApi(form, selectedFile);
+    const login = async (form) => {
+        const response = await loginToApi(form);
         return response;
     };
 

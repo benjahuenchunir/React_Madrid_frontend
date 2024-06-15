@@ -30,7 +30,7 @@ const LoginForm = () => {
       setNotification({ message: message, type: 'success' });
       setIsNotificationVisible(true);
 
-      const access_token = data.access_token;
+      const access_token = data.token;
       setToken(access_token);
 
     } else {
