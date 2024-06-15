@@ -1,146 +1,239 @@
-import React from 'react';
-import './ChatDetails.css';
+import './ChatDetails.scss';
 import { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import { isSameDay } from './utils';
+import { shouldDisplayUser } from './utils';
+import { useFetchChat } from './api';
+import MessageOptionsMenu from './MessageOptionsMenu';
+import FileDisplay from './FileDisplay';
+import OtherMessageDisplay from './OtherMessageDisplay';
 
-const listA = [
-    { text: 'Hola', date: new Date('2021-01-01T10:00:00Z') },
-    { text: 'Esta es mi tarea', date: new Date('2021-01-01T10:00:00Z') },
-    { text: 'Holaaaa?', date: new Date('2021-01-01T10:01:00Z') },
-    { text: 'Holaaaa?', date: new Date('2021-01-01T10:05:00Z') },
-
-    { text: 'Hola, cómo estas?', date: new Date('2022-01-01T10:00:00Z') },
-    { text: 'Oye, terminaste la tarea de discretas?', date: new Date('2022-01-01T10:05:00Z') },
-];
-
-const listB = [
-    { text: 'Hola, muy bien, gracias!', date: new Date('2022-01-01T10:02:00Z') },
-    { text: 'Ni entendí el enunciado', date: new Date('2022-01-01T10:07:00Z') },
-];
-
-function createSampleChat() {
-    const messages = [
-        ...listA.map((msg, index) => ({ ...msg, received: true, id: index })),
-        ...listB.map((msg, index) => ({ ...msg, received: false, id: index + listA.length }))
-    ];
-    messages.sort((a, b) => a.date - b.date);
-    return messages;
-}
+const current_user_id = 1; // TODO use actual user id
+const InputMode = {
+    NORMAL: 'normal',
+    RESPONDING_TO: 'responding_to',
+    EDIT: 'edit',
+    REPLY: 'reply'
+};
 
 const ChatDetails = ({ chat, onBack }) => {
-    const [messages, setMessages] = useState([]);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [sentFiles, setSentFiles] = useState([]);
+    const [messages, addMessage, updateMessage, deleteMessage] = useFetchChat(chat);
+    const [pinnedMessageId, setPinnedMessageId] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [selectedMessageId, setSelectedMessageId] = useState(null)
+    const [inputMode, setInputMode] = useState(InputMode.NORMAL);
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
     const messageInputRef = useRef(null);
-
-    useEffect(() => {
-        setMessages(createSampleChat());
-        setSentFiles([
-            { file: { name: 'Tarea1.pdf', size: 1024 }, messageId: 1 },
-        ]);
-    }, [chat]);
+    const pinnedMessages = messages.filter(msg => msg.pinned);
+    const pinnedMessageIndex = pinnedMessages.findIndex(msg => msg.id === pinnedMessageId) + 1;
 
     useEffect(() => {
         const chatContainer = chatContainerRef.current;
         if (chatContainer) {
             chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            const handleScroll = () => {
+                let wasLoopBroken = false;
+                for (let i = messages.length - 1; i >= 0; i--) {
+                    const msg = messages[i];
+                    const offset = i === 0 ? 0 : 100;
+                    if (msg.pinned && msg.ref.current && msg.ref.current.offsetTop - offset < chatContainer.scrollTop) {
+                        setPinnedMessageId(msg.id);
+                        wasLoopBroken = true;
+                        break;
+                    }
+                }
+
+                if (!wasLoopBroken) {
+                    setPinnedMessageId(null)
+                }
+            };
+
+            chatContainer.addEventListener('scroll', handleScroll);
+
+            return () => {
+                chatContainer.removeEventListener('scroll', handleScroll);
+            };
         }
     }, [messages]);
 
-    function isSameDay(d1, d2) {
-        return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
+    function handleSendClicked() {
+        const text = messageInputRef.current.value
+        if (inputMode === InputMode.RESPONDING_TO || inputMode === InputMode.NORMAL) {
+            if (!text && selectedFiles.length === 0) return;
+            addMessage(current_user_id, chat.id, text, selectedFiles, selectedMessageId, handleSuccessfullSend);
+        } else if (inputMode === InputMode.EDIT) {
+            updateMessage(selectedMessageId, { message: text }, handleSuccessfullSend);
+        }
     }
 
-    function addMessage() {
-        const text = messageInputRef.current.value;
-        if (!text && !selectedFile) return;
-        const newMessage = {
-            id: messages.length,
-            text,
-            date: new Date(),
-            received: false,
-        };
-        setMessages([...messages, newMessage]);
+    const handleFileChange = (e) => {
+        setSelectedFiles([...e.target.files]);
+        e.target.value = null;
+    };
 
-        if (selectedFile) {
-            const newSentFile = {
-                file: selectedFile,
-                messageId: newMessage.id
-            };
-            setSentFiles([...sentFiles, newSentFile]);
-            setSelectedFile(null);
+    const handleMessageOptionClicked = (option, messageId) => {
+        switch (option) {
+            case 'Responder':
+                setSelectedMessageId(messageId);
+                setInputMode(InputMode.RESPONDING_TO);
+                break;
+            case 'Reenviar':
+                console.log('Reenviar');
+                break;
+            case 'Fijar':
+                updateMessage(messageId, { pinned: true });
+                break;
+            case 'Desfijar':
+                updateMessage(messageId, { pinned: false });
+                break;
+            case 'Editar':
+                messageInputRef.current.value = messages.find(msg => msg.id === messageId).message;
+                setSelectedMessageId(messageId);
+                setInputMode(InputMode.EDIT);
+                break;
+            case 'Eliminar':
+                deleteMessage(messageId);
+                break;
+            default:
+                break;
         }
+    };
 
+    const handleSuccessfullSend = () => {
+        setSelectedFiles([]);
+        setSelectedMessageId(null)
         messageInputRef.current.value = '';
-        setSelectedFile(null);
+        setInputMode(InputMode.NORMAL);
+    }
+
+    const handleCancelClicked = () => {
+        setSelectedMessageId(null)
+        if (inputMode === InputMode.EDIT) {
+            messageInputRef.current.value = '';
+        }
+        setInputMode(InputMode.NORMAL);
     }
 
     if (chat === null) {
-        return <div className='no-chat-selected'>
-            <div>
-                <h1>Detalles del chat</h1>
-                <p>Selecciona un chat para ver los detalles</p>
+        return <div className='chat-details-container'>
+            <div className='no-chat-selected'>
+                <div>
+                    <h1>Detalles del chat</h1>
+                    <p>Selecciona un chat para ver los detalles</p>
+                </div>
+                <img src="/ground_ship.svg" alt="Ship on ground" className='background-ship' />
             </div>
-            <img src="/ground_ship.svg" alt="Ship on ground" className='background-ship' />
         </div>;
     }
+
 
     return (
         <div className='chat-details-container'>
             <div className="chat-info-container">
-                <button onClick={onBack} className='mobile-only'>Back</button>
-                <img src={chat.picture.large} alt="Profile" className="profile-pic" />
-                <h2>{chat.name.first + " " + chat.name.last}</h2>
+                <button onClick={onBack} className='back-button mobile-only'>&larr;</button>
+                <img src={chat.imageUrl} alt="Profile" className="profile-pic" />
+                <h2>{chat.name}</h2>
             </div>
             <div className="chat-container" ref={chatContainerRef}>
+                {pinnedMessageId && (
+                    <div className='pinned-message-container'>
+                        <div className='pinned-message-header-container'>
+                            <p className='pinned-message-header'>Mensaje pinneado #{pinnedMessageIndex}</p>
+                            <img src='pin_icon_dark.svg' className='icon' />
+                        </div>
+                        <OtherMessageDisplay
+                            messages={messages}
+                            otherMessageId={pinnedMessageId}
+                            current_user_id={current_user_id}
+                            containerClass="responding-to-display"
+                        />
+                    </div>
+                )}
                 {messages.map((msg, index) => (
-                    <>
-                        {index === 0 || !isSameDay(messages[index - 1].date, msg.date) ? (
+                    <div key={msg.id} ref={msg.ref}>
+                        {index === 0 || !isSameDay(new Date(messages[index - 1].time), new Date(msg.time)) ? (
                             <div key={`day-tag-${index}`} className="day-tag">
-                                {msg.date.toLocaleDateString()}
+                                {new Date(msg.time).toLocaleDateString()}
                             </div>
                         ) : null}
-                        <div key={msg.id} className={`message ${msg.received ? 'received' : 'sent'}`}>
-                            {sentFiles.map((sentFile) => {
-                                if (sentFile.messageId === msg.id) {
+                        <div className="message-container">
+                            {shouldDisplayUser(chat, msg, messages[index - 1], current_user_id) ? (
+                                <img src={msg.user.profilePictureUrl} alt="User" className="profile-picture" />
+                            ) : (
+                                !chat.isDm && <div className="profile-picture-placeholder"></div>
+                            )}
+                            <div className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
+                                {shouldDisplayUser(chat, msg, messages[index - 1], current_user_id) && <div className="user-name">{msg.user.name}</div>}
+                                <OtherMessageDisplay
+                                    messages={messages}
+                                    otherMessageId={msg.respondingTo}
+                                    current_user_id={current_user_id}
+                                    containerClass="responding-to-display"
+                                />
+                                {msg.files.map((sentFile, index) => {
                                     return (
-                                        <div className="message-file-display">
-                                            <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
-                                            <div className="file-info">
-                                                <div className="file-name">{sentFile.file.name}</div>
-                                                <div className="file-size">{(sentFile.file.size / 1024).toFixed(2)} KB</div>
-                                            </div>
-                                        </div>
+                                        <FileDisplay key={index} containerClass="message-file-display" file={sentFile} />
                                     );
-                                }
-                                return null;
-                            })}
-                            {msg.text && <p className='message-text'>{msg.text}</p>}
-                            <span className="message-time">{msg.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                                })}
+                                {msg.message && <p className='message-text'>{msg.message}</p>}
+                                <div className="message-info-container">
+                                    {msg.pinned && <img src='pin_icon.svg' className='icon' />}
+                                    {msg.lastEditDate && <span>Editado</span>}
+                                    <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                                    {msg.user.id === current_user_id && <img src='single_check_icon.svg' className='icon' />} {/* TODO actually implement status */}
+                                </div>
+                                <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} idUser={current_user_id} message={msg} canSendMessage={chat.canSendMessage} />
+                            </div>
                         </div>
-                    </>
+                    </div>
                 ))}
             </div>
-            {selectedFile && (
-                <div className="file-display">
-                    <img src="/file_icon.svg" alt="Archivo" className='file-icon' />
-                    <div className="file-info">
-                        <div className="file-name">{selectedFile.name}</div>
-                        <div className="file-size">{(selectedFile.size / 1024).toFixed(2)} KB</div>
-                    </div>
-                    <button className="remove-file" onClick={() => setSelectedFile(null)} />
+            <div className="input-container">
+                <div className="selected-files-container">
+                    {selectedFiles.map((file, index) => (
+                        <FileDisplay key={index} containerClass="file-display" file={file} onRemove={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))} />
+                    ))}
                 </div>
-            )}            <div className="input-container">
-                <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
-                <input type="file" ref={fileInputRef} className='hidden' onChange={(e) => {
-                    setSelectedFile(e.target.files[0]);
-                    e.target.value = null;
-                }} />                <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" />
-                <button className="send-button" onClick={() => addMessage()}>Enviar</button>
+                <OtherMessageDisplay
+                    messages={messages}
+                    otherMessageId={selectedMessageId}
+                    current_user_id={current_user_id}
+                    containerClass="responding-to-preview"
+                    onCancelCliked={handleCancelClicked}
+                />
+                <div className={`input-wrapper ${selectedMessageId ? 'straight-top' : ''}`}>
+                    {chat.canSendMessage ? (
+                        <>
+                            <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} multiple />
+                            <button className="emoji-button"></button>
+                            <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" onKeyPress={event => {
+                                if (event.key === 'Enter') {
+                                    event.preventDefault();
+                                    handleSendClicked();
+                                }
+                            }} />
+                            <button className="file-button" onClick={() => fileInputRef.current && fileInputRef.current.click()}></button>
+                        </>
+                    ) : (
+                        <p className="no-permissions-message">No tienes permisos para escribir en este chat</p>
+                    )}
+                </div>
             </div>
         </div>
     );
 };
 
-export default ChatDetails;
+            ChatDetails.propTypes = {
+                chat: PropTypes.shape({
+                id: PropTypes.number,
+            imageUrl: PropTypes.string,
+            name: PropTypes.string,
+            canSendMessage: PropTypes.bool,
+            isDm: PropTypes.bool,
+    }),
+            onBack: PropTypes.func,
+};
+
+            export default ChatDetails;

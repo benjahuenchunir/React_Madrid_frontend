@@ -1,0 +1,24 @@
+#docs-container {
+  background: linear-gradient(in oklab, var(--primary-blue), var(--primary-black));
+  min-height: 100vh;
+  height: auto;
+  padding-top: 50px;
+  padding-bottom: 50px;
+
+  .instructions-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgb(255, 255, 255);
+    border-radius: 8px;
+  }
+  
+  .instructions-page h1 {
+    text-align: center;
+    color: var(--secondary-black);
+    margin-bottom: 20px;
+    font-size: 2em;
+  }
+}
+

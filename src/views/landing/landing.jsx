@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import './landing.css';
+import './landing.scss';
 import TitleGroup from "./components/titleGroup.jsx";
 import FeatureGroup from "./components/featureGroup.jsx";
 
 const Landing = () => {
 
   return (
-    <div className="landing-container">
+    <div id="landing-container">
       <div className="content-container">
         <div className="hero-container">
           <TitleGroup/>
