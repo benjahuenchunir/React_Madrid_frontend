@@ -72,7 +72,7 @@ export const useFetchChat = (chat) => {
         const fetchChat = async () => {
             if (!chat) return;
             try {
-                const data = await fetchData(import.meta.env.VITE_BACKEND_URL + 'chats/' + chat.id);
+                const data = await fetchData(import.meta.env.VITE_BACKEND_URL + '/chats/' + chat.id);
                 const messagesWithRefs = data.map(msg => ({ ...msg, ref: React.createRef() }));
                 setMessages(messagesWithRefs);
             } catch (error) {
