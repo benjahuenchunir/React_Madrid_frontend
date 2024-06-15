@@ -24,7 +24,7 @@ export async function addUserToApi(form, selectedFile) {
     formData.append('email', form.email.value);
     formData.append('password', form.password.value);
     formData.append('phone', form.phone.value);
-    formData.append('files', selectedFile);
+    formData.append('file', selectedFile);
 
     for(let pair of formData.entries()) {
         console.log(pair[0]+ ', '+ pair[1]); 
