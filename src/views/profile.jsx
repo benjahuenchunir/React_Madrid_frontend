@@ -66,6 +66,10 @@ const Profile = () => {
         }
     };
 
+    const handleEditUser = () => {
+        window.location.href = '/edit-profile';
+    }
+
     return (
         <div id="profile-container">
             <h1>Perfil de Usuario</h1>
@@ -81,6 +85,7 @@ const Profile = () => {
             </div>
             <button onClick={logout}>Cerrar Sesión</button>
             <button onClick={handleDeleteAccount}>Eliminar Cuenta</button>
+            <button onClick={handleEditUser}>Editar Perfil</button>
         </div>
     );
 };

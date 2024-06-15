@@ -8,6 +8,7 @@ import DocsPage from './views/docs/docs';
 import Login from './views/login/login.jsx';
 import Signup from "./views/signup/signup.jsx";
 import Profile from './views/profile.jsx';
+import EditUser from './views/editUser/editUser.jsx';
 import { AuthContext } from './auth/authContext';
 import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
@@ -45,6 +46,7 @@ function App() {
         <Route path='/login' element={<Login/>} />
         <Route path='/register' element={<Signup/>} />
         <Route path='/profile' element={token ? <Profile /> : <Navigate to='/login' />} />
+        <Route path='/edit-profile' element={token ? <EditUser /> : <Navigate to='/login' />} />
       </Routes>
     </>
   )
