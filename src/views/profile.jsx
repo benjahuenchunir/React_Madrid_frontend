@@ -1,11 +1,11 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode'; 
-import { AuthContext } from '../auth/authContext';
+import { useAuth } from '../auth/useAuth';
 import './profile.scss';
 
 const Profile = () => {
-    const { token, setToken, logout } = useContext(AuthContext);
+    const { token, logout } = useAuth();
     const [isAuthorized, setIsAuthorized] = useState(true);
     const [userProfile, setUserProfile] = useState(null);
 
