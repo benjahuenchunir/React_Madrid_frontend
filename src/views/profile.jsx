@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode'; 
-import { useAuth } from '../auth/authProvider';
+import { useAuth } from '../auth/useAuth';
 import './profile.scss';
 
 const Profile = () => {

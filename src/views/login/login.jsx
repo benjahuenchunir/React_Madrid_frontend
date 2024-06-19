@@ -1,14 +1,10 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import './login.scss';
 import LoginForm from "./components/loginForm.jsx";
 
 const Login = () => {
   const loginContainerRef = useRef(null);
   const svgRef = useRef(null);
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
 
   useEffect(() => {
     const setLoginContainerHeight = () => {

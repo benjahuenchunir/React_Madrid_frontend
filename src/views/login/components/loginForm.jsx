@@ -1,8 +1,8 @@
 import './loginForm.scss';
-import React, { useState } from "react";
+import { useState } from "react";
 import { useFetchLogin } from './api';
 import Notification from '../../../components/Notification/notification';
-import { useAuth } from '../../../auth/authProvider';
+import { useAuth } from '../../../auth/useAuth';
 
 const LoginForm = () => {
   const { setToken } = useAuth();

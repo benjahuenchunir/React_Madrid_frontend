@@ -1,13 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import './signup.scss';
 import SignupForm from "./components/signupForm.jsx";
 
 const Signup = () => {
   const svgRef = useRef(null);
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
 
   useEffect(() => {
     const adjustSvgPosition = () => {

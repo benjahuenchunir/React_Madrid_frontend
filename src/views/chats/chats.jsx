@@ -4,7 +4,7 @@ import ChatCard from './components/ChatCard';
 import ChatDetails from './components/ChatDetails';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
-import { useAuth } from './../../auth/authProvider';
+import { useAuth } from './../../auth/useAuth';
 
 const Chats = () => {
     const [chats, setChats] = useState([]);
@@ -33,7 +33,7 @@ const Chats = () => {
                 console.log('error', error)
             });
         
-    }, []);
+    }, [token]);
 
     const filteredChats = chats.filter(chat =>
         `${chat.name}`.toLowerCase().includes(searchQuery.toLowerCase())

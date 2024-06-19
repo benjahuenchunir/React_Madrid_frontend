@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useRef, useContext } from 'react';
 import './Navbar.scss';
 import CustomNavLink from './CustomNavLink';
-import { useAuth } from './../../auth/authProvider';
+import { useAuth } from './../../auth/useAuth';
 
 function Navbar(): JSX.Element {
     const { token } = useAuth();

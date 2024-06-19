@@ -1,5 +1,5 @@
 import './signupForm.scss';
-import React, {useRef, useState} from "react";
+import {useRef, useState} from "react";
 import { useFetchUser } from './api';
 import Notification from '../../../components/Notification/notification';
 

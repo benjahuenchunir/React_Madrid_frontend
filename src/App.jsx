@@ -9,7 +9,7 @@ import Login from './views/login/login.jsx';
 import Signup from "./views/signup/signup.jsx";
 import Profile from './views/profile.jsx';
 import { ProtectedRoute } from './auth/ProtectedRoute.jsx';
-import { PublicRoute } from './auth/PublicRoute.jsx';
+import { PublicOnlyRoute } from './auth/PublicOnlyRoute.jsx';
 
 function App() {
   useEffect(() => {
@@ -39,8 +39,8 @@ function App() {
         <Route path='/docs' element={<div>
           <DocsPage />
         </div>} />
-        <Route path='/login' element={<PublicRoute><Login /></PublicRoute>} />
-        <Route path='/register' element={<PublicRoute><Signup /></PublicRoute>} />
+        <Route path='/login' element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
+        <Route path='/register' element={<PublicOnlyRoute><Signup /></PublicOnlyRoute>} />
         <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       </Routes>
     </>
