@@ -1,15 +1,22 @@
 import './loginForm.scss';
-import React, {useContext, useRef, useState} from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { useFetchLogin } from './api';
 import Notification from '../../../components/Notification/notification';
 import { AuthContext } from '../../../auth/authContext';
-
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const { token, setToken } = useContext(AuthContext);
   const [login] = useFetchLogin();
-  const [notification, setNotification] = useState({ message: null, type: null});
+  const [notification, setNotification] = useState({ message: null, type: null });
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      navigate('/chats');
+    }
+  }, [token, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -25,7 +32,7 @@ const LoginForm = () => {
       message = data.message;
     }
 
-    if(status >= 200 && status < 300) {
+    if (status >= 200 && status < 300) {
       event.target.reset();
       setNotification({ message: message, type: 'success' });
       setIsNotificationVisible(true);
@@ -41,18 +48,18 @@ const LoginForm = () => {
   }
 
   return (
-    <div id="login-form-container">  
+    <div id="login-form-container">
       <div className="form-card">
-      {isNotificationVisible && <Notification message={notification.message} type={notification.type} onClose={() => setIsNotificationVisible(false)}/>}
+        {isNotificationVisible && <Notification message={notification.message} type={notification.type} onClose={() => setIsNotificationVisible(false)} />}
         <form onSubmit={handleSubmit}>
           <h1>Iniciar sesión</h1>
           <div className="form-group">
             <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" required/>
+            <input type="email" id="email" name="email" required />
           </div>
           <div className="form-group">
             <label htmlFor="password">Contraseña</label>
-            <input type="password" id="password" name="password" required/>
+            <input type="password" id="password" name="password" required />
           </div>
           <button type="submit">Ingresar</button>
         </form>
