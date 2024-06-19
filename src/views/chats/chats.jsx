@@ -26,7 +26,6 @@ const Chats = () => {
         }
         axios(config)
             .then(response => {
-                console.log('data', response.data);
                 setChats(response.data);
             })
             .catch(error => {

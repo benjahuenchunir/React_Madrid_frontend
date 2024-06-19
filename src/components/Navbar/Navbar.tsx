@@ -90,9 +90,11 @@ function Navbar(): JSX.Element {
                                 return (
                                     <Fragment key={groupIndex}>
                                         {group.map((link, linkIndex) => (
-                                            <CustomNavLink key={linkIndex} to={link.to} onClick={closeMenu}>
-                                                {link.text}
-                                            </CustomNavLink>
+                                            <li key={linkIndex}>
+                                                <CustomNavLink key={linkIndex} to={link.to} onClick={closeMenu}>
+                                                    {link.text}
+                                                </CustomNavLink>
+                                            </li>
                                         ))}
                                         {groupIndex < linkGroups.length - 1 && <div className="divider"></div>}
                                     </Fragment>
