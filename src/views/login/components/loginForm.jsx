@@ -1,22 +1,14 @@
 import './loginForm.scss';
-import React, { useContext, useRef, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useFetchLogin } from './api';
 import Notification from '../../../components/Notification/notification';
-import { AuthContext } from '../../../auth/authContext';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../auth/authProvider';
 
 const LoginForm = () => {
-  const { token, setToken } = useContext(AuthContext);
+  const { setToken } = useAuth();
   const [login] = useFetchLogin();
   const [notification, setNotification] = useState({ message: null, type: null });
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (token) {
-      navigate('/chats');
-    }
-  }, [token, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
