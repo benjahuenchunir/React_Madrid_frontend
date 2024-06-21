@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Chats from './views/chats/chats';
 import { useEffect } from 'react';
 import Navbar from './components/Navbar/Navbar';
@@ -42,6 +42,7 @@ function App() {
         <Route path='/login' element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
         <Route path='/register' element={<PublicOnlyRoute><Signup /></PublicOnlyRoute>} />
         <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path='*' element={<Navigate to="/" replace />} /> {/* Any route that isnt defined navigates to home */}
       </Routes>
     </>
   )
