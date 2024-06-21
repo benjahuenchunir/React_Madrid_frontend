@@ -55,7 +55,7 @@ export const useFetchChat = (chat) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chat]);
 
-    const addMessage = async ({ idUser, idChat, message, selectedFiles, respondingTo, onSuccess, pinned = false, deletesAt = null, forwarded = false }) => {
+    const addMessage = async ( idUser, idChat, message, selectedFiles, respondingTo, onSuccess, pinned = false, deletesAt = null, forwarded = false ) => {
         try {
             const formData = new FormData();
             formData.append('idUser', idUser);
@@ -65,6 +65,7 @@ export const useFetchChat = (chat) => {
             if (deletesAt) formData.append('deletesAt', deletesAt);
             formData.append('forwarded', forwarded);
             if (respondingTo) formData.append('respondingTo', respondingTo);
+            console.log(selectedFiles);
             selectedFiles.forEach(file => formData.append('files', file));
 
             const newMessage = await api.post('/messages', formData);
