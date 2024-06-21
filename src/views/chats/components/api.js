@@ -8,13 +8,17 @@ function useApi(token) {
         const url = `${baseUrl}${endpoint}`;
         const options = {
             method,
-            headers: { ...headers, 'Authorization': `Bearer ${token}` },
+            headers: {
+                ...headers,
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             body: null,
         };
         if (body) {
             if (body instanceof FormData) {
                 options.body = body;
-                // delete options.headers['Content-Type'];
+                delete options.headers['Content-Type'];
             } else {
                 options.body = ['POST', 'PATCH'].includes(method) ? JSON.stringify(body) : body;
             }
@@ -55,7 +59,7 @@ export const useFetchChat = (chat) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chat]);
 
-    const addMessage = async ( idUser, idChat, message, selectedFiles, respondingTo, onSuccess, pinned = false, deletesAt = null, forwarded = false ) => {
+    const addMessage = async (idUser, idChat, message, selectedFiles, respondingTo, onSuccess, pinned = false, deletesAt = null, forwarded = false) => {
         try {
             const formData = new FormData();
             formData.append('idUser', idUser);
