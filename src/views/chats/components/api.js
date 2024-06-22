@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from './../../../auth/useAuth';
+import { jwtDecode } from 'jwt-decode';
 
 function useApi(token) {
     const baseUrl = import.meta.env.VITE_BACKEND_URL;
@@ -39,37 +40,69 @@ function useApi(token) {
 export const useFetchChat = (chat) => {
     const [messages, setMessages] = useState([]);
     const { token } = useAuth();
+    const idUser = Number(jwtDecode(token).sub);
     const api = useApi(token);
+    const webSocketRef = useRef(null);
 
     useEffect(() => {
-        console.log(chat)
-        console.log(api)
         if (!chat) return;
+
         const fetchChat = async () => {
             try {
-                console.log("retrieving chat " + chat.id)
                 const data = await api.get(`/chats/${chat.id}`);
                 const messagesWithRefs = data.map(msg => ({ ...msg, ref: React.createRef() }));
                 setMessages(messagesWithRefs);
+                initializeWebSocket(chat.id);
             } catch (error) {
                 console.error('Error:', error);
             }
         };
+
         fetchChat();
+
+        // Clean up WebSocket connection when component unmounts or chat changes
+        return () => {
+            if (webSocketRef.current) {
+                webSocketRef.current.close();
+            }
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chat]);
 
-    const addMessage = async (idUser, idChat, message, selectedFiles, respondingTo, onSuccess, pinned = false, deletesAt = null, forwarded = false) => {
+    const initializeWebSocket = (chatId) => {
+        const backendUrlWithoutProtocol = import.meta.env.VITE_BACKEND_URL.replace(/^http:\/\/|^https:\/\//, '');
+        const wsUrl = `ws://${backendUrlWithoutProtocol}/chats/${chatId}/messages?token=${encodeURIComponent(token)}`;
+        webSocketRef.current = new WebSocket(wsUrl);
+
+        webSocketRef.onopen = function() {
+            console.log('WebSocket connection established');
+        };
+
+        webSocketRef.current.onmessage = (event) => {
+            const newMessage = JSON.parse(event.data);
+            console.log(newMessage);
+            newMessage.ref = React.createRef();
+            setMessages(prevMessages => [...prevMessages, newMessage]);
+        };
+
+        webSocketRef.current.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+
+        webSocketRef.current.onclose = () => {
+            console.log('WebSocket connection closed');
+        };
+    };
+
+    const addMessage = async (idChat, message, selectedFiles, respondingTo, onSuccess, pinned = false, deletesAt = null, forwarded = false) => {
         try {
             const formData = new FormData();
-            formData.append('idUser', idUser);
             formData.append('idChat', idChat);
             formData.append('message', message);
             formData.append('pinned', pinned);
             if (deletesAt) formData.append('deletesAt', deletesAt);
             formData.append('forwarded', forwarded);
             if (respondingTo) formData.append('respondingTo', respondingTo);
-            console.log(selectedFiles);
             selectedFiles.forEach(file => formData.append('files', file));
 
             const newMessage = await api.post('/messages', formData);
@@ -121,49 +154,5 @@ export const useFetchChat = (chat) => {
         }
     };
 
-    return [messages, addMessage, updateMessage, deleteMessage];
+    return [messages, addMessage, updateMessage, deleteMessage, idUser];
 };
-
-// useEffect(() => {
-//     let ws; // WebSocket instance
-
-//     const fetchChat = async () => {
-//         if (!chat) return;
-//         try {
-//             const data = await fetchData(import.meta.env.VITE_BACKEND_URL + '/chats/' + chat.id);
-//             const messagesWithRefs = data.map(msg => ({ ...msg, ref: React.createRef() }));
-//             setMessages(messagesWithRefs);
-//         } catch (error) {
-//             console.error('Error:', error);
-//         }
-//     };
-
-//     const connectWebSocket = () => {
-//         if (!chat) return;
-//         // Assuming the WebSocket URL is based on your backend URL
-//         const wsUrl = import.meta.env.VITE_BACKEND_URL.replace(/^http/, 'ws') + `/chats/${chat.id}/messages`;
-//         console.log('Connecting to WebSocket:', wsUrl);
-//         ws = new WebSocket(wsUrl);
-
-//         ws.onmessage = (event) => {
-//             console.log('WebSocket message:', event.data);
-//             const newMessage = JSON.parse(event.data);
-//             console.log('WebSocket message:', newMessage);
-//             newMessage.ref = React.createRef();
-//             setMessages(prevMessages => [...prevMessages, newMessage]);
-//         };
-
-//         ws.onerror = (error) => {
-//             console.error('WebSocket error:', error);
-//         };
-//     };
-
-//     fetchChat();
-//     connectWebSocket();
-
-//     return () => {
-//         if (ws) {
-//             ws.close();
-//         }
-//     };
-// }, [chat]);
