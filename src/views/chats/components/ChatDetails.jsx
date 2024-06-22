@@ -8,7 +8,6 @@ import MessageOptionsMenu from './MessageOptionsMenu';
 import FileDisplay from './FileDisplay';
 import OtherMessageDisplay from './OtherMessageDisplay';
 
-const current_user_id = 1; // TODO use actual user id
 const InputMode = {
     NORMAL: 'normal',
     RESPONDING_TO: 'responding_to',
@@ -17,7 +16,7 @@ const InputMode = {
 };
 
 const ChatDetails = ({ chat, onBack }) => {
-    const [messages, addMessage, updateMessage, deleteMessage] = useFetchChat(chat);
+    const [messages, addMessage, updateMessage, deleteMessage, idUser] = useFetchChat(chat);
     const [pinnedMessageId, setPinnedMessageId] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedMessageId, setSelectedMessageId] = useState(null)
@@ -62,7 +61,7 @@ const ChatDetails = ({ chat, onBack }) => {
         const text = messageInputRef.current.value
         if (inputMode === InputMode.RESPONDING_TO || inputMode === InputMode.NORMAL) {
             if (!text && selectedFiles.length === 0) return;
-            addMessage(current_user_id, chat.id, text, selectedFiles, selectedMessageId, handleSuccessfullSend);
+            addMessage(chat.id, text, selectedFiles, selectedMessageId, handleSuccessfullSend);
         } else if (inputMode === InputMode.EDIT) {
             updateMessage(selectedMessageId, { message: text }, handleSuccessfullSend);
         }
@@ -146,7 +145,7 @@ const ChatDetails = ({ chat, onBack }) => {
                         <OtherMessageDisplay
                             messages={messages}
                             otherMessageId={pinnedMessageId}
-                            current_user_id={current_user_id}
+                            current_user_id={idUser}
                             containerClass="responding-to-display"
                         />
                     </div>
@@ -159,17 +158,17 @@ const ChatDetails = ({ chat, onBack }) => {
                             </div>
                         ) : null}
                         <div className="message-container">
-                            {shouldDisplayUser(chat, msg, messages[index - 1], current_user_id) ? (
+                            {shouldDisplayUser(chat, msg, messages[index - 1], idUser) ? (
                                 <img src={msg.user.profilePictureUrl} alt="User" className="profile-picture" />
                             ) : (
                                 !chat.isDm && <div className="profile-picture-placeholder"></div>
                             )}
-                            <div className={`message ${msg.user.id === current_user_id ? 'sent' : 'received'}`}>
-                                {shouldDisplayUser(chat, msg, messages[index - 1], current_user_id) && <div className="user-name">{msg.user.name}</div>}
+                            <div className={`message ${msg.user.id === idUser ? 'sent' : 'received'}`}>
+                                {shouldDisplayUser(chat, msg, messages[index - 1], idUser) && <div className="user-name">{msg.user.name}</div>}
                                 <OtherMessageDisplay
                                     messages={messages}
                                     otherMessageId={msg.respondingTo}
-                                    current_user_id={current_user_id}
+                                    current_user_id={idUser}
                                     containerClass="responding-to-display"
                                 />
                                 {msg.files.map((sentFile, index) => {
@@ -182,9 +181,9 @@ const ChatDetails = ({ chat, onBack }) => {
                                     {msg.pinned && <img src='pin_icon.svg' className='icon' />}
                                     {msg.lastEditDate && <span>Editado</span>}
                                     <span className="message-time">{new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
-                                    {msg.user.id === current_user_id && <img src='single_check_icon.svg' className='icon' />} {/* TODO actually implement status */}
+                                    {msg.user.id === idUser && <img src='single_check_icon.svg' className='icon' />} {/* TODO actually implement status */}
                                 </div>
-                                <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} idUser={current_user_id} message={msg} canSendMessage={chat.canSendMessage} />
+                                <MessageOptionsMenu onOptionClick={(option, messageId) => handleMessageOptionClicked(option, messageId)} idUser={idUser} message={msg} canSendMessage={chat.canSendMessage} />
                             </div>
                         </div>
                     </div>
@@ -199,7 +198,7 @@ const ChatDetails = ({ chat, onBack }) => {
                 <OtherMessageDisplay
                     messages={messages}
                     otherMessageId={selectedMessageId}
-                    current_user_id={current_user_id}
+                    current_user_id={idUser}
                     containerClass="responding-to-preview"
                     onCancelCliked={handleCancelClicked}
                 />
