@@ -71,7 +71,7 @@ export const useFetchChat = (chat) => {
 
     const initializeWebSocket = (chatId) => {
         const backendUrlWithoutProtocol = import.meta.env.VITE_BACKEND_URL.replace(/^http:\/\/|^https:\/\//, '');
-        const wsUrl = `ws://${backendUrlWithoutProtocol}/chats/${chatId}/messages?token=${encodeURIComponent(token)}`;
+        const wsUrl = `${import.meta.env.VITE_WS_PROTOCOL}://${backendUrlWithoutProtocol}/chats/${chatId}/messages?token=${encodeURIComponent(token)}`;
         webSocketRef.current = new WebSocket(wsUrl);
 
         webSocketRef.onopen = function() {
