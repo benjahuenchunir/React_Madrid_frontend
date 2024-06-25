@@ -2,6 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from './../../../auth/useAuth';
 import { jwtDecode } from 'jwt-decode';
 
+const ChangeType = {
+    CREATE: 'create',
+    UPDATE: 'update',
+    DELETE: 'delete'
+  };
+
 function useApi(token) {
     const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -79,10 +85,26 @@ export const useFetchChat = (chat) => {
         };
 
         webSocketRef.current.onmessage = (event) => {
-            const newMessage = JSON.parse(event.data);
-            console.log(newMessage);
-            newMessage.ref = React.createRef();
-            setMessages(prevMessages => [...prevMessages, newMessage]);
+            const { changeType, message } = JSON.parse(event.data);
+            switch (changeType) {
+                case ChangeType.CREATE:
+                    message.ref = React.createRef();
+                    setMessages(prevMessages => [...prevMessages, message]);
+                    break;
+                case ChangeType.DELETE:
+                    setMessages(prevMessages => prevMessages.filter(msg => msg.id !== message.id));
+                    break;
+                case ChangeType.UPDATE:
+                    setMessages(prevMessages => prevMessages.map(msg => {
+                        if (msg.id === message.id) {
+                            const updatedMsg = { ...msg, ...message };
+                            updatedMsg.ref = msg.ref; // Preserve the ref
+                            return updatedMsg;
+                        }
+                        return msg;
+                    }));
+                    break;
+            }
         };
 
         webSocketRef.current.onerror = (error) => {
