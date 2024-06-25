@@ -7,6 +7,7 @@ import { useFetchChat } from './api';
 import MessageOptionsMenu from './MessageOptionsMenu';
 import FileDisplay from './FileDisplay';
 import OtherMessageDisplay from './OtherMessageDisplay';
+import Picker from '@emoji-mart/react'
 
 const InputMode = {
     NORMAL: 'normal',
@@ -26,6 +27,8 @@ const ChatDetails = ({ chat, onBack }) => {
     const messageInputRef = useRef(null);
     const pinnedMessages = messages.filter(msg => msg.pinned);
     const pinnedMessageIndex = pinnedMessages.findIndex(msg => msg.id === pinnedMessageId) + 1;
+    const [isPickerVisible, setPickerVisible] = useState(false);
+    const pickerRef = useRef(null);
 
     useEffect(() => {
         const chatContainer = chatContainerRef.current;
@@ -188,8 +191,14 @@ const ChatDetails = ({ chat, onBack }) => {
                         </div>
                     </div>
                 ))}
-            </div>
+            </div >
             <div className="input-container">
+                <div ref={pickerRef} id="emoji-picker" className={isPickerVisible ? '' : 'hidden'}>
+                    <Picker className="aaa" onEmojiSelect={(emoji) => {
+                        messageInputRef.current.value += emoji.native;
+                        setPickerVisible(false); // Optionally hide picker after selection
+                    }} onClickOutside={() => {if (isPickerVisible) setPickerVisible(false)}} locale='es' maxFrequentRows={0} theme='dark'/>
+                </div>
                 <div className="selected-files-container">
                     {selectedFiles.map((file, index) => (
                         <FileDisplay key={index} containerClass="file-display" file={file} onRemove={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))} />
@@ -206,7 +215,7 @@ const ChatDetails = ({ chat, onBack }) => {
                     {chat.canSendMessage ? (
                         <>
                             <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} multiple />
-                            <button className="emoji-button"></button>
+                            <button className="emoji-button" onClick={() => setPickerVisible(true)}></button>
                             <input type="text" ref={messageInputRef} placeholder="Escribe un mensaje..." className="message-input" onKeyPress={event => {
                                 if (event.key === 'Enter') {
                                     event.preventDefault();
@@ -224,15 +233,15 @@ const ChatDetails = ({ chat, onBack }) => {
     );
 };
 
-            ChatDetails.propTypes = {
-                chat: PropTypes.shape({
-                id: PropTypes.number,
-            imageUrl: PropTypes.string,
-            name: PropTypes.string,
-            canSendMessage: PropTypes.bool,
-            isDm: PropTypes.bool,
+ChatDetails.propTypes = {
+    chat: PropTypes.shape({
+        id: PropTypes.number,
+        imageUrl: PropTypes.string,
+        name: PropTypes.string,
+        canSendMessage: PropTypes.bool,
+        isDm: PropTypes.bool,
     }),
-            onBack: PropTypes.func,
+    onBack: PropTypes.func,
 };
 
-            export default ChatDetails;
+export default ChatDetails;
