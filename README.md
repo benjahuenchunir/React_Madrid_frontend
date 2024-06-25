@@ -21,6 +21,25 @@ El objetivo del proyecto es proporcionar una nueva plataforma de mensajería efi
 
 Los usuarios objetivo de "deepspace" son personas interesadas en la comunicación e interacción social. Estos usuarios son indistintos a factores como el género y la ubicación, y deben contar con acceso a internet. Pueden ser profesionales, estudiantes, grupos y organizaciones, personas que buscan su espacio para conversar sobre temas en común, entre muchos otros. 
 
+## Setup
+
+1. Crear archivo `.env` copiando el archivo `.env.example`
+2. Rellenar el archivo `.env` con las credenciales correspondientes
+    - VITE_BACKEND_URL: url de tu API
+    - VITE_WS_PROTOCOL: `ws` o `wss` dependiendo de si usas http o https 
+
+3. Instalar dependencias:
+
+```bash
+yarn install
+```
+
+4. Correr el frontend:
+
+```bash
+yarn dev
+```
+
 
 ## Historia de Usuarios :busts_in_silhouette:
 
