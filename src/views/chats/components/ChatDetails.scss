@@ -18,6 +18,14 @@
         }
     }
 
+    .pinned-message-container .message-image-display {
+        max-width: 50px;
+    }
+
+    .responding-to-preview .message-image-display {
+        max-width: 50px;
+    }
+
     .message-container {
         display: flex;
         width: 100%;
@@ -207,6 +215,21 @@
         justify-content: space-between;
         align-items: center;
         border-radius: 5px;
+
+        .files-container {
+            display: flex;
+            gap: 10px;
+
+            .more-files {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                background-color: var(--secondary-black);
+                padding: 5px 10px;
+                border-radius: 5px;
+            }
+        }
     }
 
     .message-preview-parent {
