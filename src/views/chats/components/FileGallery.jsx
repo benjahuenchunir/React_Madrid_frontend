@@ -1,73 +1,65 @@
 import { useState, useEffect } from 'react';
 import './FileGallery.scss';
 import PropTypes from 'prop-types';
+import FileDisplay from './FileDisplay';
 
 const FileGallery = ({ files }) => {
     const [selectedFileIndex, setSelectedFileIndex] = useState(0);
     const [fileObjects, setFileObjects] = useState([]);
     const [showMorePreview, setShowMorePreview] = useState(null);
-    const maxFilesDisplayed = 4
+    const maxFilesDisplayed = 3
 
     useEffect(() => {
         if (!files || files.length == 0) return;
 
-        const newFileObjects = files.map((file) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                setFileObjects((prevUrls) => {
-                    const updatedUrls = [...prevUrls];
-                    updatedUrls[files.indexOf(file)] = reader.result;
-                    return updatedUrls;
-                });
-            };
-            return null;
-        });
-        setFileObjects(newFileObjects);
         setSelectedFileIndex(0);
+        const processFiles = async () => {
+            const processedFiles = await Promise.all(files.map(file => {
+                if (file.type.startsWith('image/')) {
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve({ name: file.name, size: file.size, fileUrl: reader.result });
+                        reader.onerror = () => resolve({ error: true });
+                        reader.readAsDataURL(file);
+                    });
+                } else {
+                    return Promise.resolve({ name: file.name, size: file.size, type: file.type });
+                }
+            }));
 
-        if (files.length > maxFilesDisplayed) {
-            setShowMorePreview(files.length - maxFilesDisplayed)
-        } else {
-            setShowMorePreview(null)
-        }
+            setFileObjects(processedFiles);
+            setShowMorePreview(files.length > maxFilesDisplayed ? files.length - maxFilesDisplayed : null);
+        };
+
+        processFiles();
     }, [files]);
+
+    const renderThumbnail = (file, index) => (
+        <div key={index} className={`file-thumbnail ${index === selectedFileIndex ? 'selected' : ''}`} onClick={() => handleThumbnailClick(index)}>
+            {file.fileUrl ? (
+                <img src={file.fileUrl} alt={`File ${index}`} className='img-preview' />
+            ) : (
+                <img src="/file_icon.svg" alt={`File ${index}`} className='file-icon' />
+            )}
+        </div>
+    );
 
     const handleThumbnailClick = (index) => {
         setSelectedFileIndex(index);
     };
 
-    if (!files || files.length == 0) return null;
+    if (!fileObjects || fileObjects.length == 0) return null;
 
     return (
         <div id="file-gallery-container">
             <div className="selected-file-display">
-                {fileObjects[selectedFileIndex] && (
-                    <img src={fileObjects[selectedFileIndex]} alt={`Selected file ${selectedFileIndex}`} />
-                )}
+                <FileDisplay containerClass="file-display" file={fileObjects[selectedFileIndex]} />
             </div>
             <div className="file-thumbnails-container">
-                {showMorePreview ? fileObjects.slice(0, maxFilesDisplayed).map((url, index) => (
-                    url && <img
-                        key={index}
-                        src={url}
-                        alt={`File ${index}`}
-                        className={`file-thumbnail ${index === selectedFileIndex ? 'selected' : ''}`}
-                        onClick={() => handleThumbnailClick(index)}
-                    />
-                )) : fileObjects.map((url, index) => (
-                    url && <img
-                        key={index}
-                        src={url}
-                        alt={`File ${index}`}
-                        className={`file-thumbnail ${index === selectedFileIndex ? 'selected' : ''}`}
-                        onClick={() => handleThumbnailClick(index)}
-                    />
-                ))}
+                {fileObjects.slice(0, showMorePreview ? maxFilesDisplayed : fileObjects.length).map(renderThumbnail)}
                 {showMorePreview && (
                     <div className="more-preview">+{showMorePreview} más</div>
                 )}
-                {/* TODO make this button work */}
             </div>
         </div>
     );
