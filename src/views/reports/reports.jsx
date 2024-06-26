@@ -4,22 +4,18 @@ import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../../auth/useAuth';
 import './reports.scss';
 
-// Apartado para ver los reportes a todos los mennsajes (supongamos que esta es una vista de administrador)
-// Tres botones para 1) eliminar el mensaje 2) borrar al usuario 3) ignorar el reporte.
-
 const Reports = () => {
     const { token, logout } = useAuth();
     const [isAuthorized, setIsAuthorized] = useState(true);
     const [reports, setReports] = useState(null);
+    const [messages, setMessages] = useState([]);
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        let userId = null;
-
         if (token && token !== 'null') {
             const decodedToken = jwtDecode(token);
-            userId = decodedToken.sub;
 
-            const config = {
+            const configReports = {
                 method: 'get',
                 url: `${import.meta.env.VITE_BACKEND_URL}/reports`,
                 headers: {
@@ -27,18 +23,53 @@ const Reports = () => {
                 }
             };
 
-            axios(config)
+            axios(configReports)
                 .then(response => {
                     setReports(response.data);
                 })
                 .catch(error => {
                     console.error('Error fetching reports:', error);
-                    setIsAuthorized(false);
                 });
+
+            const configMessages = {
+                method: 'get',
+                url: `${import.meta.env.VITE_BACKEND_URL}/messages`,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            };
+
+            axios(configMessages)
+                .then(response => {
+                    setMessages(response.data || []); 
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching messages:', error);
+                    setMessages([]); 
+                });
+
+            const configUsers = {
+                method: 'get',
+                url: `${import.meta.env.VITE_BACKEND_URL}/users`,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            };
+
+            axios(configUsers)
+                .then(response => {
+                    setUsers(response.data || []); 
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching users:', error);
+                    setUsers([]);
+                }  
+            ); 
         } else {
             setIsAuthorized(false);
         }
-
     }, [token]);
 
     const handleDeleteMessage = (id_message) => {
@@ -53,6 +84,8 @@ const Reports = () => {
         axios(config)
             .then(response => {
                 console.log('Message deleted:', response.status);
+
+                setMessages(prevMessages => prevMessages.filter(message => message.id !== id_message));
             })
             .catch(error => {
                 console.error('Error deleting message:', error);
@@ -60,10 +93,6 @@ const Reports = () => {
     }
 
     const handleDeleteAccount = (id_message) => {
-        // No es tan directo ya que report no tiene el id_user
-        // Lo que sí tiene es el id_message, por lo que se puede obtener el id_user a partir de id_message
-        // Se puede hacer un get a /messages/:id_message para obtener el id_user
-
         const config = {
             method: 'get',
             url: `${import.meta.env.VITE_BACKEND_URL}/messages/${id_message}`,
@@ -90,9 +119,9 @@ const Reports = () => {
                     .catch(error => {
                         console.error('Error deleting account:', error);
                     });
-            })
+            });
     }
-    
+
     const handleDeleteReport = (id) => {
         const config = {
             method: 'delete',
@@ -105,41 +134,43 @@ const Reports = () => {
         axios(config)
             .then(response => {
                 console.log('Report deleted:', response.status);
-            }
-            )
+                setReports(prevReports => prevReports.filter(report => report.id !== id));
+            })
             .catch(error => {
                 console.error('Error deleting report:', error);
-            }
-            );
+            });
     }
-        
 
     if (!isAuthorized) {
         return <p>Unauthorized</p>;
     }
 
     if (!reports) {
-        return <p>Loading...</p>;
+        return <p>No hay reportes</p>;
     }
 
     return (
         <div className="reports">
             <h1>Reports</h1>
             <ul>
-                {reports.map(report => (
-                    <div key={report.id}>
-                        <p>{report.id_message}</p>
-                        <p>{report.message}</p>
-                        <p>{report.type}</p>
-                        <button onClick={() => handleDeleteMessage(report.id_message)}>Borrar Mensaje</button>
-                        <button onClick={() => handleDeleteAccount(report.id_message)}>Borrar Usuario</button>
-                        <button onClick={() => handleDeleteReport(report.id)}>Ignorar Reporte</button>
-                    </div>
-                ))}
+                {reports.map(report => {
+                    const relatedMessage = messages.find(message => message.id === report.id_message);
+                    const relatedUser = users.find(user => user.id === relatedMessage.id_user);
+                    return (
+                        <div key={report.id}>
+                            <p>Usuario: {relatedUser ? relatedUser.name + ' ' + relatedUser.last_name: "Cargando Usuario..."}</p>
+                            <p>Mensaje: {relatedMessage ? relatedMessage.message : "Cargando mensaje..."}</p>
+                            <p>Motivo: {report.message}</p>
+                            <p>Tipo: {report.type}</p>
+                            <button onClick={() => handleDeleteMessage(report.id_message)}>Borrar Mensaje</button>
+                            <button onClick={() => handleDeleteAccount(report.id_message)}>Borrar Usuario</button>
+                            <button onClick={() => handleDeleteReport(report.id)}>Ignorar Reporte</button>
+                        </div>
+                    );
+                })}
             </ul>
         </div>
     );
 }
-    
 
 export default Reports;
