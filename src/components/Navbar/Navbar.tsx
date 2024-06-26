@@ -40,6 +40,7 @@ function Navbar(): JSX.Element {
         ],
         [
             { to: "/profile", text: "Mi perfil" },
+            { to: "/reports", text: "Reportes" },
         ]
     ];
 
