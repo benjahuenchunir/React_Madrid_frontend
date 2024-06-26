@@ -200,7 +200,7 @@ const ChatDetails = ({ chat, onBack }) => {
                         setPickerVisible(false); // Optionally hide picker after selection
                     }} onClickOutside={() => {if (isPickerVisible) setPickerVisible(false)}} locale='es' maxFrequentRows={0} theme='dark'/>
                 </div>
-                <FileGallery files={selectedFiles} />
+                <FileGallery files={selectedFiles} onClose={()=> setSelectedFiles([])} />
                 <OtherMessageDisplay
                     messages={messages}
                     otherMessageId={selectedMessageId}

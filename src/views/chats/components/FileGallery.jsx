@@ -3,14 +3,17 @@ import './FileGallery.scss';
 import PropTypes from 'prop-types';
 import FileDisplay from './FileDisplay';
 
-const FileGallery = ({ files }) => {
+const FileGallery = ({ files, onClose }) => {
     const [selectedFileIndex, setSelectedFileIndex] = useState(0);
     const [fileObjects, setFileObjects] = useState([]);
     const [showMorePreview, setShowMorePreview] = useState(null);
     const maxFilesDisplayed = 3
 
     useEffect(() => {
-        if (!files || files.length == 0) return;
+        if (!files || files.length == 0) {
+            setFileObjects([]);
+            return;
+        }
 
         setSelectedFileIndex(0);
         const processFiles = async () => {
@@ -52,6 +55,7 @@ const FileGallery = ({ files }) => {
 
     return (
         <div id="file-gallery-container">
+            <button id="btn-close" onClick={onClose} />
             <div className="selected-file-display">
                 <FileDisplay containerClass="file-display" file={fileObjects[selectedFileIndex]} />
             </div>
@@ -60,6 +64,7 @@ const FileGallery = ({ files }) => {
                 {showMorePreview && (
                     <div className="more-preview">+{showMorePreview} más</div>
                 )}
+                {/* TODO make this do something on click */}
             </div>
         </div>
     );
@@ -67,6 +72,7 @@ const FileGallery = ({ files }) => {
 
 FileGallery.propTypes = {
     files: PropTypes.array.isRequired,
+    onClose: PropTypes.func.isRequired,
 };
 
 export default FileGallery;
