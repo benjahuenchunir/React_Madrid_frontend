@@ -7,7 +7,8 @@ import { useFetchChat } from './api';
 import MessageOptionsMenu from './MessageOptionsMenu';
 import FileDisplay from './FileDisplay';
 import OtherMessageDisplay from './OtherMessageDisplay';
-import Picker from '@emoji-mart/react'
+import FileGallery from './FileGallery';
+import Picker from '@emoji-mart/react';
 
 const InputMode = {
     NORMAL: 'normal',
@@ -199,11 +200,12 @@ const ChatDetails = ({ chat, onBack }) => {
                         setPickerVisible(false); // Optionally hide picker after selection
                     }} onClickOutside={() => {if (isPickerVisible) setPickerVisible(false)}} locale='es' maxFrequentRows={0} theme='dark'/>
                 </div>
-                <div className="selected-files-container">
+                <FileGallery files={selectedFiles} />
+                {/* <div className="selected-files-container">
                     {selectedFiles.map((file, index) => (
                         <FileDisplay key={index} containerClass="file-display" file={file} onRemove={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))} />
                     ))}
-                </div>
+                </div> */}
                 <OtherMessageDisplay
                     messages={messages}
                     otherMessageId={selectedMessageId}
