@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './chats.scss';
 import ChatCard from './components/ChatCard';
 import ChatDetails from './components/ChatDetails';
@@ -12,6 +12,7 @@ const Chats = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedChat, setSelectedChat] = useState(null);
     const [isCreatingChat, setIsCreatingChat] = useState(false);
+    const fabRef = useRef()
     const { token } = useAuth();
 
     useEffect(() => {
@@ -33,7 +34,7 @@ const Chats = () => {
             .catch(error => {
                 console.log('error', error)
             });
-        
+
     }, [token]);
 
     const filteredChats = chats.filter(chat =>
@@ -60,8 +61,8 @@ const Chats = () => {
                         />
                     ))}
                 </div>
-                <button className="fab" onClick={()=> setIsCreatingChat(true)}>+</button>
-                {isCreatingChat && <NewChatMenu onClose={()=> setIsCreatingChat(false)}/>}
+                <button className="fab" onClick={() => setIsCreatingChat(true)} ref={fabRef}>+</button>
+                {isCreatingChat && <NewChatMenu onClose={() => setIsCreatingChat(false)} buttonRef={fabRef} />}
             </div>
             <div className={`chat-details ${!selectedChat && 'hide-on-mobile'}`}>
                 <ChatDetails

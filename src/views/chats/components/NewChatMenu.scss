@@ -7,6 +7,7 @@
     right: -180px;
     max-width: 500px;
     height: 300px;
+    z-index: 100;
 
     #btn-close {
         top: 5px;
@@ -78,7 +79,7 @@
             align-items: center;
     
             &:hover {
-                background-color: var(--primary-blue);
+                background-color: var(--primary-light-blue);
             }
     
             .profile-picture {
