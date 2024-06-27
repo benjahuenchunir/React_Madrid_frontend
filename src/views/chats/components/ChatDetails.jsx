@@ -19,7 +19,7 @@ const InputMode = {
 };
 
 const ChatDetails = ({ chat, onBack }) => {
-    const [messages, addMessage, updateMessage, deleteMessage, idUser] = useFetchChat(chat);
+    const [messages, addMessage, updateMessage, deleteMessage, reportMessage, idUser] = useFetchChat(chat);
     const [pinnedMessageId, setPinnedMessageId] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedMessageId, setSelectedMessageId] = useState(null)
@@ -139,7 +139,7 @@ const ChatDetails = ({ chat, onBack }) => {
 
     return (
         <div className='chat-details-container'>
-            <ReportForm messages={messages} idUser={idUser} ref={reportDialogRef}/>
+            <ReportForm messages={messages} idUser={idUser} ref={reportDialogRef} reportMessage={reportMessage}/>
             <div className="chat-info-container">
                 <button onClick={onBack} className='back-button mobile-only'>&larr;</button>
                 <img src={chat.imageUrl} alt="Profile" className="profile-pic" />
