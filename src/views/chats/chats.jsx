@@ -5,11 +5,13 @@ import ChatDetails from './components/ChatDetails';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { useAuth } from './../../auth/useAuth';
+import UserList from './components/AllUsers'
 
 const Chats = () => {
     const [chats, setChats] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedChat, setSelectedChat] = useState(null);
+    const [isCreatingChat, setIsCreatingChat] = useState(false);
     const { token } = useAuth();
 
     useEffect(() => {
@@ -58,7 +60,8 @@ const Chats = () => {
                         />
                     ))}
                 </div>
-                <button className="fab">+</button>
+                <button className="fab" onClick={()=> setIsCreatingChat(true)}>+</button>
+                {isCreatingChat && <UserList/>}
             </div>
             <div className={`chat-details ${!selectedChat && 'hide-on-mobile'}`}>
                 <ChatDetails
