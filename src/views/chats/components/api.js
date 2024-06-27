@@ -175,6 +175,23 @@ export const useFetchChat = (chat) => {
             // TODO: Display error that message could not be deleted
         }
     };
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-    return [messages, addMessage, updateMessage, deleteMessage, idUser];
+    const reportMessage = async (idMessage, reportType, description, onSuccess, onError) => {
+        try {
+            await sleep(2000);
+            const response = await api.post(`/reports`, {
+                id_reporter: idUser,
+                id_message: idMessage,
+                message: description,
+                type: reportType
+            });
+            onSuccess(response);
+        } catch (error) {
+            console.error('Error deleting message:', error);
+            onError(error)
+        }
+    };
+
+    return [messages, addMessage, updateMessage, deleteMessage, reportMessage, idUser];
 };
