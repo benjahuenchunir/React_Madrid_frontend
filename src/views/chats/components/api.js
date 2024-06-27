@@ -7,7 +7,7 @@ const ChangeType = {
     DELETE: 'delete'
   };
 
-function useApi(token) {
+export function useApi(token) {
     const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
     async function fetchApi(endpoint, { method = 'GET', body = null, headers = {} } = {}) {
