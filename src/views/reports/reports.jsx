@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode'; 
 import { useAuth } from '../../auth/useAuth';
 import './reports.scss';
+import ReportsCard from './components/reportsCard.jsx';
 
 const Reports = () => {
+    const svgRef = useRef(null);
     const { token, logout } = useAuth();
     const [isAuthorized, setIsAuthorized] = useState(true);
     const [reports, setReports] = useState(null);
@@ -141,6 +143,37 @@ const Reports = () => {
             });
     }
 
+    useEffect(() => {
+        const adjustSvgPosition = () => {
+
+        if (!svgRef.current) {
+            return;
+        }
+
+        if (window.innerWidth > 1024) {
+            svgRef.current.style.right = 0;
+            svgRef.current.style.left = 'auto';
+            return;
+        }
+
+        if (svgRef.current) {
+            const svgWidth = svgRef.current.offsetWidth;
+            const viewportWidth = window.innerWidth;
+            const leftPosition = (viewportWidth - svgWidth) / 2;
+            svgRef.current.style.left = `${leftPosition}px`;
+        }
+        };
+
+        adjustSvgPosition(); // Adjust position when component mounts
+
+        window.addEventListener('resize', adjustSvgPosition); // Adjust position when window is resized
+
+        // Clean up event listener when component is unmounted
+        return () => {
+        window.removeEventListener('resize', adjustSvgPosition);
+        };
+    }, []);
+
     if (!isAuthorized) {
         return <p>Unauthorized</p>;
     }
@@ -150,25 +183,20 @@ const Reports = () => {
     }
 
     return (
-        <div className="reports">
-            <h1>Reports</h1>
-            <ul>
-                {reports.map(report => {
-                    const relatedMessage = messages.find(message => message.id === report.id_message);
-                    const relatedUser = users.find(user => user.id === relatedMessage.id_user);
-                    return (
-                        <div key={report.id}>
-                            <p>Usuario: {relatedUser ? relatedUser.name + ' ' + relatedUser.last_name: "Cargando Usuario..."}</p>
-                            <p>Mensaje: {relatedMessage ? relatedMessage.message : "Cargando mensaje..."}</p>
-                            <p>Motivo: {report.message}</p>
-                            <p>Tipo: {report.type}</p>
-                            <button onClick={() => handleDeleteMessage(report.id_message)}>Borrar Mensaje</button>
-                            <button onClick={() => handleDeleteAccount(report.id_message)}>Borrar Usuario</button>
-                            <button onClick={() => handleDeleteReport(report.id)}>Ignorar Reporte</button>
-                        </div>
-                    );
-                })}
-            </ul>
+        <div id="reports-container">
+            <div className="content">
+                <div className="reports-container">
+                    <img ref={svgRef} src="/ship_with_stars.svg" alt="Ship on ground" className="reports-fixed-bottom"/>
+                    <ReportsCard
+                      reports={reports}
+                      messages={messages}
+                      users={users}
+                      handleDeleteMessage={handleDeleteMessage}
+                      handleDeleteAccount={handleDeleteAccount}
+                      handleDeleteReport={handleDeleteReport}
+                    />
+                </div>
+            </div>
         </div>
     );
 }
