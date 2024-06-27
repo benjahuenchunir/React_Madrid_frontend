@@ -9,6 +9,7 @@ import FileDisplay from './FileDisplay';
 import OtherMessageDisplay from './OtherMessageDisplay';
 import FileGallery from './FileGallery';
 import Picker from '@emoji-mart/react';
+import ReportForm from './ReportForm/ReportForm';
 
 const InputMode = {
     NORMAL: 'normal',
@@ -30,6 +31,7 @@ const ChatDetails = ({ chat, onBack }) => {
     const pinnedMessageIndex = pinnedMessages.findIndex(msg => msg.id === pinnedMessageId) + 1;
     const [isPickerVisible, setPickerVisible] = useState(false);
     const pickerRef = useRef(null);
+    const reportDialogRef = useRef();
 
     useEffect(() => {
         const chatContainer = chatContainerRef.current;
@@ -99,6 +101,9 @@ const ChatDetails = ({ chat, onBack }) => {
             case 'Eliminar':
                 deleteMessage(messageId);
                 break;
+            case 'Reportar':
+                reportDialogRef.current.open(messageId);
+                break;
             default:
                 break;
         }
@@ -134,6 +139,7 @@ const ChatDetails = ({ chat, onBack }) => {
 
     return (
         <div className='chat-details-container'>
+            <ReportForm messages={messages} idUser={idUser} ref={reportDialogRef}/>
             <div className="chat-info-container">
                 <button onClick={onBack} className='back-button mobile-only'>&larr;</button>
                 <img src={chat.imageUrl} alt="Profile" className="profile-pic" />

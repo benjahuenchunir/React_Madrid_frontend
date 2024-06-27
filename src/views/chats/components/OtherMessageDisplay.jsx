@@ -4,6 +4,8 @@ import FileDisplay from './FileDisplay';
 const OtherMessageDisplay = ({ messages, otherMessageId, current_user_id, containerClass, onCancelCliked }) => {
     const maxFilesDisplayed = 3;
 
+    console.log(messages)
+
     const handleClick = () => {
         const message = messages.find(msg => msg.id === otherMessageId);
         if (message) {
@@ -13,6 +15,8 @@ const OtherMessageDisplay = ({ messages, otherMessageId, current_user_id, contai
         }
     };
 
+    console.log("adasdsaddd")
+    console.log(messages)
     const msg = messages.find(msg => msg.id === otherMessageId);
 
     return (
