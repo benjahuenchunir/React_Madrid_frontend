@@ -5,7 +5,7 @@ import ChatDetails from './components/ChatDetails';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { useAuth } from './../../auth/useAuth';
-import UserList from './components/AllUsers'
+import NewChatMenu from './components/NewChatMenu'
 
 const Chats = () => {
     const [chats, setChats] = useState([]);
@@ -61,7 +61,7 @@ const Chats = () => {
                     ))}
                 </div>
                 <button className="fab" onClick={()=> setIsCreatingChat(true)}>+</button>
-                {isCreatingChat && <UserList/>}
+                {isCreatingChat && <NewChatMenu onClose={()=> setIsCreatingChat(false)}/>}
             </div>
             <div className={`chat-details ${!selectedChat && 'hide-on-mobile'}`}>
                 <ChatDetails

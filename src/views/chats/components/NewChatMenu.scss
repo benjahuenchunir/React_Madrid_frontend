@@ -1,0 +1,91 @@
+#new-chat-menu {
+    position: absolute;
+    background-color: var(--secondary-black);
+    padding: 15px 10px 10px 10px;
+    border-radius: 10px;
+    bottom: 60px;
+    right: -180px;
+    max-width: 500px;
+    height: 300px;
+
+    #btn-close {
+        top: 5px;
+        right: 0;
+        margin-bottom: 3px;
+        cursor: pointer;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image:  url('/close_icon.svg');
+        background-color: transparent;
+        border: none;
+        position: absolute;
+        z-index: 100;
+
+        &:focus {
+            outline: none;
+        }
+    }
+    
+    #inner-content {
+        overflow-y: scroll;
+        max-height: 100%;
+
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+    
+        &::-webkit-scrollbar-thumb {
+            background: var(--secondary-black);
+        }
+    
+        &::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    
+        .input-container {
+            position: sticky;
+            top: 0;
+            padding-top: 10px;
+            margin-bottom: 5px;
+            background-color: var(--secondary-black);
+    
+            .input-filter-users {
+                padding: 10px;
+                border: none;
+                border-radius: 15px;
+                background-color: var(--primary-light-blue);
+                color: var(--secondary-white);
+                padding-left: 30px;
+                background-image: url('/search_icon.svg');
+                background-position: 5px center;
+                background-repeat: no-repeat;
+        
+                &::placeholder {
+                     color: var(--secondary-white);
+                }
+            }
+        }
+    
+    
+        .user-container {
+            width: 100%;
+            cursor: pointer;
+            box-sizing: border-box;
+            display: flex;
+            gap: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            align-items: center;
+    
+            &:hover {
+                background-color: var(--primary-blue);
+            }
+    
+            .profile-picture {
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+            }
+        }
+    }
+}
