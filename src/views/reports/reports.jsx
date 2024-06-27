@@ -186,15 +186,15 @@ const Reports = () => {
         <div id="reports-container">
             <div className="content">
                 <div className="reports-container">
-                    <ReportsCard 
-                        reports={reports} 
-                        messages={messages} 
-                        users={users}
-                        handleDeleteMessage={handleDeleteMessage}
-                        handleDeleteAccount={handleDeleteAccount}
-                        handleDeleteReport={handleDeleteReport}
-                    />
                     <img ref={svgRef} src="/ship_with_stars.svg" alt="Ship on ground" className="reports-fixed-bottom"/>
+                    <ReportsCard
+                      reports={reports}
+                      messages={messages}
+                      users={users}
+                      handleDeleteMessage={handleDeleteMessage}
+                      handleDeleteAccount={handleDeleteAccount}
+                      handleDeleteReport={handleDeleteReport}
+                    />
                 </div>
             </div>
         </div>
