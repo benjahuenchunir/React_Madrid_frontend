@@ -7,7 +7,7 @@ import AboutUs from './views/aboutus/AboutUs';
 import DocsPage from './views/docs/docs';
 import Login from './views/login/login.jsx';
 import Signup from "./views/signup/signup.jsx";
-import Profile from './views/profile.jsx';
+import Profile from './views/profile/profile.jsx';
 import Reports from './views/reports/reports.jsx';
 import { ProtectedRoute } from './auth/ProtectedRoute.jsx';
 import { PublicOnlyRoute } from './auth/PublicOnlyRoute.jsx';

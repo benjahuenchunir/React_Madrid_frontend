@@ -178,10 +178,6 @@ const Reports = () => {
         return <p>Unauthorized</p>;
     }
 
-    if (!reports) {
-        return <p>No hay reportes</p>;
-    }
-
     return (
         <div id="reports-container">
             <div className="content">
