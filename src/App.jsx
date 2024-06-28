@@ -11,6 +11,7 @@ import Profile from './views/profile/profile.jsx';
 import Reports from './views/reports/reports.jsx';
 import { ProtectedRoute } from './auth/ProtectedRoute.jsx';
 import { PublicOnlyRoute } from './auth/PublicOnlyRoute.jsx';
+import { AdminOnlyRoute } from './auth/AdminOnlyRoute.jsx';
 
 function App() {
   useEffect(() => {
@@ -40,7 +41,7 @@ function App() {
         <Route path='/docs' element={<div>
           <DocsPage />
         </div>} />
-        <Route path='/reports' element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+        <Route path='/reports' element={<AdminOnlyRoute><Reports /></AdminOnlyRoute>} />
         <Route path='/login' element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
         <Route path='/register' element={<PublicOnlyRoute><Signup /></PublicOnlyRoute>} />
         <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
