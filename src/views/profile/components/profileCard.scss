@@ -50,7 +50,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 2em;
+        margin-top: 1em;
     }
 
     .button-group button {
@@ -75,6 +75,19 @@
             flex-direction: column;
         }
 
+        .card-content {
+            // Here I want to reverse the order of the elements
+            flex-direction: column-reverse;
+        }
+
+        .profile-details {
+            width: 100%;
+        }
+
+        .profile-photo {
+            width: 100%;
+        }
+
         .button-group button {
             width: 100%;
             margin-top: 10px;
@@ -91,6 +104,7 @@
     @media (max-width: 768px) {
         .profile-card {
             margin: 0;
+            height: 100%;
             width: 100%;
             max-width: 100%;
             border-radius: 0;

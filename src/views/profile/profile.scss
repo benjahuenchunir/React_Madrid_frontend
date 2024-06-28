@@ -5,6 +5,7 @@
 
     .content {
         overflow: clip;
+        height: 100%;
     }
 
     h2 {
@@ -12,6 +13,7 @@
     }
 
     .profile-container {
+        height: 100%;
         width: 100%;
         z-index: -1;
         display: flex;
@@ -34,6 +36,11 @@
     }
 
     @media (max-width: 768px) {
+        .content {
+            height: auto;
+            min-height: 100%;
+        }
+
         .profile-container {
             align-items: initial;
         }
