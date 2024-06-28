@@ -6,6 +6,8 @@
         margin-bottom: 20px;
         border-radius: 2em;
         position: fixed;
+        color: var(--secondary-white);
+        border: 2px solid;
         right: 20px;
         bottom: 20px;
         z-index: 2000;
@@ -14,7 +16,7 @@
         box-sizing: border-box;
 
         &.success {
-            background-color: var(--tertiary-green);
+            border-color: var(--tertiary-green);
         }
 
         &.warning {
@@ -41,6 +43,8 @@
             border-radius: 0;
             left: 0;
             bottom: auto;
+            border: none;
+            border-bottom: 2px solid;
         }
     }
 
