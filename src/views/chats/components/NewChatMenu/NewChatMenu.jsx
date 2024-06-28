@@ -41,7 +41,7 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
     };
 
     const filteredUsers = users.filter(user =>
-        user.name.toLowerCase().includes(filter.toLowerCase())
+        (user.name + ' ' + user.lastName).toLowerCase().includes(filter.toLowerCase()) || (user.id === idUser  && 'yo'.includes(filter.toLowerCase()))
     );
 
     const onUserClicked = async (user) => {

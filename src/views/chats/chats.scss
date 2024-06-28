@@ -50,12 +50,16 @@
         padding: 10px;
     }
 
+    // No se porque pero esto es necesario
+    .chats-container.hide-on-mobile {
+        display: flex;
+    }
+
     .chat-details {
         width: 100%;
     }
 
     .hide-on-mobile {
-        overflow: hidden;
         display: none;
     }
 

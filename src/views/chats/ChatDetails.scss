@@ -1,4 +1,4 @@
-.chat-details-container {
+#chat-details-container {
     display: flex;
     flex-direction: column;
     background-image: linear-gradient(var(--primary-blue), var(--primary-light-blue));
@@ -10,6 +10,7 @@
         align-items: center;
         color: var(--secondary-white);
         gap: 10px;
+        padding-left: 10px;
 
         .profile-pic {
             width: 50px;
@@ -113,7 +114,7 @@
     .chat-container {
         overflow-y: auto;
         flex: 1;
-    }
+}
 
     .input-container {
         margin-left: 10px;

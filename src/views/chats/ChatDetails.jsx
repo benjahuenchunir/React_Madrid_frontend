@@ -131,7 +131,7 @@ const ChatDetails = ({ chat, onBack, onChatCreated }) => {
     }
 
     if (chat === null) {
-        return <div className='chat-details-container'>
+        return <div id='chat-details-container'>
             <div className='no-chat-selected'>
                 <div>
                     <h1>Detalles del chat</h1>
@@ -144,7 +144,7 @@ const ChatDetails = ({ chat, onBack, onChatCreated }) => {
 
 
     return (
-        <div className='chat-details-container'>
+        <div id='chat-details-container'>
             <ReportForm messages={messages} idUser={idUser} ref={reportDialogRef} reportMessage={reportMessage} />
             <div className="chat-info-container">
                 <button onClick={onBack} className='back-button mobile-only'>&larr;</button>
