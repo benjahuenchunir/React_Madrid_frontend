@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode'; 
-import { useAuth } from '../auth/useAuth';
+import { useAuth } from '../../auth/useAuth.js';
 import './profile.scss';
+import ProfileCard from './components/profileCard.jsx';
 
 const Profile = () => {
+    const svgRef = useRef(null);
     const { token, logout } = useAuth();
     const [isAuthorized, setIsAuthorized] = useState(true);
     const [userProfile, setUserProfile] = useState(null);
@@ -37,6 +39,37 @@ const Profile = () => {
         }
     }, [token]);
 
+    useEffect(() => {
+        const adjustSvgPosition = () => {
+
+            if (!svgRef.current) {
+                return;
+            }
+
+            if (window.innerWidth > 1024) {
+                svgRef.current.style.right = 0;
+                svgRef.current.style.left = 'auto';
+                return;
+            }
+
+            if (svgRef.current) {
+                const svgWidth = svgRef.current.offsetWidth;
+                const viewportWidth = window.innerWidth;
+                const leftPosition = (viewportWidth - svgWidth) / 2;
+                svgRef.current.style.left = `${leftPosition}px`;
+            }
+        };
+
+        adjustSvgPosition();
+
+        window.addEventListener('resize', adjustSvgPosition)
+
+
+        return () => {
+            window.removeEventListener('resize', adjustSvgPosition);
+        };
+    }, []);
+
     if (!isAuthorized) {
         return <p>Unauthorized</p>;
     }
@@ -68,19 +101,16 @@ const Profile = () => {
 
     return (
         <div id="profile-container">
-            <h1>Perfil de Usuario</h1>
-            <div className="profile-details">
-                <p><strong>Nombre:</strong> {userProfile.name}</p>
-                <p><strong>Email:</strong> {userProfile.email}</p>
-                <p><strong>Teléfono:</strong> {userProfile.phone}</p>
-                {userProfile.profile_picture_url && (
-                    <div className="profile-picture">
-                        <img src={userProfile.profile_picture_url} alt="Profile" />
-                    </div>
-                )}
+            <div className="content">
+                <div className="profile-container">
+                    <img ref={svgRef} src="/ship_with_stars.svg" alt="Ship on ground" className="profile-fixed-bottom"/>
+                    <ProfileCard
+                        userProfile={userProfile}
+                        logout={logout}
+                        handleDeleteAccount={handleDeleteAccount}
+                    />
+                </div>
             </div>
-            <button onClick={logout}>Cerrar Sesión</button>
-            <button onClick={handleDeleteAccount}>Eliminar Cuenta</button>
         </div>
     );
 };

@@ -167,6 +167,10 @@ const Reports = () => {
         };
     }, []);
 
+    if (!isAuthorized) {
+        return <p>Unauthorized</p>;
+    }
+    
     return (
         <div id="reports-container">
             <div className="content">

@@ -1,0 +1,99 @@
+#profile-card-container {
+    display: flex;
+    width: 100%;
+
+    .profile-card {
+        padding: 20px;
+        border-radius: 1.5em;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+        background-color: var(--primary-black);
+        z-index: 1000;
+        margin: 20vh auto;
+    }
+
+    .card-content {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .profile-details {
+        width: 60%;
+    }
+
+    .profile-photo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40%;
+    }
+
+    .profile-photo img {
+        margin: 10px;
+        width: 50%;
+        border-radius: 50%;
+    }
+
+    .profile-card button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 1em;
+        background-color: var(--secondary-black);
+        color: var(--secondary-white);
+        border-radius: 2em;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+        width: 100%;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2em;
+    }
+
+    .button-group button {
+        padding: 10px 20px;
+        width: 48%;
+        border-radius: 20px;
+        background-color: var(--primary-black);
+        border: 0.1em solid var(--secondary-white);
+    }
+
+    .button-group button:hover {
+        background-color: var(--secondary-orange);
+        border-color: var(--secondary-orange);
+    }
+
+    @media (max-width: 768px) {
+        .report-card {
+            margin: 10px;
+        }
+
+        .button-group {
+            flex-direction: column;
+        }
+
+        .button-group button {
+            width: 100%;
+            margin-top: 10px;
+        }
+    }
+
+    @media (min-width: 769px) {
+        .profile-card {
+            width: 60vw;
+            max-width: 60vw;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .profile-card {
+            margin: 0;
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+        }
+    }
+}
