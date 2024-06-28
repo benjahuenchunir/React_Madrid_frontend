@@ -1,7 +1,8 @@
 import './reportsCard.scss'
 import ReportCard from './reportCard.jsx';
+import PropTypes from 'prop-types'
 
-const ReportsCard = ( {reports, messages, users, handleDeleteMessage, handleDeleteAccount, handleDeleteReport} ) => {
+const ReportsCard = ({ reports, messages, users, handleDeleteMessage, handleDeleteAccount, handleDeleteReport }) => {
 
     return (
         <div id="reports-card-container">
@@ -30,6 +31,15 @@ const ReportsCard = ( {reports, messages, users, handleDeleteMessage, handleDele
             </div>
         </div>
     )
+}
+
+ReportCard.propTypes = {
+    reports: PropTypes.array.isRequired,
+    messages: PropTypes.array.isRequired,
+    users: PropTypes.array.isRequired,
+    handleDeleteMessage: PropTypes.func.isRequired,
+    handleDeleteAccount: PropTypes.func.isRequired,
+    handleDeleteReport: PropTypes.func.isRequired,
 }
 
 export default ReportsCard;

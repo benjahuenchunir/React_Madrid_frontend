@@ -12,6 +12,7 @@ const MessageOptionsMenu = ({ onOptionClick, idUser, message, canSendMessage }) 
         { label: (message.pinned ? 'Desfijar' : 'Fijar'), onClick: () => onOptionClick(message.pinned ? 'Desfijar' : 'Fijar', message.id), needsSendMessage: true, hasToBeHisMessage: false }, // TODO maybe this needs to be admin only
         { label: 'Editar', onClick: () => onOptionClick('Editar', message.id), needsSendMessage: true, hasToBeHisMessage: true },
         { label: 'Eliminar', onClick: () => onOptionClick('Eliminar', message.id), needsSendMessage: true, hasToBeHisMessage: true }, // TODO this could also be a admin feature if its not his message
+        { label: 'Reportar', onClick: () => onOptionClick('Reportar', message.id), needsSendMessage: false, hasToBeHisMessage: false},
     ]; 
 
     const options = allOptions.filter(option => (!option.needsSendMessage || canSendMessage) && (!option.hasToBeHisMessage || message.idUser === idUser));
