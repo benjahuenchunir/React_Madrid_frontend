@@ -2,6 +2,12 @@ import React, { Fragment, useState, useEffect, useRef, useContext } from 'react'
 import './Navbar.scss';
 import CustomNavLink from './CustomNavLink';
 import { useAuth } from './../../auth/useAuth';
+import { jwtDecode } from 'jwt-decode';
+
+function isAdmin (token) {
+    let decodedToken = jwtDecode(token);
+    return decodedToken.scope === 'admin';
+}
 
 function Navbar(): JSX.Element {
     const { token } = useAuth();
@@ -40,6 +46,9 @@ function Navbar(): JSX.Element {
         ],
         [
             { to: "/profile", text: "Mi perfil" },
+        ],
+        [
+            { to: "/profile", text: "Mi perfil" },
             { to: "/reports", text: "Reportes" },
         ]
     ];
@@ -67,7 +76,12 @@ function Navbar(): JSX.Element {
                                 <CustomNavLink to={link.to}>{link.text}</CustomNavLink>
                             </li>
                         ))}
-                        {token && linkGroups[2].map((link, linkIndex) => (
+                        {(token && !isAdmin(token)) && linkGroups[2].map((link, linkIndex) => (
+                            <li key={linkIndex}>
+                                <CustomNavLink to={link.to}>{link.text}</CustomNavLink>
+                            </li>
+                        ))}
+                        {(token && isAdmin(token)) && linkGroups[3].map((link, linkIndex) => (
                             <li key={linkIndex}>
                                 <CustomNavLink to={link.to}>{link.text}</CustomNavLink>
                             </li>
@@ -87,7 +101,19 @@ function Navbar(): JSX.Element {
                     <div className={`dropdown-menu ${isOpen ? 'show' : ''}`} ref={dropdownRef}>
                         {linkGroups.map((group, groupIndex) => {
                             // If user is logged in, only render groups at index 0 and 2
-                            if (token && (groupIndex === 0 || groupIndex === 2)) {
+                            if (!token && (groupIndex === 0 || groupIndex === 1)) {
+                                return (
+                                    <Fragment key={groupIndex}>
+                                        {group.map((link, linkIndex) => (
+                                            <CustomNavLink key={linkIndex} to={link.to} onClick={closeMenu}>
+                                                {link.text}
+                                            </CustomNavLink>
+                                        ))}
+                                        {groupIndex < linkGroups.length - 1 && <div className="divider"></div>}
+                                    </Fragment>
+                                );
+                            }
+                            else if ((token && !isAdmin(token)) && (groupIndex === 0 || groupIndex === 2)) {
                                 return (
                                     <Fragment key={groupIndex}>
                                         {group.map((link, linkIndex) => (
@@ -101,14 +127,15 @@ function Navbar(): JSX.Element {
                                     </Fragment>
                                 );
                             }
-                            // If user is not logged in, only render groups at index 0 and 1
-                            else if (!token && (groupIndex === 0 || groupIndex === 1)) {
+                            else if ((token && isAdmin(token)) && (groupIndex === 0 || groupIndex === 3)) {
                                 return (
                                     <Fragment key={groupIndex}>
                                         {group.map((link, linkIndex) => (
-                                            <CustomNavLink key={linkIndex} to={link.to} onClick={closeMenu}>
-                                                {link.text}
-                                            </CustomNavLink>
+                                            <li key={linkIndex}>
+                                                <CustomNavLink key={linkIndex} to={link.to} onClick={closeMenu}>
+                                                    {link.text}
+                                                </CustomNavLink>
+                                            </li>
                                         ))}
                                         {groupIndex < linkGroups.length - 1 && <div className="divider"></div>}
                                     </Fragment>
