@@ -4,12 +4,11 @@ import { useAuth } from '../../../auth/useAuth';
 import "./NewChatMenu.scss";
 import PropTypes from 'prop-types';
 
-const NewChatMenu = ({ onClose, buttonRef }) => {
+const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
     const [users, setUsers] = useState([]);
     const [filter, setFilter] = useState('');
     const containerRef = useRef()
-
-    const { token, idUser } = useAuth();
+    const { token } = useAuth();
     const api = useApi(token);
 
     useEffect(() => {
@@ -45,12 +44,27 @@ const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(filter.toLowerCase())
 );
 
-const onUserClicked = async (idOtherUser) => {
+const onUserClicked = async (user) => {
     try {
-        const data = await api.get(`/chats/users/${idOtherUser}`);
-        console.log(data)
+        // Search for a DM that already has both users
+        const idChat = await api.get(`/chats/users/${user.id}`);
+        onDMReceived(idChat);
+        onClose();
     } catch (error) {
-        console.error('Error:', error);
+        if (error.status === 404) {
+            // If the DM doesn't exist, create a new one
+            const newChat = {
+                name: user.name + ' ' + user.lastName,
+                imageUrl: user.profilePictureUrl,
+                canSendMessage: true,
+                lastMessage: null,
+                isDm: true
+            };
+            console.log(newChat)
+            onNewDM(newChat);
+        } else {
+            console.error(error);
+        }
     }
 }
 
@@ -69,7 +83,7 @@ return (
                 />
             </div>
             {filteredUsers.map(user => (
-                <div key={user.id} onClick={() => onUserClicked(user.id)} className="user-container">
+                <div key={user.id} onClick={() => onUserClicked(user)} className="user-container">
                     <img src={user.profilePictureUrl} className='profile-picture' />
                     <p>{user.name} {user.lastName}</p>
                 </div>
@@ -81,7 +95,9 @@ return (
 
 NewChatMenu.propTypes = {
     onClose: PropTypes.func.isRequired,
-    buttonRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+    buttonRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    onDMReceived: PropTypes.func.isRequired,
+    onNewDM: PropTypes.func.isRequired
 }
 
 export default NewChatMenu;

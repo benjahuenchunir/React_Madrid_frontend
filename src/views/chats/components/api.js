@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from './../../../auth/useAuth';
+import { ChatMode } from './../constants';
 
 const ChangeType = {
     CREATE: 'create',
@@ -30,7 +31,11 @@ export function useApi(token) {
             }
         }
         const response = await fetch(url, options);
-        if (!response.ok) throw new Error(`HTTP error, status: ${response.status}`);
+        if (!response.ok) {
+            const error = new Error(`HTTP error, status: ${response.status}`);
+            error.status = response.status;
+            throw error;
+        }
         return response.json();
     }
 
@@ -42,7 +47,7 @@ export function useApi(token) {
     };
 }
 
-export const useFetchChat = (chat) => {
+export const useFetchChat = (chat, onChatChanged, chatMode) => {
     const [messages, setMessages] = useState([]);
     const { token, idUser } = useAuth();
     const api = useApi(token);
@@ -50,7 +55,7 @@ export const useFetchChat = (chat) => {
 
     useEffect(() => {
         if (!chat) return;
-
+        
         const fetchChat = async () => {
             try {
                 const data = await api.get(`/chats/${chat.id}`);
@@ -62,7 +67,15 @@ export const useFetchChat = (chat) => {
             }
         };
 
-        fetchChat();
+        console.log(chatMode)
+        console.log(ChatMode.NORMAL)
+        if (chatMode === ChatMode.NORMAL) {
+            fetchChat();
+        } else {
+            setMessages([])
+        }
+        
+        onChatChanged();
 
         // Clean up WebSocket connection when component unmounts or chat changes
         return () => {
@@ -71,7 +84,7 @@ export const useFetchChat = (chat) => {
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chat]);
+    }, [chat, chatMode]);
 
     const initializeWebSocket = (chatId) => {
         const backendUrlWithoutProtocol = import.meta.env.VITE_BACKEND_URL.replace(/^http:\/\/|^https:\/\//, '');

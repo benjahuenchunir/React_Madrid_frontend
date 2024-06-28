@@ -10,6 +10,7 @@ import OtherMessageDisplay from './OtherMessageDisplay';
 import FileGallery from './FileGallery';
 import Picker from '@emoji-mart/react';
 import ReportForm from './ReportForm/ReportForm';
+import { ChatMode } from './../constants';
 
 const InputMode = {
     NORMAL: 'normal',
@@ -18,18 +19,24 @@ const InputMode = {
     REPLY: 'reply'
 };
 
-const ChatDetails = ({ chat, onBack }) => {
-    const [messages, addMessage, updateMessage, deleteMessage, reportMessage, idUser] = useFetchChat(chat);
+const ChatDetails = ({ chat, onBack, chatMode }) => {
     const [pinnedMessageId, setPinnedMessageId] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedMessageId, setSelectedMessageId] = useState(null)
     const [inputMode, setInputMode] = useState(InputMode.NORMAL);
+    const [isPickerVisible, setPickerVisible] = useState(false);
+    const onChatChanged = () => {
+        setSelectedFiles([])
+        setInputMode(InputMode.NORMAL)
+        setSelectedMessageId(null)
+        setPickerVisible(false)
+    }
+    const [messages, addMessage, updateMessage, deleteMessage, reportMessage, idUser] = useFetchChat(chat, onChatChanged, chatMode);
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
     const messageInputRef = useRef(null);
     const pinnedMessages = messages.filter(msg => msg.pinned);
     const pinnedMessageIndex = pinnedMessages.findIndex(msg => msg.id === pinnedMessageId) + 1;
-    const [isPickerVisible, setPickerVisible] = useState(false);
     const pickerRef = useRef(null);
     const reportDialogRef = useRef();
 
@@ -245,6 +252,7 @@ ChatDetails.propTypes = {
         isDm: PropTypes.bool,
     }),
     onBack: PropTypes.func,
+    chatMode: PropTypes.oneOf(Object.values(ChatMode)).isRequired,
 };
 
 export default ChatDetails;

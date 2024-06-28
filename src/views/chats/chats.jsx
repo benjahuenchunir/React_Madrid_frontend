@@ -6,12 +6,15 @@ import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { useAuth } from './../../auth/useAuth';
 import NewChatMenu from './components/NewChatMenu'
+import { ChatMode } from './constants';
+
 
 const Chats = () => {
     const [chats, setChats] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedChat, setSelectedChat] = useState(null);
     const [isCreatingChat, setIsCreatingChat] = useState(false);
+    const [chatMode, setChatMode] = useState(ChatMode.NORMAL);
     const fabRef = useRef()
     const { token } = useAuth();
 
@@ -62,12 +65,26 @@ const Chats = () => {
                     ))}
                 </div>
                 <button className="fab" onClick={() => setIsCreatingChat(true)} ref={fabRef}>+</button>
-                {isCreatingChat && <NewChatMenu onClose={() => setIsCreatingChat(false)} buttonRef={fabRef} />}
+                {isCreatingChat &&
+                    <NewChatMenu
+                        onClose={() => setIsCreatingChat(false)}
+                        buttonRef={fabRef} onDMReceived={(idChat) => {
+                            setSelectedChat(chats.find(
+                                chat => chat.id === idChat
+                            ))
+                            setChatMode(ChatMode.NORMAL)
+                        }
+                        }
+                        onNewDM={(chat) => {
+                            setSelectedChat(chat)
+                            setChatMode(ChatMode.DM_CREATION)
+                        }} />}
             </div>
             <div className={`chat-details ${!selectedChat && 'hide-on-mobile'}`}>
                 <ChatDetails
                     chat={selectedChat}
                     onBack={() => setSelectedChat(null)}
+                    chatMode={chatMode}
                 />
             </div>
         </div>
