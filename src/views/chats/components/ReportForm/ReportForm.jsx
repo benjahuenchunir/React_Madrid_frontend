@@ -40,6 +40,8 @@ const ReportDialog = forwardRef((props, ref) => {
 
     const onSuccess = () => {
         setCurrentMessageId(null);
+        setReportType(ReportType.SPAM);
+        setReportText('');
         // TODO display success notice
     }
 
