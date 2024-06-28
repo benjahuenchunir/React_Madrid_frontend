@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useAuth } from './../../../auth/useAuth';
+import { useAuth } from '../../auth/useAuth';
 
 const ChangeType = {
     CREATE: 'create',
     UPDATE: 'update',
     DELETE: 'delete'
-  };
+};
 
-function useApi(token) {
+export function useApi(token) {
     const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
     async function fetchApi(endpoint, { method = 'GET', body = null, headers = {} } = {}) {
@@ -30,7 +30,11 @@ function useApi(token) {
             }
         }
         const response = await fetch(url, options);
-        if (!response.ok) throw new Error(`HTTP error, status: ${response.status}`);
+        if (!response.ok) {
+            const error = new Error(`HTTP error, status: ${response.status}`);
+            error.status = response.status;
+            throw error;
+        }
         return response.json();
     }
 
@@ -42,7 +46,7 @@ function useApi(token) {
     };
 }
 
-export const useFetchChat = (chat) => {
+export const useFetchChat = (chat, onChatChanged) => {
     const [messages, setMessages] = useState([]);
     const { token, idUser } = useAuth();
     const api = useApi(token);
@@ -62,7 +66,14 @@ export const useFetchChat = (chat) => {
             }
         };
 
-        fetchChat();
+        if (chat.isCreatingDM) {
+            console.log("Creating DM")
+            setMessages([])
+        } else {
+            fetchChat();
+        }
+
+        onChatChanged();
 
         // Clean up WebSocket connection when component unmounts or chat changes
         return () => {
@@ -78,7 +89,7 @@ export const useFetchChat = (chat) => {
         const wsUrl = `${import.meta.env.VITE_WS_PROTOCOL}://${backendUrlWithoutProtocol}/chats/${chatId}/messages?token=${encodeURIComponent(token)}`;
         webSocketRef.current = new WebSocket(wsUrl);
 
-        webSocketRef.onopen = function() {
+        webSocketRef.onopen = function () {
             console.log('WebSocket connection established');
         };
 
@@ -114,10 +125,22 @@ export const useFetchChat = (chat) => {
         };
     };
 
-    const addMessage = async (idChat, message, selectedFiles, respondingTo, onSuccess, pinned = false, deletesAt = null, forwarded = false) => {
+    const addMessage = async (chat, message, selectedFiles, respondingTo, onSuccess, onChatCreated, pinned = false, deletesAt = null, forwarded = false) => {
         try {
+            let newChat;
+            if (chat.isCreatingDM) {
+                // If in creation mode first create the chat and switch back to normal mode
+                // TODO it would be better to call a special method that creates both the chat and the message in one transaction
+                newChat = await api.post(`/chats`, {
+                    name: chat.name,
+                    image_url: chat.imageUrl,
+                    mode: 'dm',
+                    users: chat.users
+                });
+            }
+
             const formData = new FormData();
-            formData.append('idChat', idChat);
+            formData.append('idChat', chat.isCreatingDM ? newChat.id : chat.id);
             formData.append('message', message);
             formData.append('pinned', pinned);
             if (deletesAt) formData.append('deletesAt', deletesAt);
@@ -135,6 +158,11 @@ export const useFetchChat = (chat) => {
             newMessage.ref = React.createRef();
             setMessages(prevMessages => [...prevMessages, newMessage]);
             onSuccess();
+
+            if (chat.isCreatingDM) {
+                onChatCreated(newChat); // Add the chat and reset the chatMode
+            }
+
         } catch (error) {
             console.error('Error adding message:', error);
             // TODO display error that message could not be sent
@@ -153,7 +181,7 @@ export const useFetchChat = (chat) => {
                     }
                     return msg;
                 }));
-                onSuccess();
+                if (onSuccess) onSuccess();
             } else {
                 console.error('Message could not be updated');
                 // TODO: Display error that message could not be updated

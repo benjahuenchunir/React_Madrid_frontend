@@ -1,6 +1,6 @@
 import { useState, useImperativeHandle, forwardRef } from 'react';
 import './ReportForm.scss';
-import OtherMessageDisplay from '../OtherMessageDisplay'
+import OtherMessageDisplay from '../OtherMessageDisplay/OtherMessageDisplay'
 import PropTypes from 'prop-types';
 
 const ReportType = {

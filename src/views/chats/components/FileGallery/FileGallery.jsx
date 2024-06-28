@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import './FileGallery.scss';
+import '../FileGallery/FileGallery.scss';
 import PropTypes from 'prop-types';
-import FileDisplay from './FileDisplay';
+import FileDisplay from '../FileDisplay/FileDisplay';
 
 const FileGallery = ({ files, onClose }) => {
     const [selectedFileIndex, setSelectedFileIndex] = useState(0);

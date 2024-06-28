@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import { isSameDay } from './utils';
 import { shouldDisplayUser } from './utils';
 import { useFetchChat } from './api';
-import MessageOptionsMenu from './MessageOptionsMenu';
-import FileDisplay from './FileDisplay';
-import OtherMessageDisplay from './OtherMessageDisplay';
-import FileGallery from './FileGallery';
+import MessageOptionsMenu from './components/MessageOptionsMenu/MessageOptionsMenu';
+import FileDisplay from './components/FileDisplay/FileDisplay';
+import OtherMessageDisplay from './components/OtherMessageDisplay/OtherMessageDisplay';
+import FileGallery from './components/FileGallery/FileGallery';
 import Picker from '@emoji-mart/react';
-import ReportForm from './ReportForm/ReportForm';
+import ReportForm from './components/ReportForm/ReportForm';
 
 const InputMode = {
     NORMAL: 'normal',
@@ -18,18 +18,24 @@ const InputMode = {
     REPLY: 'reply'
 };
 
-const ChatDetails = ({ chat, onBack }) => {
-    const [messages, addMessage, updateMessage, deleteMessage, reportMessage, idUser] = useFetchChat(chat);
+const ChatDetails = ({ chat, onBack, onChatCreated }) => {
     const [pinnedMessageId, setPinnedMessageId] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedMessageId, setSelectedMessageId] = useState(null)
     const [inputMode, setInputMode] = useState(InputMode.NORMAL);
+    const [isPickerVisible, setPickerVisible] = useState(false);
+    const onChatChanged = () => {
+        setSelectedFiles([])
+        setInputMode(InputMode.NORMAL)
+        setSelectedMessageId(null)
+        setPickerVisible(false)
+    }
+    const [messages, addMessage, updateMessage, deleteMessage, reportMessage, idUser] = useFetchChat(chat, onChatChanged);
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
     const messageInputRef = useRef(null);
     const pinnedMessages = messages.filter(msg => msg.pinned);
     const pinnedMessageIndex = pinnedMessages.findIndex(msg => msg.id === pinnedMessageId) + 1;
-    const [isPickerVisible, setPickerVisible] = useState(false);
     const pickerRef = useRef(null);
     const reportDialogRef = useRef();
 
@@ -67,7 +73,7 @@ const ChatDetails = ({ chat, onBack }) => {
         const text = messageInputRef.current.value
         if (inputMode === InputMode.RESPONDING_TO || inputMode === InputMode.NORMAL) {
             if (!text && selectedFiles.length === 0) return;
-            addMessage(chat.id, text, selectedFiles, selectedMessageId, handleSuccessfullSend);
+            addMessage(chat, text, selectedFiles, selectedMessageId, handleSuccessfullSend, onChatCreated);
         } else if (inputMode === InputMode.EDIT) {
             updateMessage(selectedMessageId, { message: text }, handleSuccessfullSend);
         }
@@ -125,7 +131,7 @@ const ChatDetails = ({ chat, onBack }) => {
     }
 
     if (chat === null) {
-        return <div className='chat-details-container'>
+        return <div id='chat-details-container'>
             <div className='no-chat-selected'>
                 <div>
                     <h1>Detalles del chat</h1>
@@ -138,8 +144,8 @@ const ChatDetails = ({ chat, onBack }) => {
 
 
     return (
-        <div className='chat-details-container'>
-            <ReportForm messages={messages} idUser={idUser} ref={reportDialogRef} reportMessage={reportMessage}/>
+        <div id='chat-details-container'>
+            <ReportForm messages={messages} idUser={idUser} ref={reportDialogRef} reportMessage={reportMessage} />
             <div className="chat-info-container">
                 <button onClick={onBack} className='back-button mobile-only'>&larr;</button>
                 <img src={chat.imageUrl} alt="Profile" className="profile-pic" />
@@ -204,9 +210,9 @@ const ChatDetails = ({ chat, onBack }) => {
                     <Picker onEmojiSelect={(emoji) => {
                         messageInputRef.current.value += emoji.native;
                         setPickerVisible(false); // Optionally hide picker after selection
-                    }} onClickOutside={() => {if (isPickerVisible) setPickerVisible(false)}} locale='es' maxFrequentRows={0} theme='dark'/>
+                    }} onClickOutside={() => { if (isPickerVisible) setPickerVisible(false) }} locale='es' maxFrequentRows={0} theme='dark' />
                 </div>
-                <FileGallery files={selectedFiles} onClose={()=> setSelectedFiles([])} />
+                <FileGallery files={selectedFiles} onClose={() => setSelectedFiles([])} />
                 <OtherMessageDisplay
                     messages={messages}
                     otherMessageId={selectedMessageId}
@@ -245,6 +251,7 @@ ChatDetails.propTypes = {
         isDm: PropTypes.bool,
     }),
     onBack: PropTypes.func,
+    onChatCreated: PropTypes.func.isRequired
 };
 
 export default ChatDetails;

@@ -1,15 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './chats.scss';
-import ChatCard from './components/ChatCard';
-import ChatDetails from './components/ChatDetails';
+import ChatCard from './components/ChatCard/ChatCard';
+import ChatDetails from './ChatDetails';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { useAuth } from './../../auth/useAuth';
+import NewChatMenu from './components/NewChatMenu/NewChatMenu'
 
 const Chats = () => {
     const [chats, setChats] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedChat, setSelectedChat] = useState(null);
+    const [isCreatingChat, setIsCreatingChat] = useState(false);
+    const fabRef = useRef()
     const { token } = useAuth();
 
     useEffect(() => {
@@ -27,16 +30,22 @@ const Chats = () => {
         axios(config)
             .then(response => {
                 setChats(response.data);
+                console.log(chats)
             })
             .catch(error => {
                 console.log('error', error)
             });
-        
+
     }, [token]);
 
     const filteredChats = chats.filter(chat =>
         `${chat.name}`.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    const onChatCreated = (chat) => {
+        setChats([...chats, chat]);
+        setSelectedChat(chat);
+    }
 
     return (
         <div id="chats-container">
@@ -58,12 +67,26 @@ const Chats = () => {
                         />
                     ))}
                 </div>
-                <button className="fab">+</button>
+                <button className="fab" onClick={() => setIsCreatingChat(true)} ref={fabRef}>+</button>
+                {isCreatingChat &&
+                    <NewChatMenu
+                        onClose={() => setIsCreatingChat(false)}
+                        buttonRef={fabRef}
+                        onDMReceived={(idChat) => {
+                            setSelectedChat(chats.find(
+                                chat => chat.id === idChat
+                            ))
+                        }
+                        }
+                        onNewDM={(chat) => {
+                            setSelectedChat(chat)
+                        }} />}
             </div>
             <div className={`chat-details ${!selectedChat && 'hide-on-mobile'}`}>
                 <ChatDetails
                     chat={selectedChat}
                     onBack={() => setSelectedChat(null)}
+                    onChatCreated={onChatCreated}
                 />
             </div>
         </div>
