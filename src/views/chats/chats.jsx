@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import './chats.scss';
-import ChatCard from './components/ChatCard';
-import ChatDetails from './components/ChatDetails';
+import ChatCard from './components/ChatCard/ChatCard';
+import ChatDetails from './ChatDetails';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { useAuth } from './../../auth/useAuth';
-import NewChatMenu from './components/NewChatMenu'
+import NewChatMenu from './components/NewChatMenu/NewChatMenu'
 
 const Chats = () => {
     const [chats, setChats] = useState([]);
@@ -71,7 +71,7 @@ const Chats = () => {
                 {isCreatingChat &&
                     <NewChatMenu
                         onClose={() => setIsCreatingChat(false)}
-                        buttonRef={fabRef} 
+                        buttonRef={fabRef}
                         onDMReceived={(idChat) => {
                             setSelectedChat(chats.find(
                                 chat => chat.id === idChat

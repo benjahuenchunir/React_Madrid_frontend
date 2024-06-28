@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useAuth } from './../../../auth/useAuth';
+import { useAuth } from '../../auth/useAuth';
 
 const ChangeType = {
     CREATE: 'create',
     UPDATE: 'update',
     DELETE: 'delete'
-  };
+};
 
 export function useApi(token) {
     const baseUrl = import.meta.env.VITE_BACKEND_URL;
@@ -54,7 +54,7 @@ export const useFetchChat = (chat, onChatChanged) => {
 
     useEffect(() => {
         if (!chat) return;
-        
+
         const fetchChat = async () => {
             try {
                 const data = await api.get(`/chats/${chat.id}`);
@@ -72,7 +72,7 @@ export const useFetchChat = (chat, onChatChanged) => {
         } else {
             fetchChat();
         }
-        
+
         onChatChanged();
 
         // Clean up WebSocket connection when component unmounts or chat changes
@@ -89,7 +89,7 @@ export const useFetchChat = (chat, onChatChanged) => {
         const wsUrl = `${import.meta.env.VITE_WS_PROTOCOL}://${backendUrlWithoutProtocol}/chats/${chatId}/messages?token=${encodeURIComponent(token)}`;
         webSocketRef.current = new WebSocket(wsUrl);
 
-        webSocketRef.onopen = function() {
+        webSocketRef.onopen = function () {
             console.log('WebSocket connection established');
         };
 
@@ -158,7 +158,7 @@ export const useFetchChat = (chat, onChatChanged) => {
             newMessage.ref = React.createRef();
             setMessages(prevMessages => [...prevMessages, newMessage]);
             onSuccess();
-        
+
             if (chat.isCreatingDM) {
                 onChatCreated(newChat); // Add the chat and reset the chatMode
             }

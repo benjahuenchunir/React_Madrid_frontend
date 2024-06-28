@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { useApi } from './api';
-import { useAuth } from '../../../auth/useAuth';
-import "./NewChatMenu.scss";
+import { useApi } from '../../api';
+import { useAuth } from '../../../../auth/useAuth';
+import "../NewChatMenu/NewChatMenu.scss";
 import PropTypes from 'prop-types';
 
 const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
@@ -47,14 +47,13 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
     const onUserClicked = async (user) => {
         try {
             // Search for a DM that already has both users
-            const idChat = await api.get(`/chats/users/${user.id}`);
+            const idChat = await api.get(`/chats/dms/${user.id}`);
             onDMReceived(idChat);
             onClose();
         } catch (error) {
             if (error.status === 404) {
                 // If the DM doesn't exist, create a new one
                 // Both users are owners of the chat
-                // if both users are the same person it will create a chat with itself
                 let newChat = {};
                 if (user.id === idUser) {
                     newChat.name = 'Yo';
@@ -103,7 +102,7 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
                 {filteredUsers.map(user => (
                     <div key={user.id} onClick={() => onUserClicked(user)} className="user-container">
                         <img src={user.profilePictureUrl} className='profile-picture' />
-                        <p>{user.name} {user.lastName}</p>
+                        <p>{user.id === idUser ? 'Yo' : `${user.name} ${user.lastName}`}</p>
                     </div>
                 ))}
             </div>

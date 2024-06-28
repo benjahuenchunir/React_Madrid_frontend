@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import FileDisplay from './FileDisplay';
+import FileDisplay from './../FileDisplay/FileDisplay';
 
 const OtherMessageDisplay = ({ messages, otherMessageId, current_user_id, containerClass, onCancelCliked }) => {
     const maxFilesDisplayed = 3;

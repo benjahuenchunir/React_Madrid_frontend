@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import { isSameDay } from './utils';
 import { shouldDisplayUser } from './utils';
 import { useFetchChat } from './api';
-import MessageOptionsMenu from './MessageOptionsMenu';
-import FileDisplay from './FileDisplay';
-import OtherMessageDisplay from './OtherMessageDisplay';
-import FileGallery from './FileGallery';
+import MessageOptionsMenu from './components/MessageOptionsMenu/MessageOptionsMenu';
+import FileDisplay from './components/FileDisplay/FileDisplay';
+import OtherMessageDisplay from './components/OtherMessageDisplay/OtherMessageDisplay';
+import FileGallery from './components/FileGallery/FileGallery';
 import Picker from '@emoji-mart/react';
-import ReportForm from './ReportForm/ReportForm';
+import ReportForm from './components/ReportForm/ReportForm';
 
 const InputMode = {
     NORMAL: 'normal',
@@ -145,7 +145,7 @@ const ChatDetails = ({ chat, onBack, onChatCreated }) => {
 
     return (
         <div className='chat-details-container'>
-            <ReportForm messages={messages} idUser={idUser} ref={reportDialogRef} reportMessage={reportMessage}/>
+            <ReportForm messages={messages} idUser={idUser} ref={reportDialogRef} reportMessage={reportMessage} />
             <div className="chat-info-container">
                 <button onClick={onBack} className='back-button mobile-only'>&larr;</button>
                 <img src={chat.imageUrl} alt="Profile" className="profile-pic" />
@@ -210,9 +210,9 @@ const ChatDetails = ({ chat, onBack, onChatCreated }) => {
                     <Picker onEmojiSelect={(emoji) => {
                         messageInputRef.current.value += emoji.native;
                         setPickerVisible(false); // Optionally hide picker after selection
-                    }} onClickOutside={() => {if (isPickerVisible) setPickerVisible(false)}} locale='es' maxFrequentRows={0} theme='dark'/>
+                    }} onClickOutside={() => { if (isPickerVisible) setPickerVisible(false) }} locale='es' maxFrequentRows={0} theme='dark' />
                 </div>
-                <FileGallery files={selectedFiles} onClose={()=> setSelectedFiles([])} />
+                <FileGallery files={selectedFiles} onClose={() => setSelectedFiles([])} />
                 <OtherMessageDisplay
                     messages={messages}
                     otherMessageId={selectedMessageId}
