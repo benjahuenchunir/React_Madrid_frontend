@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from './../../../auth/useAuth';
-import { ChatMode } from './../constants';
 
 const ChangeType = {
     CREATE: 'create',
@@ -47,7 +46,7 @@ export function useApi(token) {
     };
 }
 
-export const useFetchChat = (chat, onChatChanged, chatMode) => {
+export const useFetchChat = (chat, onChatChanged) => {
     const [messages, setMessages] = useState([]);
     const { token, idUser } = useAuth();
     const api = useApi(token);
@@ -67,12 +66,11 @@ export const useFetchChat = (chat, onChatChanged, chatMode) => {
             }
         };
 
-        console.log(chatMode)
-        console.log(ChatMode.NORMAL)
-        if (chatMode === ChatMode.NORMAL) {
-            fetchChat();
-        } else {
+        if (chat.isCreatingDM) {
+            console.log("Creating DM")
             setMessages([])
+        } else {
+            fetchChat();
         }
         
         onChatChanged();
@@ -84,7 +82,7 @@ export const useFetchChat = (chat, onChatChanged, chatMode) => {
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chat, chatMode]);
+    }, [chat]);
 
     const initializeWebSocket = (chatId) => {
         const backendUrlWithoutProtocol = import.meta.env.VITE_BACKEND_URL.replace(/^http:\/\/|^https:\/\//, '');
@@ -127,10 +125,22 @@ export const useFetchChat = (chat, onChatChanged, chatMode) => {
         };
     };
 
-    const addMessage = async (idChat, message, selectedFiles, respondingTo, onSuccess, pinned = false, deletesAt = null, forwarded = false) => {
+    const addMessage = async (chat, message, selectedFiles, respondingTo, onSuccess, onChatCreated, pinned = false, deletesAt = null, forwarded = false) => {
         try {
+            let newChat;
+            if (chat.isCreatingDM) {
+                // If in creation mode first create the chat and switch back to normal mode
+                // TODO it would be better to call a special method that creates both the chat and the message in one transaction
+                newChat = await api.post(`/chats`, {
+                    name: chat.name,
+                    image_url: chat.imageUrl,
+                    mode: 'dm',
+                    users: chat.users
+                });
+            }
+
             const formData = new FormData();
-            formData.append('idChat', idChat);
+            formData.append('idChat', chat.isCreatingDM ? newChat.id : chat.id);
             formData.append('message', message);
             formData.append('pinned', pinned);
             if (deletesAt) formData.append('deletesAt', deletesAt);
@@ -148,6 +158,11 @@ export const useFetchChat = (chat, onChatChanged, chatMode) => {
             newMessage.ref = React.createRef();
             setMessages(prevMessages => [...prevMessages, newMessage]);
             onSuccess();
+        
+            if (chat.isCreatingDM) {
+                onChatCreated(newChat); // Add the chat and reset the chatMode
+            }
+
         } catch (error) {
             console.error('Error adding message:', error);
             // TODO display error that message could not be sent
@@ -166,7 +181,7 @@ export const useFetchChat = (chat, onChatChanged, chatMode) => {
                     }
                     return msg;
                 }));
-                onSuccess();
+                if (onSuccess) onSuccess();
             } else {
                 console.error('Message could not be updated');
                 // TODO: Display error that message could not be updated

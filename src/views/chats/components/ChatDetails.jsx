@@ -10,7 +10,6 @@ import OtherMessageDisplay from './OtherMessageDisplay';
 import FileGallery from './FileGallery';
 import Picker from '@emoji-mart/react';
 import ReportForm from './ReportForm/ReportForm';
-import { ChatMode } from './../constants';
 
 const InputMode = {
     NORMAL: 'normal',
@@ -19,7 +18,7 @@ const InputMode = {
     REPLY: 'reply'
 };
 
-const ChatDetails = ({ chat, onBack, chatMode }) => {
+const ChatDetails = ({ chat, onBack, onChatCreated }) => {
     const [pinnedMessageId, setPinnedMessageId] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedMessageId, setSelectedMessageId] = useState(null)
@@ -31,7 +30,7 @@ const ChatDetails = ({ chat, onBack, chatMode }) => {
         setSelectedMessageId(null)
         setPickerVisible(false)
     }
-    const [messages, addMessage, updateMessage, deleteMessage, reportMessage, idUser] = useFetchChat(chat, onChatChanged, chatMode);
+    const [messages, addMessage, updateMessage, deleteMessage, reportMessage, idUser] = useFetchChat(chat, onChatChanged);
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
     const messageInputRef = useRef(null);
@@ -74,7 +73,7 @@ const ChatDetails = ({ chat, onBack, chatMode }) => {
         const text = messageInputRef.current.value
         if (inputMode === InputMode.RESPONDING_TO || inputMode === InputMode.NORMAL) {
             if (!text && selectedFiles.length === 0) return;
-            addMessage(chat.id, text, selectedFiles, selectedMessageId, handleSuccessfullSend);
+            addMessage(chat, text, selectedFiles, selectedMessageId, handleSuccessfullSend, onChatCreated);
         } else if (inputMode === InputMode.EDIT) {
             updateMessage(selectedMessageId, { message: text }, handleSuccessfullSend);
         }
@@ -252,7 +251,7 @@ ChatDetails.propTypes = {
         isDm: PropTypes.bool,
     }),
     onBack: PropTypes.func,
-    chatMode: PropTypes.oneOf(Object.values(ChatMode)).isRequired,
+    onChatCreated: PropTypes.func.isRequired
 };
 
 export default ChatDetails;

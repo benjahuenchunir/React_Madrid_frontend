@@ -6,15 +6,12 @@ import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { useAuth } from './../../auth/useAuth';
 import NewChatMenu from './components/NewChatMenu'
-import { ChatMode } from './constants';
-
 
 const Chats = () => {
     const [chats, setChats] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedChat, setSelectedChat] = useState(null);
     const [isCreatingChat, setIsCreatingChat] = useState(false);
-    const [chatMode, setChatMode] = useState(ChatMode.NORMAL);
     const fabRef = useRef()
     const { token } = useAuth();
 
@@ -33,6 +30,7 @@ const Chats = () => {
         axios(config)
             .then(response => {
                 setChats(response.data);
+                console.log(chats)
             })
             .catch(error => {
                 console.log('error', error)
@@ -43,6 +41,11 @@ const Chats = () => {
     const filteredChats = chats.filter(chat =>
         `${chat.name}`.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    const onChatCreated = (chat) => {
+        setChats([...chats, chat]);
+        setSelectedChat(chat);
+    }
 
     return (
         <div id="chats-container">
@@ -68,23 +71,22 @@ const Chats = () => {
                 {isCreatingChat &&
                     <NewChatMenu
                         onClose={() => setIsCreatingChat(false)}
-                        buttonRef={fabRef} onDMReceived={(idChat) => {
+                        buttonRef={fabRef} 
+                        onDMReceived={(idChat) => {
                             setSelectedChat(chats.find(
                                 chat => chat.id === idChat
                             ))
-                            setChatMode(ChatMode.NORMAL)
                         }
                         }
                         onNewDM={(chat) => {
                             setSelectedChat(chat)
-                            setChatMode(ChatMode.DM_CREATION)
                         }} />}
             </div>
             <div className={`chat-details ${!selectedChat && 'hide-on-mobile'}`}>
                 <ChatDetails
                     chat={selectedChat}
                     onBack={() => setSelectedChat(null)}
-                    chatMode={chatMode}
+                    onChatCreated={onChatCreated}
                 />
             </div>
         </div>
