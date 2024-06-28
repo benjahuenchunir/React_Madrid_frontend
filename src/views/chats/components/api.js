@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from './../../../auth/useAuth';
-import { jwtDecode } from 'jwt-decode';
 
 const ChangeType = {
     CREATE: 'create',
@@ -45,8 +44,7 @@ function useApi(token) {
 
 export const useFetchChat = (chat) => {
     const [messages, setMessages] = useState([]);
-    const { token } = useAuth();
-    const idUser = Number(jwtDecode(token).sub);
+    const { token, idUser } = useAuth();
     const api = useApi(token);
     const webSocketRef = useRef(null);
 
@@ -175,11 +173,9 @@ export const useFetchChat = (chat) => {
             // TODO: Display error that message could not be deleted
         }
     };
-    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     const reportMessage = async (idMessage, reportType, description, onSuccess, onError) => {
         try {
-            await sleep(2000);
             const response = await api.post(`/reports`, {
                 id_reporter: idUser,
                 id_message: idMessage,

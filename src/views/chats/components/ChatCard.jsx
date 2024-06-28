@@ -8,7 +8,7 @@ const ChatCard = ({ profilePic, contactName, lastMessage, onClick }) => {
             <div className="chat-info">
                 <div className="chat-info-top">
                     <h2 className="contact-name">{contactName}</h2>
-                    <p className="last-message-time">
+                    {lastMessage && <p className="last-message-time">
                         {
                             (() => {
                                 const messageDate = new Date(lastMessage.time);
@@ -20,9 +20,9 @@ const ChatCard = ({ profilePic, contactName, lastMessage, onClick }) => {
                                 }
                             })()
                         }
-                    </p>
+                    </p>}
                 </div>
-                <p className="last-message">{lastMessage.message}</p>
+                {lastMessage && <p className="last-message">{lastMessage.message}</p>}
             </div>
         </div>
     );
@@ -34,7 +34,7 @@ ChatCard.propTypes = {
     lastMessage: PropTypes.shape({
         time: PropTypes.string.isRequired,
         message: PropTypes.string.isRequired,
-    }).isRequired,
+    }),
     onClick: PropTypes.func.isRequired,
 };
 
