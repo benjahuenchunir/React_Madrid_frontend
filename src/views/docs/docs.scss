@@ -1,9 +1,8 @@
 #docs-container {
   background: linear-gradient(in oklab, var(--primary-blue), var(--primary-black));
-  min-height: 100vh;
-  height: auto;
+  height: calc(100vh - var(--navbar-height));
   padding-top: 50px;
-  padding-bottom: 50px;
+  box-sizing: border-box;
 
   .instructions-page {
     max-width: 800px;

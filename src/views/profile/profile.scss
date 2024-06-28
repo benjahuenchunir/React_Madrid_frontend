@@ -1,5 +1,8 @@
 
 #profile-container {
+    height: calc(100vh - var(--navbar-height));
+    background-image: linear-gradient(var(--primary-blue), var(--primary-light-blue));
+
     .content {
         overflow: clip;
     }
@@ -10,7 +13,6 @@
 
     .profile-container {
         width: 100%;
-        background-image: linear-gradient(var(--primary-blue), var(--primary-light-blue));
         z-index: -1;
         display: flex;
         justify-content: flex-start;
