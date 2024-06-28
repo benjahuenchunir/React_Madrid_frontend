@@ -3,67 +3,76 @@ import axios from 'axios';
 import { useAuth } from '../../auth/useAuth';
 import './reports.scss';
 import ReportsCard from './components/reportsCard.jsx';
+import { jwtDecode } from 'jwt-decode';
 
 const Reports = () => {
     const svgRef = useRef(null);
     const { token } = useAuth();
+    const [isAuthorized, setIsAuthorized] = useState(true);
     const [reports, setReports] = useState([]);
     const [messages, setMessages] = useState([]);
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        const configReports = {
-            method: 'get',
-            url: `${import.meta.env.VITE_BACKEND_URL}/reports`,
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        };
+        if (token && token !== 'null') {
+            const decodedToken = jwtDecode(token);
 
-        axios(configReports)
-            .then(response => {
-                setReports(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching reports:', error);
-            });
+            const configReports = {
+                method: 'get',
+                url: `${import.meta.env.VITE_BACKEND_URL}/reports`,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            };
 
-        const configMessages = {
-            method: 'get',
-            url: `${import.meta.env.VITE_BACKEND_URL}/messages`,
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        };
+            axios(configReports)
+              .then(response => {
+                  setReports(response.data);
+                  console.log(response.data);
+              })
+              .catch(error => {
+                  console.error('Error fetching reports:', error);
+              });
 
-        axios(configMessages)
-            .then(response => {
-                setMessages(response.data || []);
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching messages:', error);
-                setMessages([]);
-            });
+            const configMessages = {
+                method: 'get',
+                url: `${import.meta.env.VITE_BACKEND_URL}/messages`,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            };
 
-        const configUsers = {
-            method: 'get',
-            url: `${import.meta.env.VITE_BACKEND_URL}/users`,
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        };
+            axios(configMessages)
+              .then(response => {
+                  setMessages(response.data || []);
+                  console.log(response.data);
+              })
+              .catch(error => {
+                  console.error('Error fetching messages:', error);
+                  setMessages([]);
+              });
 
-        axios(configUsers)
-            .then(response => {
-                setUsers(response.data || []);
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching users:', error);
-                setUsers([]);
-            }
-            );
+            const configUsers = {
+                method: 'get',
+                url: `${import.meta.env.VITE_BACKEND_URL}/users`,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            };
+
+            axios(configUsers)
+              .then(response => {
+                  setUsers(response.data || []);
+                  console.log(response.data);
+              })
+              .catch(error => {
+                    console.error('Error fetching users:', error);
+                    setUsers([]);
+                }
+              );
+        } else {
+            setIsAuthorized(false);
+        }
     }, [token]);
 
     const handleDeleteMessage = (deletedReport) => {
