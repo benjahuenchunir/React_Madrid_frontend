@@ -5,9 +5,9 @@ const ProfileCard = ( {userProfile, logout, handleDeleteAccount}) => {
     return (
         <div id="profile-card-container">
             <div className="profile-card">
-                <h1>{userProfile.name}</h1>
                 <div className="card-content">
                     <div className="profile-details">
+                        <h1>{userProfile.name}</h1>
                         <h3>Email</h3>
                         <p>{userProfile.email}</p>
                         <h3>Teléfono</h3>
