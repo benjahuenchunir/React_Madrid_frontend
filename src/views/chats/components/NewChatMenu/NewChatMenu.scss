@@ -9,14 +9,12 @@
     height: 300px;
     z-index: 100;
 
-    #btn-close {
+    #btn-close, #btn-back {
         top: 5px;
-        right: 0;
-        margin-bottom: 3px;
         cursor: pointer;
+        margin-bottom: 3px;
         background-repeat: no-repeat;
         background-position: center;
-        background-image:  url('/close_icon.svg');
         background-color: transparent;
         border: none;
         position: absolute;
@@ -25,6 +23,16 @@
         &:focus {
             outline: none;
         }
+    }
+
+    #btn-close {
+        right: 0;
+        background-image:  url('/close_icon.svg');
+    }
+
+    #btn-back {
+        left: 0;
+        background-image:  url('/back_icon.svg');
     }
     
     #inner-content {
@@ -46,7 +54,7 @@
         .input-container {
             position: sticky;
             top: 0;
-            padding-top: 10px;
+            padding-top: 14px;
             margin-bottom: 5px;
             background-color: var(--secondary-black);
     
@@ -86,6 +94,10 @@
                 border-radius: 50%;
                 width: 50px;
                 height: 50px;
+            }
+
+            .user-selection-checkbox {
+                margin-left: auto;
             }
         }
     }

@@ -10,6 +10,9 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
     const containerRef = useRef()
     const { token, idUser } = useAuth();
     const api = useApi(token);
+    // For creating chats
+    const [isSelectingUsers, setIsSelectingUsers] = useState(false)
+    const [selectedUsers, setSelectedUsers] = useState([]);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -26,13 +29,16 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (containerRef.current && !containerRef.current.contains(event.target) && buttonRef.current && !buttonRef.current.contains(event.target)) {
-                onClose()
+            if (containerRef.current && !containerRef.current.contains(event.target) &&
+                buttonRef.current && !buttonRef.current.contains(event.target)) {
+                onClose();
             }
-        }
-        window.addEventListener('click', handleClickOutside);
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
         return () => {
-            window.removeEventListener('click', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [buttonRef, onClose]);
 
@@ -40,11 +46,24 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
         setFilter(event.target.value);
     };
 
+    const handleUserSelectChange = (userId) => {
+        console.log("gola")
+        setSelectedUsers(prevSelectedUsers =>
+            prevSelectedUsers.includes(userId)
+                ? prevSelectedUsers.filter(id => id !== userId)
+                : [...prevSelectedUsers, userId]
+        );
+    };
+
     const filteredUsers = users.filter(user =>
-        (user.name + ' ' + user.lastName).toLowerCase().includes(filter.toLowerCase()) || (user.id === idUser  && 'yo'.includes(filter.toLowerCase()))
+        (user.name + ' ' + user.lastName).toLowerCase().includes(filter.toLowerCase()) || (user.id === idUser && 'yo'.includes(filter.toLowerCase()))
     );
 
     const onUserClicked = async (user) => {
+        if (isSelectingUsers) {
+            handleUserSelectChange(user.id);
+            return;
+        }
         try {
             // Search for a DM that already has both users
             const idChat = await api.get(`/chats/dms/${user.id}`);
@@ -85,8 +104,14 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
         }
     }
 
+    const onBack = () => {
+        setIsSelectingUsers(false);
+        setSelectedUsers([]);
+    }
+
     return (
         <div id="new-chat-menu" ref={containerRef}>
+            {isSelectingUsers && <button id="btn-back" onClick={onBack} />}
             <button id="btn-close" onClick={onClose} />
 
             <div id="inner-content">
@@ -99,12 +124,23 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
                         className='input-filter-users'
                     />
                 </div>
-                {filteredUsers.map(user => (
-                    <div key={user.id} onClick={() => onUserClicked(user)} className="user-container">
-                        <img src={user.profilePictureUrl} className='profile-picture' />
-                        <p>{user.id === idUser ? 'Yo' : `${user.name} ${user.lastName}`}</p>
-                    </div>
-                ))}
+                {!isSelectingUsers && <div onClick={() => setIsSelectingUsers(true)} className="user-container">
+                    <p>+ Crear grupo</p>
+                </div>}
+                {filteredUsers.map(user => 
+                    !(isSelectingUsers && user.id === idUser) && (
+                        <div key={user.id} onClick={() => onUserClicked(user)} className="user-container">
+                            <img src={user.profilePictureUrl} className='profile-picture' />
+                            <p>{user.id === idUser ? 'Yo' : `${user.name} ${user.lastName}`}</p>
+                            {isSelectingUsers && <input
+                                type="checkbox"
+                                checked={selectedUsers.includes(user.id)}
+                                className='user-selection-checkbox'
+                                readOnly={true}
+                            />}
+                        </div>)
+                
+                )}
             </div>
         </div>
     );
