@@ -150,7 +150,7 @@ const Chat = ({ chat, onBack, onChatCreated }) => {
         <div id='chat-container'>
             <ReportForm messages={messages} idUser={idUser} ref={reportDialogRef} reportMessage={reportMessage} />
             <div className="chat-info-container" onClick={()=>{if (!areDetailsShown) setAreDetailsShown(true)}}>
-                {areDetailsShown && <ChatDetails idChat={chat.id} onClose={()=>setAreDetailsShown(false)}/>}
+                {areDetailsShown && <ChatDetails idChat={chat.id} onClose={()=>setAreDetailsShown(false)} messages={messages}/>}
                 <button onClick={onBack} className='back-button mobile-only'>&larr;</button>
                 <img src={chat.imageUrl} alt="Profile" className="profile-pic" />
                 <h2 className="chat-name">{chat.name}</h2>

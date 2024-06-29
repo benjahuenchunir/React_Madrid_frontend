@@ -10,21 +10,30 @@ const Sections = {
   LINKS: 'Enlaces'
 }
 
-function ChatDetails({ idChat, onClose }) {
+function ChatDetails({ idChat, onClose, messages }) {
   const [chat, setChat] = useState(null)
   const [selectedSection, setSelectedSection] = useState(Sections.GENERAL)
   const api = useApi()
 
   useEffect(() => {
     const fetchData = async () => {
-        const { status, data } = await api.get(`/chats/details/${idChat}`);
-        if (status === 'success') {
-          setChat(data)
-        }
+      const { status, data } = await api.get(`/chats/details/${idChat}`);
+      if (status === 'success') {
+        setChat(data)
+      }
     };
 
     fetchData();
   }, [idChat]);
+
+  const scrollToMessage = (idMessage) => {
+    const message = messages.find(msg => msg.id === idMessage);
+    if (message) {
+        message.ref.current.scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+};
 
   const renderSectionContent = () => {
     if (!chat) {
@@ -55,7 +64,15 @@ function ChatDetails({ idChat, onClose }) {
       case Sections.FILES:
         return <div>Archivos del chat</div>;
       case Sections.LINKS:
-        return <div>Enlaces del chat</div>;
+        return <div className='urls-container'>
+          {chat.urls.map((url, index) => (
+            <div key={index} className="url-container">
+              <a href={url.url} target="_blank" rel="noreferrer">{url.url}</a>
+              <p onClick={()=> scrollToMessage(url.idMessage)}>Ir al mensaje</p>
+            </div>
+          ))
+          }
+        </div>;
       default:
         return <div>Section not found</div>;
     }
@@ -66,22 +83,23 @@ function ChatDetails({ idChat, onClose }) {
       <button onClick={() => onClose()} id='btn-close' />
       <div className="sections-container">
         {Object.entries(Sections).map(([key, value]) => (
-              <div className={`section ${selectedSection === value ? 'selected' : ''}`} key={key} onClick={()=> setSelectedSection(value)}>
-                  {value}
-              </div>
-          ))}
+          <div className={`section ${selectedSection === value ? 'selected' : ''}`} key={key} onClick={() => setSelectedSection(value)}>
+            {value}
+          </div>
+        ))}
       </div>
       <div className="tab-container">
-          {renderSectionContent()}
+        {renderSectionContent()}
       </div>
-      
+
     </div>
   );
 }
 
 ChatDetails.propTypes = {
-    idChat: PropTypes.number.isRequired,
-    onClose: PropTypes.func.isRequired,
+  idChat: PropTypes.number.isRequired,
+  onClose: PropTypes.func.isRequired,
+  messages: PropTypes.array.isRequired
 }
 
 export default ChatDetails;
