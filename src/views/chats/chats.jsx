@@ -54,6 +54,7 @@ const Chats = () => {
                             onClick={() => setSelectedChat(chat)}
                         />
                     ))}
+                    {filteredChats.length === 0 && <div className="no-chats">No se encontraron chats</div>}
                 </div>
                 <button className="fab" onClick={() => setIsCreatingChat(true)} ref={fabRef}>+</button>
                 {isCreatingChat &&
