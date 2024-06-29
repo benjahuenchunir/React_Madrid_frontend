@@ -1,0 +1,43 @@
+
+#signup-container {
+    .content {
+        overflow: clip;
+    }
+
+    h2 {
+        margin-top: 1.6em;
+    }
+
+    .signup-container {
+        width: 100%;
+        background-image: linear-gradient(var(--primary-blue), var(--primary-light-blue));
+        z-index: -1;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .signup-container h1, .signup-container h2,
+    .signup-container h3, .signup-container h4,
+    .signup-container h5, .signup-container h6,
+    .signup-container p, .signup-container a {
+        color: var(--secondary-white);
+    }
+
+    .signup-fixed-bottom {
+        position: fixed;
+        bottom: 0;
+        height: 90vh;
+        z-index: 0;
+    }
+
+    @media (max-width: 768px) {
+        .signup-container {
+            align-items: initial;
+        }
+
+        .signup-fixed-bottom {
+            display: none;
+        }
+    }
+}
