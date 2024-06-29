@@ -80,7 +80,12 @@ const Chats = () => {
                         }
                         onNewDM={(chat) => {
                             setSelectedChat(chat)
-                        }} />}
+                        }} 
+                        onNewGroup={(chat) => {
+                            setChats([...chats, chat])
+                            setSelectedChat(chat)
+                        }}
+                        />}
             </div>
             <div className={`chat-details ${!selectedChat && 'hide-on-mobile'}`}>
                 <ChatDetails

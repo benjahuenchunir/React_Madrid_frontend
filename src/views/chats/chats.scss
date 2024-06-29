@@ -48,11 +48,7 @@
         width: 100%;
         background-color: var(--primary-black);
         padding: 10px;
-    }
-
-    // No se porque pero esto es necesario
-    .chats-container.hide-on-mobile {
-        display: flex;
+            box-sizing: border-box;
     }
 
     .chat-details {
@@ -65,7 +61,7 @@
 
     @media (min-width: 768px) {
         .hide-on-mobile {
-            display: block;
+            display: flex;
         }
 
         .chats-container {
