@@ -16,7 +16,7 @@ const Landing = () => {
       </div>
       <FeatureGroup/>
       <div className="ship-container">
-        <img src="/ground_ship.svg" alt="Ship on ground" className="fixed-bottom"/>
+        <img src="/ship_with_stars.svg" alt="Ship on ground" className="fixed-bottom"/>
       </div>
     </div>
   )
