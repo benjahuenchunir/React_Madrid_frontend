@@ -8,6 +8,9 @@
     max-width: 230px;
     width: 100%;
 
+    @media (max-width: 768px) {
+        right: 20px;
+    }
 
     height: 300px;
     z-index: 100;

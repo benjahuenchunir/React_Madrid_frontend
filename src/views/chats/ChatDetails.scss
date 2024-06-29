@@ -396,9 +396,15 @@
         font-size: 0.8rem;
     }
 
+    .received {
+        .message-options-menu {
+            left: 90%;
+        }
+    }
+
     .message-options-menu {
         position: absolute;
-        right: 0;
+        right: 10px;
         top: 30px;
         background: var(--secondary-white);
         border-radius: 5px;
