@@ -2,6 +2,11 @@ import './profileCard.scss';
 
 const ProfileCard = ( {userProfile, logout, handleDeleteAccount}) => {
 
+    const handleEditUser = () => {
+        window.location.href = '/edit-profile';
+    }
+
+
     return (
         <div id="profile-card-container">
             <div className="profile-card">
@@ -21,6 +26,7 @@ const ProfileCard = ( {userProfile, logout, handleDeleteAccount}) => {
                 </div>
                 <div className="button-group">
                     <button onClick={logout}>Cerrar Sesión</button>
+                    <button onClick={handleEditUser}>Editar Perfil</button>
                     <button onClick={handleDeleteAccount}>Eliminar Cuenta</button>
                 </div>
             </div>

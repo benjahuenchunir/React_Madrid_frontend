@@ -8,6 +8,7 @@ import DocsPage from './views/docs/docs';
 import Login from './views/login/login.jsx';
 import Signup from "./views/signup/signup.jsx";
 import Profile from './views/profile/profile.jsx';
+import EditUser from "./views/edituser/editUser.jsx";
 import Reports from './views/reports/reports.jsx';
 import { ProtectedRoute } from './auth/ProtectedRoute.jsx';
 import { PublicOnlyRoute } from './auth/PublicOnlyRoute.jsx';
@@ -45,6 +46,7 @@ function App() {
         <Route path='/login' element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
         <Route path='/register' element={<PublicOnlyRoute><Signup /></PublicOnlyRoute>} />
         <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path='/edituser' element={<ProtectedRoute><EditUser /></ProtectedRoute>} />
         <Route path='*' element={<Navigate to="/" replace />} /> {/* Any route that isnt defined navigates to home */}
       </Routes>
     </>
