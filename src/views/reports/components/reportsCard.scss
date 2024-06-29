@@ -1,0 +1,67 @@
+#reports-card-container {
+    display: flex;
+    width: 100%;
+
+    .reports-card {
+        padding: 20px;
+        border-radius: 1.5em;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+        background-color: var(--primary-black);
+        z-index: 1000;
+        margin: 20vh auto;
+    }
+    
+    .reports-card label {
+        color: var(--secondary-white);
+        margin-bottom: 5px;
+        font-size: 1em;
+    }
+    
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .reports-card button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 1em;
+        background-color: var(--secondary-black);
+        color: var(--secondary-white);
+        border-radius: 2em;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+        width: 100%;
+    }
+    
+    #submit-button:hover {
+        background-color: var(--secondary-orange);
+        border-color: var(--secondary-orange);
+        color: var(--secondary-white);
+    }
+
+    #submit-button {
+        border: 0.1em solid var(--secondary-white);
+        margin-top: 40px;
+        margin-bottom: 30px;
+    }
+    
+    @media (min-width: 769px) {
+        .reports-card {
+            width: 60vw;
+            max-width: 60vw;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .reports-card {
+            margin: 0;
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+        }
+    }
+}

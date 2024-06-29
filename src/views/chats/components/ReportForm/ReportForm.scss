@@ -1,0 +1,51 @@
+#report-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: none;
+    border-radius: 5px;
+    padding-top: 15px;
+    width: 100%;
+    max-width: 300px;
+    z-index: 999999999999999999999;
+
+    #btn-close {
+        top: 2px;
+        right: 0;
+        position: absolute;
+        cursor: pointer;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image:  url('/close_icon.svg');
+        background-color: transparent;
+        border: none;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .reported-message-display {
+        margin-top: 10px;
+        width: 93%;
+        
+        .message-image-display {
+            max-width: 50px;
+        }
+    }
+
+    .report-text {
+        resize: none;
+        height: 120px;
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999999999999999999998;
+}

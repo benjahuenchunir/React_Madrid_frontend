@@ -4,7 +4,6 @@ import React from 'react';
 function CustomNavLink({ to, children, onClick = () => {} }) {
 
   return (
-    <li>
       <NavLink 
         className={({ isActive }) => isActive ? "active" : ""} 
         to={to}
@@ -12,7 +11,6 @@ function CustomNavLink({ to, children, onClick = () => {} }) {
       >
         {children}
       </NavLink>
-    </li>
   );
 }
 

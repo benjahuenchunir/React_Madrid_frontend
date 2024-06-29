@@ -36,7 +36,7 @@
     padding: 20px;
     background-color: #fff;
     animation: slideDown 0.3s ease-out;
-    font-family: "Codec Pro";
+    font-family: "Open Sans", sans-serif;
     color: var(--primary-black);
 }
 

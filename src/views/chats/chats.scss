@@ -48,6 +48,7 @@
         width: 100%;
         background-color: var(--primary-black);
         padding: 10px;
+            box-sizing: border-box;
     }
 
     .chat-details {
@@ -55,13 +56,12 @@
     }
 
     .hide-on-mobile {
-        overflow: hidden;
         display: none;
     }
 
     @media (min-width: 768px) {
         .hide-on-mobile {
-            display: block;
+            display: flex;
         }
 
         .chats-container {
