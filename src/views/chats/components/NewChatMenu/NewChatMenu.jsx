@@ -248,6 +248,7 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM, onNewGroup }) 
                                     </div>)
 
                             )}
+                            {filteredUsers.length === 0 && <div className="no-users">No se encontraron usuarios</div>}
                         </div>
                         {state === NewChatState.SELECTING_USERS && <button className="next-button" onClick={onNextClicked}> Siguiente</button>}
                     </>
