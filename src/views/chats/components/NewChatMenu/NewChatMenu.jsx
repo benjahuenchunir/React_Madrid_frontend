@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useApi } from '../../api';
+import { useApi } from '../../../../utils/api'
 import { useAuth } from '../../../../auth/useAuth';
 import "../NewChatMenu/NewChatMenu.scss";
 import PropTypes from 'prop-types';
@@ -17,8 +17,8 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM, onNewGroup }) 
     const [users, setUsers] = useState([]);
     const [filter, setFilter] = useState('');
     const containerRef = useRef()
-    const { token, idUser } = useAuth();
-    const api = useApi(token);
+    const { idUser } = useAuth();
+    const api = useApi();
     // For creating group
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [groupName, setGroupName] = useState('');
@@ -38,7 +38,7 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM, onNewGroup }) 
         };
 
         fetchUsers();
-    }, [token]);
+    });
 
     useEffect(() => {
         const handleClickOutside = (event) => {

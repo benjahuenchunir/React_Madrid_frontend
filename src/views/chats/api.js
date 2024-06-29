@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../auth/useAuth';
+import { useApi } from '../../utils/api'
 
 const ChangeType = {
     CREATE: 'create',
@@ -7,49 +8,10 @@ const ChangeType = {
     DELETE: 'delete'
 };
 
-export function useApi(token) {
-    const baseUrl = import.meta.env.VITE_BACKEND_URL;
-
-    async function fetchApi(endpoint, { method = 'GET', body = null, headers = {} } = {}) {
-        const url = `${baseUrl}${endpoint}`;
-        const options = {
-            method,
-            headers: {
-                ...headers,
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: null,
-        };
-        if (body) {
-            if (body instanceof FormData) {
-                options.body = body;
-                delete options.headers['Content-Type'];
-            } else {
-                options.body = ['POST', 'PATCH'].includes(method) ? JSON.stringify(body) : body;
-            }
-        }
-        const response = await fetch(url, options);
-        if (!response.ok) {
-            const error = new Error(`HTTP error, status: ${response.status}`);
-            error.status = response.status;
-            throw error;
-        }
-        return response.json();
-    }
-
-    return {
-        get: (endpoint) => fetchApi(endpoint),
-        post: (endpoint, body) => fetchApi(endpoint, { method: 'POST', body }),
-        patch: (endpoint, body) => fetchApi(endpoint, { method: 'PATCH', body }),
-        delete: (endpoint) => fetchApi(endpoint, { method: 'DELETE' }),
-    };
-}
-
 export const useFetchChat = (chat, onChatChanged) => {
     const [messages, setMessages] = useState([]);
     const { token, idUser } = useAuth();
-    const api = useApi(token);
+    const api = useApi();
     const webSocketRef = useRef(null);
 
     useEffect(() => {

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import './ChatDetails.scss'
 import { useState, useEffect } from 'react';
-import { useApi } from '../../api';
+import { useApi } from '../../../../utils/api'
 
 const Sections = {
   GENERAL: 'General',
@@ -38,7 +38,7 @@ function ChatDetails({ idChat, onClose }) {
         return (<div>
           <div className="row">
             <img src={chat.imageUrl} alt="Profile" className="profile-pic" />
-            <h3>{chat.name}</h3>
+            <h3 className="chat-name">{chat.name}</h3>
           </div>
           <h5>Creado el {new Date(chat.createdAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</h5>
           <button id="btn-exit-chat">Salir</button>

@@ -4,6 +4,8 @@ import { AuthContext } from './authProvider';
 
 export const useAuth = () => {
     const { token } = useContext(AuthContext);
-    const idUser = token ? Number(jwtDecode(token).sub) : null;
-    return { ...useContext(AuthContext), idUser };
+    const decodedToken = token ? jwtDecode(token) : null;
+    const idUser = decodedToken ? Number(decodedToken.sub) : null;
+    const scope = decodedToken ? decodedToken.scope : null;
+    return { ...useContext(AuthContext), idUser, scope };
 }

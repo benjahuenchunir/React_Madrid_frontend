@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect, createContext } from 'react';
+import axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -8,11 +9,13 @@ function AuthProvider({ children }) {
 
     useEffect(() => {
         if (token) {
-            localStorage.setItem('token', token);
+          axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+          localStorage.setItem('token',token);
         } else {
-            localStorage.removeItem('token');
+          delete axios.defaults.headers.common["Authorization"];
+          localStorage.removeItem('token')
         }
-    }, [token]);
+      }, [token]);
 
     function logout() {
         setToken(null);

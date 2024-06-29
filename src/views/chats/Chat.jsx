@@ -153,7 +153,7 @@ const Chat = ({ chat, onBack, onChatCreated }) => {
                 {areDetailsShown && <ChatDetails idChat={chat.id} onClose={()=>setAreDetailsShown(false)}/>}
                 <button onClick={onBack} className='back-button mobile-only'>&larr;</button>
                 <img src={chat.imageUrl} alt="Profile" className="profile-pic" />
-                <h2>{chat.name}</h2>
+                <h2 className="chat-name">{chat.name}</h2>
             </div>
             <div className="chat-container" ref={chatContainerRef}>
                 {pinnedMessageId && (
