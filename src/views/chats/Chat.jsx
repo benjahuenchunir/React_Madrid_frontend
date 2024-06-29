@@ -1,4 +1,4 @@
-import './ChatDetails.scss';
+import './Chat.scss';
 import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { isSameDay } from './utils';
@@ -10,6 +10,7 @@ import OtherMessageDisplay from './components/OtherMessageDisplay/OtherMessageDi
 import FileGallery from './components/FileGallery/FileGallery';
 import Picker from '@emoji-mart/react';
 import ReportForm from './components/ReportForm/ReportForm';
+import ChatDetails from './components/ChatDetails/ChatDetails';
 
 const InputMode = {
     NORMAL: 'normal',
@@ -18,7 +19,7 @@ const InputMode = {
     REPLY: 'reply'
 };
 
-const ChatDetails = ({ chat, onBack, onChatCreated }) => {
+const Chat = ({ chat, onBack, onChatCreated }) => {
     const [pinnedMessageId, setPinnedMessageId] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedMessageId, setSelectedMessageId] = useState(null)
@@ -38,6 +39,8 @@ const ChatDetails = ({ chat, onBack, onChatCreated }) => {
     const pinnedMessageIndex = pinnedMessages.findIndex(msg => msg.id === pinnedMessageId) + 1;
     const pickerRef = useRef(null);
     const reportDialogRef = useRef();
+    // ChatDetails
+    const [areDetailsShown, setAreDetailsShown] = useState(false);
 
     useEffect(() => {
         const chatContainer = chatContainerRef.current;
@@ -131,7 +134,7 @@ const ChatDetails = ({ chat, onBack, onChatCreated }) => {
     }
 
     if (chat === null) {
-        return <div id='chat-details-container'>
+        return <div id='chat-container'>
             <div className='no-chat-selected'>
                 <div>
                     <h1>Detalles del chat</h1>
@@ -144,9 +147,10 @@ const ChatDetails = ({ chat, onBack, onChatCreated }) => {
 
 
     return (
-        <div id='chat-details-container'>
+        <div id='chat-container'>
             <ReportForm messages={messages} idUser={idUser} ref={reportDialogRef} reportMessage={reportMessage} />
-            <div className="chat-info-container">
+            <div className="chat-info-container" onClick={()=>{if (!areDetailsShown) setAreDetailsShown(true)}}>
+                {areDetailsShown && <ChatDetails idChat={chat.id} onClose={()=>setAreDetailsShown(false)}/>}
                 <button onClick={onBack} className='back-button mobile-only'>&larr;</button>
                 <img src={chat.imageUrl} alt="Profile" className="profile-pic" />
                 <h2>{chat.name}</h2>
@@ -242,7 +246,7 @@ const ChatDetails = ({ chat, onBack, onChatCreated }) => {
     );
 };
 
-ChatDetails.propTypes = {
+Chat.propTypes = {
     chat: PropTypes.shape({
         id: PropTypes.number,
         imageUrl: PropTypes.string,
@@ -254,4 +258,4 @@ ChatDetails.propTypes = {
     onChatCreated: PropTypes.func.isRequired
 };
 
-export default ChatDetails;
+export default Chat;
