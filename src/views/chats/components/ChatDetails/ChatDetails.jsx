@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import './ChatDetails.scss'
 import { useState, useEffect } from 'react';
 import { useApi } from '../../../../utils/api'
+import FileDisplay from '../FileDisplay/FileDisplay'
 
 const Sections = {
   GENERAL: 'General',
@@ -62,7 +63,13 @@ function ChatDetails({ idChat, onClose, messages }) {
           ))}
         </div>);
       case Sections.FILES:
-        return <div>Archivos del chat</div>;
+        return <div className="files-container">
+            {chat.files.map((file, index) => (
+                <FileDisplay containerClass="square-file-container" file={file} key={index} onClick={()=>scrollToMessage(file.idMessage)} />
+            ))
+            }
+            {chat.files.length === 0 && <div>No se han compartido archivos</div>}
+        </div>;
       case Sections.LINKS:
         return <div className='urls-container'>
           {chat.urls.map((url, index) => (
@@ -72,6 +79,7 @@ function ChatDetails({ idChat, onClose, messages }) {
             </div>
           ))
           }
+          {chat.urls.length === 0 && <div>No se han compartido enlaces</div>}
         </div>;
       default:
         return <div>Section not found</div>;

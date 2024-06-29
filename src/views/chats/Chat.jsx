@@ -133,6 +133,23 @@ const Chat = ({ chat, onBack, onChatCreated }) => {
         setInputMode(InputMode.NORMAL);
     }
 
+    const handleFileDownload = async (file) => {
+        try {
+          const response = await fetch(file.fileUrl);
+          const data = await response.blob();
+          const blobUrl = window.URL.createObjectURL(data);
+          const anchor = document.createElement('a');
+          anchor.href = blobUrl;
+          anchor.download = file.fileName;
+          document.body.appendChild(anchor);
+          anchor.click();
+          document.body.removeChild(anchor);
+          window.URL.revokeObjectURL(blobUrl);
+        } catch (error) {
+          console.error('Download failed', error);
+        }
+      };
+
     if (chat === null) {
         return <div id='chat-container'>
             <div className='no-chat-selected'>
@@ -144,7 +161,6 @@ const Chat = ({ chat, onBack, onChatCreated }) => {
             </div>
         </div>;
     }
-
 
     return (
         <div id='chat-container'>
@@ -193,7 +209,7 @@ const Chat = ({ chat, onBack, onChatCreated }) => {
                                 />
                                 {msg.files.map((sentFile, index) => {
                                     return (
-                                        <FileDisplay key={index} containerClass="message-file-display" file={sentFile} />
+                                        <FileDisplay key={index} containerClass="message-file-display" file={sentFile} onClick={() => handleFileDownload(sentFile)}/>
                                     );
                                 })}
                                 {msg.message && <p className='message-text'>{msg.message}</p>}
