@@ -1,6 +1,12 @@
 import './profileCard.scss';
+import {Navigate} from "react-router-dom";
 
 const ProfileCard = ( {userProfile, logout, handleDeleteAccount}) => {
+
+    const handleEditUser = () => {
+        window.location.href = '/edituser';
+    }
+
 
     return (
         <div id="profile-card-container">
@@ -21,6 +27,7 @@ const ProfileCard = ( {userProfile, logout, handleDeleteAccount}) => {
                 </div>
                 <div className="button-group">
                     <button onClick={logout}>Cerrar Sesión</button>
+                    <button onClick={handleEditUser}>Editar Perfil</button>
                     <button onClick={handleDeleteAccount}>Eliminar Cuenta</button>
                 </div>
             </div>
