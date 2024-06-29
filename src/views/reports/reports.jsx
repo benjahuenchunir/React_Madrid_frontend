@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useAuth } from '../../auth/useAuth';
 import './reports.scss';
 import ReportsCard from './components/reportsCard.jsx';
-import { jwtDecode } from 'jwt-decode';
 
 const Reports = () => {
     const svgRef = useRef(null);
@@ -15,7 +14,6 @@ const Reports = () => {
 
     useEffect(() => {
         if (token && token !== 'null') {
-            const decodedToken = jwtDecode(token);
 
             const configReports = {
                 method: 'get',

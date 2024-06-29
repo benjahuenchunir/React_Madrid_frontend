@@ -18,14 +18,15 @@ export const useFetchChat = (chat, onChatChanged) => {
         if (!chat) return;
 
         const fetchChat = async () => {
-            try {
-                const data = await api.get(`/chats/${chat.id}`);
-                const messagesWithRefs = data.map(msg => ({ ...msg, ref: React.createRef() }));
-                setMessages(messagesWithRefs);
-                initializeWebSocket(chat.id);
-            } catch (error) {
-                console.error('Error:', error);
+            const { status, data } = await api.get(`/chats/${chat.id}`);
+            if (status !== 'success') {
+                console.error('Error fetching chat:', data);
+                return; // TODO display error that chat could not be fetched
             }
+            const messagesWithRefs = data.map(msg => ({ ...msg, ref: React.createRef() }));
+            setMessages(messagesWithRefs);
+            initializeWebSocket(chat.id);
+
         };
 
         if (chat.isCreatingDM) {
@@ -88,93 +89,90 @@ export const useFetchChat = (chat, onChatChanged) => {
     };
 
     const addMessage = async (chat, message, selectedFiles, respondingTo, onSuccess, onChatCreated, pinned = false, deletesAt = null, forwarded = false) => {
-        try {
-            let newChat;
-            if (chat.isCreatingDM) {
-                // If in creation mode first create the chat and switch back to normal mode
-                // TODO it would be better to call a special method that creates both the chat and the message in one transaction
-                newChat = await api.post(`/chats`, {
-                    name: chat.name,
-                    mode: 'dm',
-                    users: chat.users
-                });
+        let newChat;
+        if (chat.isCreatingDM) {
+            // If in creation mode first create the chat and switch back to normal mode
+            // TODO it would be better to call a special method that creates both the chat and the message in one transaction
+            const { status, data } = await api.post(`/chats`, {
+                name: chat.name,
+                mode: 'dm',
+                users: chat.users
+            });
+
+            if (status !== 'success') {
+                console.error('Error creating chat:', data);
+                return; // TODO display error that chat could not be created
+            } else {
+                newChat = data;
             }
+        }
 
-            const formData = new FormData();
-            formData.append('idChat', chat.isCreatingDM ? newChat.id : chat.id);
-            formData.append('message', message);
-            formData.append('pinned', pinned);
-            if (deletesAt) formData.append('deletesAt', deletesAt);
-            formData.append('forwarded', forwarded);
-            if (respondingTo) formData.append('respondingTo', respondingTo);
-            selectedFiles.forEach(file => formData.append('files', file));
+        const formData = new FormData();
+        formData.append('idChat', chat.isCreatingDM ? newChat.id : chat.id);
+        formData.append('message', message);
+        formData.append('pinned', pinned);
+        if (deletesAt) formData.append('deletesAt', deletesAt);
+        formData.append('forwarded', forwarded);
+        if (respondingTo) formData.append('respondingTo', respondingTo);
+        selectedFiles.forEach(file => formData.append('files', file));
 
-            const newMessage = await api.post('/messages', formData);
+        const { status, data } = await api.post('/messages', formData);
 
-            if (!newMessage) {
-                console.error('Message could not be sent');
-                return; // TODO display error that message could not be sent
-            }
+        if (status !== 'success') {
+            console.error('Error adding message:', data);
+            return; // TODO display error that message could not be sent
+        }
 
-            newMessage.ref = React.createRef();
-            setMessages(prevMessages => [...prevMessages, newMessage]);
-            onSuccess();
+        data.ref = React.createRef();
+        setMessages(prevMessages => [...prevMessages, data]);
+        onSuccess();
 
-            if (chat.isCreatingDM) {
-                onChatCreated(newChat); // Add the chat and reset the chatMode
-            }
-
-        } catch (error) {
-            console.error('Error adding message:', error);
-            // TODO display error that message could not be sent
+        if (chat.isCreatingDM) {
+            onChatCreated(newChat); // Add the chat and reset the chatMode
         }
     };
 
     const updateMessage = async (idMessage, attributes, onSuccess) => {
-        try {
-            const updatedMessage = await api.patch(`/messages/${idMessage}`, attributes);
-            if (updatedMessage) {
-                setMessages(prevMessages => prevMessages.map(msg => {
-                    if (msg.id === idMessage) {
-                        const updatedMsg = { ...msg, ...updatedMessage };
-                        updatedMsg.ref = msg.ref; // Preserve the ref
-                        return updatedMsg;
-                    }
-                    return msg;
-                }));
-                if (onSuccess) onSuccess();
-            } else {
-                console.error('Message could not be updated');
-                // TODO: Display error that message could not be updated
-            }
-        } catch (error) {
-            console.error('Error updating message:', error);
+        const { status, data } = await api.patch(`/messages/${idMessage}`, attributes);
+
+        if (status !== 'success') {
+            console.error('Message could not be updated');
             // TODO: Display error that message could not be updated
+        } else {
+            setMessages(prevMessages => prevMessages.map(msg => {
+                if (msg.id === idMessage) {
+                    const updatedMsg = { ...msg, ...data };
+                    updatedMsg.ref = msg.ref; // Preserve the ref
+                    return updatedMsg;
+                }
+                return msg;
+            }));
+            if (onSuccess) onSuccess();
         }
     };
 
     const deleteMessage = async (idMessage) => {
-        try {
-            await api.delete(`/messages/${idMessage}`);
-            setMessages(prevMessages => prevMessages.filter(msg => msg.id !== idMessage));
-        } catch (error) {
-            console.error('Error deleting message:', error);
+        const { status, data } = await api.delete(`/messages/${idMessage}`);
+        if (status !== 'success') {
+            console.error('Error deleting message:', data);
             // TODO: Display error that message could not be deleted
+        } else {
+            setMessages(prevMessages => prevMessages.filter(msg => msg.id !== idMessage));
         }
     };
 
     const reportMessage = async (idMessage, reportType, description, onSuccess, onError) => {
-        try {
-            const response = await api.post(`/reports`, {
-                id_reporter: idUser,
-                id_message: idMessage,
-                message: description,
-                type: reportType
-            });
-            onSuccess(response);
-        } catch (error) {
-            console.error('Error deleting message:', error);
-            onError(error)
+        const { status, data } = await api.post(`/reports`, {
+            id_reporter: idUser,
+            id_message: idMessage,
+            message: description,
+            type: reportType
+        });
+        if (status !== 'success') {
+            console.error('Error deleting message:', data);
+            onError(data)
+        } else {
+            onSuccess(data);
         }
     };
 

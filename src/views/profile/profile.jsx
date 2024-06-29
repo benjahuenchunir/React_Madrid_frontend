@@ -1,31 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 import { useAuth } from '../../auth/useAuth.js';
 import './profile.scss';
 import ProfileCard from './components/profileCard.jsx';
+import { useApi } from '../../utils/api'
 
 const Profile = () => {
     const svgRef = useRef(null);
-    const { token, logout, idUser } = useAuth();
+    const { logout, idUser } = useAuth();
     const [userProfile, setUserProfile] = useState(null);
+    const api = useApi();
 
     useEffect(() => {
-        const config = {
-            method: 'get',
-            url: `${import.meta.env.VITE_BACKEND_URL}/users/${idUser}`,
-            headers: {
-                'Authorization': `Bearer ${token}`
+        const fetchData = async () => {
+            const {status, data} = await api.get(`/users/${idUser}`)
+            if (status === 'success') {
+                setUserProfile(data);
+            } else {
+                // TODO display notice
             }
-        };
+        }
 
-        axios(config)
-            .then(response => {
-                setUserProfile(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching user profile:', error);
-            });
-    }, [token, idUser]);
+        fetchData();
+    }, []);
 
     useEffect(() => {
         const adjustSvgPosition = () => {
@@ -58,24 +54,15 @@ const Profile = () => {
         };
     }, []);
 
-    const handleDeleteAccount = () => {
+    const handleDeleteAccount = async () => {
         if (userProfile) {
-            const config = {
-                method: 'delete',
-                url: `${import.meta.env.VITE_BACKEND_URL}/users/${userProfile.id}`,
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            };
-
-            axios(config)
-                .then(response => {
-                    console.log('Account deleted:', response.data);
-                    logout();
-                })
-                .catch(error => {
-                    console.error('Error deleting account:', error);
-                });
+            const {status, data} = await api.delete(`/users/${userProfile.id}`)
+            if (status === 'success') {
+                console.log('Account deleted:', data);
+                logout();
+            } else {
+                // TODO display notice
+            }
         }
     };
 

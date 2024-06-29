@@ -1,13 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import './editUser.scss';
 import EditForm from "./components/editForm.jsx";
 
 const EditUser = () => {
     const svgRef = useRef(null);
-    const [windowSize, setWindowSize] = useState({
-        width: window.innerWidth,
-        height: window.innerHeight,
-    });
 
     useEffect(() => {
         const adjustSvgPosition = () => {

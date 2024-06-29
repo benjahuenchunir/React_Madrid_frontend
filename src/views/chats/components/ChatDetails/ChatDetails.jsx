@@ -17,13 +17,10 @@ function ChatDetails({ idChat, onClose }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const chat = await api.get(`/chats/details/${idChat}`);
-        console.log(chat);
-        setChat(chat)
-      } catch (error) {
-        console.error(error);
-      }
+        const { status, data } = await api.get(`/chats/details/${idChat}`);
+        if (status === 'success') {
+          setChat(data)
+        }
     };
 
     fetchData();
