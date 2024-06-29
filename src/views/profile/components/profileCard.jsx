@@ -1,9 +1,10 @@
 import './profileCard.scss';
+import {Navigate} from "react-router-dom";
 
 const ProfileCard = ( {userProfile, logout, handleDeleteAccount}) => {
 
     const handleEditUser = () => {
-        window.location.href = '/edit-profile';
+        window.location.href = '/edituser';
     }
 
 
