@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import './ChatDetails.scss'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useApi } from '../../../../utils/api'
 import FileDisplay from '../FileDisplay/FileDisplay'
 
@@ -15,6 +15,21 @@ function ChatDetails({ idChat, onClose, messages }) {
   const [chat, setChat] = useState(null)
   const [selectedSection, setSelectedSection] = useState(Sections.GENERAL)
   const api = useApi()
+  const containerRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+        if (containerRef.current && !containerRef.current.contains(event.target)) {
+            onClose();
+        }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+    };
+}, [onClose]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,7 +102,7 @@ function ChatDetails({ idChat, onClose, messages }) {
   };
 
   return (
-    <div id="chat-details-container">
+    <div id="chat-details-container" ref={containerRef}>
       <button onClick={() => onClose()} id='btn-close' />
       <div className="sections-container">
         {Object.entries(Sections).map(([key, value]) => (
