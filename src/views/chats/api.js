@@ -133,7 +133,6 @@ export const useFetchChat = (chat, onChatChanged) => {
                 // TODO it would be better to call a special method that creates both the chat and the message in one transaction
                 newChat = await api.post(`/chats`, {
                     name: chat.name,
-                    image_url: chat.imageUrl,
                     mode: 'dm',
                     users: chat.users
                 });

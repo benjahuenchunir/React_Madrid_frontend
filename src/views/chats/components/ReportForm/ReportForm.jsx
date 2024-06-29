@@ -2,6 +2,7 @@ import { useState, useImperativeHandle, forwardRef } from 'react';
 import './ReportForm.scss';
 import OtherMessageDisplay from '../OtherMessageDisplay/OtherMessageDisplay'
 import PropTypes from 'prop-types';
+import LoadingButton from '../../../../components/LoadingButton/LoadingButton';
 
 const ReportType = {
     SPAM: 'spam',
@@ -75,13 +76,12 @@ const ReportDialog = forwardRef((props, ref) => {
                     onChange={handleReportTextChange}
                     className='report-text'
                 />
-                <button onClick={onSubmit} disabled={isLoading} id="submit">
-                    {isLoading ? (
-                        <div className="loading-spinner"></div> // Assuming you have CSS for a spinner
-                    ) : (
-                        "Reportar"
-                    )}
-                </button>
+                <LoadingButton 
+                    text="Reportar"
+                    onClick={onSubmit}
+                    className="submit"
+                    isLoading={isLoading}
+                />
             </dialog>
         </>
     );

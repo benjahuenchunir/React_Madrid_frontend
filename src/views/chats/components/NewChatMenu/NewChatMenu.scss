@@ -17,14 +17,60 @@
     }
 
     .create-button {
-        margin-top: 80%;
+        width: 100%;
+        margin-top: 20%;
     }
 
-    .image-and-name-row {
-        margin-top: 20px;
+    label {
+        font-size: 12px;
+    }
+
+    .selected-users-preview {
         display: flex;
+        width: 100%;
+        overflow-x: hidden;
+        margin-top: 20px;
+        gap: 5px;
+
+        .user-container-small {
+            width: 40px;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: var(--primary-light-blue);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            .profile-picture {
+                border-radius: 50%;
+                width: 25px;
+                height: 25px;
+            }
+
+            p {
+                font-size: 12px;
+                margin: 0;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+        }
+
+        p {
+            font-size: 12px;
+        }
+    }
+
+
+    .image-and-name-row {
+        border-top: 1px solid #ffffff;
+        display: flex;
+        padding-top: 10px;
         align-items: center;
         gap: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
 
         .image-preview,
         .image-preview-placeholder {
@@ -52,7 +98,6 @@
         width: 100%;
         margin-top: 10px;
     }
-
 
     #btn-close,
     #btn-back {
@@ -82,25 +127,12 @@
     }
 
     #inner-content {
-        overflow-y: scroll;
         max-height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         box-sizing: border-box;
-
-        &::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        &::-webkit-scrollbar-thumb {
-            background: var(--secondary-black);
-        }
-
-        &::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
 
         .input-container {
             position: sticky;
@@ -123,6 +155,23 @@
                 &::placeholder {
                     color: var(--secondary-white);
                 }
+            }
+        }
+
+        .users-container {
+            overflow-y: scroll;
+            width: 100%;
+
+            &::-webkit-scrollbar {
+                width: 10px;
+            }
+    
+            &::-webkit-scrollbar-thumb {
+                background: var(--secondary-black);
+            }
+    
+            &::-webkit-scrollbar-thumb:hover {
+                background: #555;
             }
         }
 

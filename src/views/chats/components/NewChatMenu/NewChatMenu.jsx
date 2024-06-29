@@ -4,6 +4,7 @@ import { useAuth } from '../../../../auth/useAuth';
 import "../NewChatMenu/NewChatMenu.scss";
 import PropTypes from 'prop-types';
 import { ChatModes } from '../../constants';
+import LoadingButton from '../../../../components/LoadingButton/LoadingButton';
 
 const NewChatState = {
     NORMAL: 'normal',
@@ -11,7 +12,7 @@ const NewChatState = {
     CREATING_GROUP: 'creating_group'
 }
 
-const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
+const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM, onNewGroup }) => {
     const [state, setState] = useState(false)
     const [users, setUsers] = useState([]);
     const [filter, setFilter] = useState('');
@@ -24,6 +25,7 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
     const [chatMode, setChatMode] = useState(ChatModes.EVERYONE)
     const [imagePreviewUrl, setImagePreviewUrl] = useState('');
     const fileInputRef = useRef(null);
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -87,18 +89,10 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
                 let newChat = {};
                 if (user.id === idUser) {
                     newChat.name = 'Yo';
-                    newChat.users = [{
-                        id: user.id,
-                        role: 'owner'
-                    }];
                 } else {
                     newChat.name = user.name + ' ' + user.lastName;
                     newChat.users = [{
                         id: user.id,
-                        role: 'owner'
-                    },
-                    {
-                        id: idUser,
                         role: 'owner'
                     }
                     ];
@@ -147,23 +141,27 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
     };
 
     const onCreateClicked = async () => {
-        // try {
-        //     const newChat = {
-        //         name: 'Nuevo grupo',
-        //         users: selectedUsers.map(id => ({
-        //             id,
-        //             role: 'owner'
-        //         })),
-        //         imageUrl: null,
-        //         canSendMessage: true,
-        //         isCreatingDM: false
-        //     }
-        //     const chat = await api.post(`/chats`, newChat);
-        //     onDMReceived(chat.id);
-        //     onClose();
-        // } catch (error) {
-        //     console.error('Error:', error);
-        // }
+        if (!groupName) return;
+
+        try {
+            setIsLoading(true)
+            const formData = new FormData();
+            formData.append('name', groupName);
+            formData.append('users', JSON.stringify(selectedUsers.map(id => ({
+                id: id,
+                role: 'member'
+            }))));
+            formData.append('mode', chatMode)
+            formData.append('image', fileInputRef.current.files[0]);
+
+            const chat = await api.post(`/chats`, formData);
+            onNewGroup(chat)
+            onClose();
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -173,6 +171,18 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
             <div id="inner-content">
                 {state === NewChatState.CREATING_GROUP ? (
                     <>
+                        <div className="selected-users-preview">
+                            {selectedUsers.slice(0, 3).map(id => {
+                                const user = users.find(user => user.id === id);
+                                return (
+                                    <div key={id} className="user-container-small">
+                                        <img src={user.profilePictureUrl} className='profile-picture' />
+                                        <p>{user.name}</p>
+                                    </div>
+                                );
+                            })}
+                            {selectedUsers.length > 3 && <p>+{selectedUsers.length - 3} más</p>}
+                        </div>
                         <div className="image-and-name-row">
                             {imagePreviewUrl ? (
                                 <img src={imagePreviewUrl} alt="Group preview" className="image-preview" onClick={() => fileInputRef.current.click()} />
@@ -181,6 +191,7 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
                             )}
                             <input
                                 type="file"
+                                accept="image/*"
                                 className='input-group-image'
                                 onChange={handleImageChange}
                                 ref={fileInputRef}
@@ -193,15 +204,23 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
                                 className='input-group-name'
                             />
                         </div>
-                        <select value={chatMode} onChange={(event) => setChatMode(event.target.value)} className='report-type-selector'>
-                            {Object.entries(ChatModes).map(([key, value]) =>
-                                value !== ChatModes.DM && (
-                                    <option key={key} value={value}>
-                                        {value}
-                                    </option>)
-                            )}
-                        </select>
-                        <button className="create-button" onClick={onCreateClicked}> Crear grupo</button>
+                        <div>
+                            <label htmlFor="chatModeSelector">¿Quién puede mandar mensajes?</label>
+                            <select id="chatModeSelector" value={chatMode} onChange={(event) => setChatMode(event.target.value)} className='report-type-selector'>
+                                {Object.entries(ChatModes).map(([key, value]) =>
+                                    value !== ChatModes.DM && (
+                                        <option key={key} value={value}>
+                                            {value}
+                                        </option>)
+                                )}
+                            </select>
+                        </div>
+                        <LoadingButton
+                            text="Crear grupo"
+                            onClick={onCreateClicked}
+                            className="create-button"
+                            isLoading={isLoading}
+                        />
                     </>
                 ) : (
                     <>
@@ -214,23 +233,25 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM }) => {
                                 className='input-filter-users'
                             />
                         </div>
-                        {!(state === NewChatState.SELECTING_USERS) && <div onClick={() => setState(NewChatState.SELECTING_USERS)} className="user-container">
-                            <p>+ Crear grupo</p>
-                        </div>}
-                        {filteredUsers.map(user =>
-                            !(state === NewChatState.SELECTING_USERS && user.id === idUser) && (
-                                <div key={user.id} onClick={() => onUserClicked(user)} className="user-container">
-                                    <img src={user.profilePictureUrl} className='profile-picture' />
-                                    <p>{user.id === idUser ? 'Yo' : `${user.name} ${user.lastName}`}</p>
-                                    {state === NewChatState.SELECTING_USERS && <input
-                                        type="checkbox"
-                                        checked={selectedUsers.includes(user.id)}
-                                        className='user-selection-checkbox'
-                                        readOnly={true}
-                                    />}
-                                </div>)
+                        <div className="users-container">
+                            {!(state === NewChatState.SELECTING_USERS) && <div onClick={() => setState(NewChatState.SELECTING_USERS)} className="user-container">
+                                <p>+ Crear grupo</p>
+                            </div>}
+                            {filteredUsers.map(user =>
+                                !(state === NewChatState.SELECTING_USERS && user.id === idUser) && (
+                                    <div key={user.id} onClick={() => onUserClicked(user)} className="user-container">
+                                        <img src={user.profilePictureUrl} className='profile-picture' />
+                                        <p>{user.id === idUser ? 'Yo' : `${user.name} ${user.lastName}`}</p>
+                                        {state === NewChatState.SELECTING_USERS && <input
+                                            type="checkbox"
+                                            checked={selectedUsers.includes(user.id)}
+                                            className='user-selection-checkbox'
+                                            readOnly={true}
+                                        />}
+                                    </div>)
 
-                        )}
+                            )}
+                        </div>
                         {state === NewChatState.SELECTING_USERS && <button className="next-button" onClick={onNextClicked}> Siguiente</button>}
                     </>
                 )}
@@ -244,7 +265,8 @@ NewChatMenu.propTypes = {
     onClose: PropTypes.func.isRequired,
     buttonRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     onDMReceived: PropTypes.func.isRequired,
-    onNewDM: PropTypes.func.isRequired
+    onNewDM: PropTypes.func.isRequired,
+    onNewGroup: PropTypes.func.isRequired,
 }
 
 export default NewChatMenu;
