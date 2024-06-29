@@ -1,4 +1,4 @@
-#chat-details-container {
+#chat-container {
     display: flex;
     flex-direction: column;
     background-image: linear-gradient(var(--primary-blue), var(--primary-light-blue));
@@ -11,6 +11,7 @@
         color: var(--secondary-white);
         gap: 10px;
         padding-left: 10px;
+        cursor: pointer;
 
         .profile-pic {
             width: 50px;

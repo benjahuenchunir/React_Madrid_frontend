@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import './chats.scss';
 import ChatCard from './components/ChatCard/ChatCard';
-import ChatDetails from './ChatDetails';
+import Chat from './Chat';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { useAuth } from './../../auth/useAuth';
@@ -88,7 +88,7 @@ const Chats = () => {
                         />}
             </div>
             <div className={`chat-details ${!selectedChat && 'hide-on-mobile'}`}>
-                <ChatDetails
+                <Chat
                     chat={selectedChat}
                     onBack={() => setSelectedChat(null)}
                     onChatCreated={onChatCreated}
