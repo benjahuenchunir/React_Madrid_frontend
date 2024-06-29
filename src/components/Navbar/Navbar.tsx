@@ -58,11 +58,13 @@ function Navbar(): JSX.Element {
             <nav className="navbar">
                 <div className="left-nav-links">
                     <ul>
-                        {linkGroups[0].map((link, linkIndex) => (
-                            <li key={linkIndex}>
+                    {linkGroups[0].map((link, linkIndex) => (
+                        <li key={linkIndex}>
+                            {(link.to === '/chats' && !token) ? null : (
                                 <CustomNavLink to={link.to}>{link.text}</CustomNavLink>
-                            </li>
-                        ))}
+                            )}
+                        </li>
+                    ))}
                     </ul>
                 </div>
 
