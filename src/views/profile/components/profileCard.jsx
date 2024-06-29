@@ -13,7 +13,7 @@ const ProfileCard = ( {userProfile, logout, handleDeleteAccount}) => {
             <div className="profile-card">
                 <div className="card-content">
                     <div className="profile-details">
-                        <h1>{userProfile.name}</h1>
+                        <h1>{userProfile.name} {userProfile.last_name}</h1>
                         <h3>Email</h3>
                         <p>{userProfile.email}</p>
                         <h3>Teléfono</h3>

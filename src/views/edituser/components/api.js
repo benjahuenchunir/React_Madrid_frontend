@@ -1,3 +1,5 @@
+import {jwtDecode} from "jwt-decode";
+
 async function fetchData(url, options) {
     const response = await fetch(url, options);
     const clone = response.clone();
@@ -16,7 +18,7 @@ async function fetchData(url, options) {
 }
 
 
-export async function editUserToApi(form, selectedFile) {
+export async function editUserToApi(form, selectedFile, token) {
 
     const formData = new FormData();
     formData.append('name', form.name.value);
@@ -30,9 +32,16 @@ export async function editUserToApi(form, selectedFile) {
         console.log(pair[0]+ ', '+ pair[1]);
     }
 
-    const response = await fetchData(import.meta.env.VITE_BACKEND_URL + '/users/edit', {
+    let decodedToken = jwtDecode(token);
+    let userId = decodedToken.sub;
+
+    const response = await fetchData(import.meta.env.VITE_BACKEND_URL + '/users/' + userId, {
         method: 'PATCH',
         body: formData,
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+
     });
 
     return response;
@@ -41,8 +50,8 @@ export async function editUserToApi(form, selectedFile) {
 
 export const useFetchUser = () => {
 
-    const editUser = async (form, selectedFile) => {
-        const response = await editUserToApi(form, selectedFile);
+    const editUser = async (form, selectedFile, token) => {
+        const response = await editUserToApi(form, selectedFile, token);
         return response;
     };
 

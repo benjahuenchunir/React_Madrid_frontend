@@ -2,9 +2,11 @@ import './editForm.scss';
 import React, {useRef, useState} from "react";
 import { useFetchUser } from './api';
 import Notification from '../../../components/Notification/notification';
+import {useAuth} from "../../../auth/useAuth.js";
 
 const EditForm = () => {
     const [editUser] = useFetchUser();
+    const { token } = useAuth();
     const [selectedFile, setSelectedFile] = useState(null);
     const [notification, setNotification] = useState({ message: null, type: null});
     const [isNotificationVisible, setIsNotificationVisible] = useState(false);
@@ -17,7 +19,7 @@ const EditForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        let response = await editUser(event.target, selectedFile);
+        let response = await editUser(event.target, selectedFile, token);
         let { status, data } = response;
         console.log(status)
         console.log(data)
