@@ -19,6 +19,7 @@
     }
 
     .ship-container {
+        z-index: -1;
         position: relative;
         height: 50vh;
     }
@@ -97,13 +98,18 @@
     .fixed-bottom {
         position: absolute;
         bottom: 0;
-        width: 100vw;
+        right: 0;
+        width: 60vw;
         z-index: -1;
     }
 
     @media (max-width: 1024px) {
         .ship-container {
             height: 30vh;
+        }
+
+        .fixed-bottom {
+            width: 100vw;
         }
     }
 }
