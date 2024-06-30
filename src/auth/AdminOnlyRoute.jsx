@@ -1,14 +1,12 @@
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './useAuth';
-import { jwtDecode } from "jwt-decode";
 
 export const AdminOnlyRoute = ({ children }) => {
-    const { token } = useAuth();
+    const { token, scope } = useAuth();
 
     if (token) {
-        let decodedToken = jwtDecode(token);
-        if (!(decodedToken.scope == 'admin')) {
+        if (!(scope == 'admin')) {
             return <Navigate to="/chats" />;
         }
         return children;

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useApi } from '../../api';
+import { useApi } from '../../../../utils/api'
 import { useAuth } from '../../../../auth/useAuth';
 import "../NewChatMenu/NewChatMenu.scss";
 import PropTypes from 'prop-types';
@@ -17,8 +17,8 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM, onNewGroup }) 
     const [users, setUsers] = useState([]);
     const [filter, setFilter] = useState('');
     const containerRef = useRef()
-    const { token, idUser } = useAuth();
-    const api = useApi(token);
+    const { idUser } = useAuth();
+    const api = useApi();
     // For creating group
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [groupName, setGroupName] = useState('');
@@ -29,16 +29,16 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM, onNewGroup }) 
 
     useEffect(() => {
         const fetchUsers = async () => {
-            try {
-                const data = await api.get(`/users`);
+            const {status, data} = await api.get(`/users`);
+            if (status === 'success') {
                 setUsers(data);
-            } catch (error) {
-                console.error('Error:', error);
+            } else {
+                // TODO display notice
             }
         };
 
         fetchUsers();
-    }, [token]);
+    });
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -60,7 +60,6 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM, onNewGroup }) 
     };
 
     const handleUserSelectChange = (userId) => {
-        console.log("gola")
         setSelectedUsers(prevSelectedUsers =>
             prevSelectedUsers.includes(userId)
                 ? prevSelectedUsers.filter(id => id !== userId)
@@ -77,35 +76,33 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM, onNewGroup }) 
             handleUserSelectChange(user.id);
             return;
         }
-        try {
-            // Search for a DM that already has both users
-            const idChat = await api.get(`/chats/dms/${user.id}`);
-            onDMReceived(idChat);
+        // Search for a DM that already has both users
+        const { status, data } = await api.get(`/chats/dms/${user.id}`);
+        if (status === 'success') {
+            onDMReceived(data);
             onClose();
-        } catch (error) {
-            if (error.status === 404) {
-                // If the DM doesn't exist, create a new one
-                // Both users are owners of the chat
-                let newChat = {};
-                if (user.id === idUser) {
-                    newChat.name = 'Yo';
-                } else {
-                    newChat.name = user.name + ' ' + user.lastName;
-                    newChat.users = [{
-                        id: user.id,
-                        role: 'owner'
-                    }
-                    ];
-                }
-                newChat.imageUrl = user.profilePictureUrl;
-                newChat.canSendMessage = true;
-                newChat.isCreatingDM = true;
-
-                onNewDM(newChat);
-                onClose()
+        } else if (status === 404) {
+            // If the DM doesn't exist, create a new one
+            // Both users are owners of the chat
+            let newChat = {};
+            if (user.id === idUser) {
+                newChat.name = 'Yo';
             } else {
-                console.error(error);
+                newChat.name = user.name + ' ' + user.lastName;
+                newChat.users = [{
+                    id: user.id,
+                    role: 'owner'
+                }
+                ];
             }
+            newChat.imageUrl = user.profilePictureUrl;
+            newChat.canSendMessage = true;
+            newChat.isCreatingDM = true;
+
+            onNewDM(newChat);
+            onClose()
+        } else {
+            // TODO display notice
         }
     }
 
@@ -143,7 +140,6 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM, onNewGroup }) 
     const onCreateClicked = async () => {
         if (!groupName) return;
 
-        try {
             setIsLoading(true)
             const formData = new FormData();
             formData.append('name', groupName);
@@ -154,14 +150,15 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM, onNewGroup }) 
             formData.append('mode', chatMode)
             formData.append('image', fileInputRef.current.files[0]);
 
-            const chat = await api.post(`/chats`, formData);
-            onNewGroup(chat)
-            onClose();
-        } catch (error) {
-            console.error('Error:', error);
-        } finally {
+            const { status, data } = await api.post(`/chats`, formData);
+            if (status === 'success') {
+                onNewGroup(data)
+                onClose();
+            } else {
+                // TODO display notice
+            }
+            
             setIsLoading(false)
-        }
     }
 
     return (
@@ -251,6 +248,7 @@ const NewChatMenu = ({ onClose, buttonRef, onDMReceived, onNewDM, onNewGroup }) 
                                     </div>)
 
                             )}
+                            {filteredUsers.length === 0 && <div className="no-users">No se encontraron usuarios</div>}
                         </div>
                         {state === NewChatState.SELECTING_USERS && <button className="next-button" onClick={onNextClicked}> Siguiente</button>}
                     </>

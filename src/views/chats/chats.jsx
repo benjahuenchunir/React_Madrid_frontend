@@ -2,10 +2,8 @@ import { useEffect, useState, useRef } from 'react';
 import './chats.scss';
 import ChatCard from './components/ChatCard/ChatCard';
 import Chat from './Chat';
-import { jwtDecode } from 'jwt-decode';
-import axios from 'axios';
-import { useAuth } from './../../auth/useAuth';
 import NewChatMenu from './components/NewChatMenu/NewChatMenu'
+import { useApi } from '../../utils/api';
 
 const Chats = () => {
     const [chats, setChats] = useState([]);
@@ -13,30 +11,20 @@ const Chats = () => {
     const [selectedChat, setSelectedChat] = useState(null);
     const [isCreatingChat, setIsCreatingChat] = useState(false);
     const fabRef = useRef()
-    const { token } = useAuth();
+    const api = useApi();
 
     useEffect(() => {
-        let userId = null;
-        const decodedToken = jwtDecode(token);
-        userId = decodedToken.sub;
-
-        let config = {
-            method: 'get',
-            url: import.meta.env.VITE_BACKEND_URL + `/chats?userId=${userId}`,
-            headers: {
-                'Authorization': `Bearer ${token}`
+        const fetchChats = async () => {
+            const { status, data } = await api.get(`/chats`);
+            if (status === 'success') {
+                console.log(data);
+                setChats(data);
+            } else {
+                console.error('Error fetching chats:', data);
             }
         }
-        axios(config)
-            .then(response => {
-                setChats(response.data);
-                console.log(chats)
-            })
-            .catch(error => {
-                console.log('error', error)
-            });
-
-    }, [token]);
+        fetchChats();
+    }, []);
 
     const filteredChats = chats.filter(chat =>
         `${chat.name}`.toLowerCase().includes(searchQuery.toLowerCase())
@@ -66,6 +54,7 @@ const Chats = () => {
                             onClick={() => setSelectedChat(chat)}
                         />
                     ))}
+                    {filteredChats.length === 0 && <div className="no-chats">No se encontraron chats</div>}
                 </div>
                 <button className="fab" onClick={() => setIsCreatingChat(true)} ref={fabRef}>+</button>
                 {isCreatingChat &&

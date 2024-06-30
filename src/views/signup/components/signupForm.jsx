@@ -1,14 +1,14 @@
 import './signupForm.scss';
 import {useRef, useState} from "react";
-import { useFetchUser } from './api';
 import Notification from '../../../components/Notification/notification';
+import { useApi } from '../../../utils/api'
 
 const SignupForm = () => {
-  const [addUser] = useFetchUser();
   const [selectedFile, setSelectedFile] = useState(null);
   const [notification, setNotification] = useState({ message: null, type: null});
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const fileInputRef = useRef(null);
+  const api = useApi();
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -17,26 +17,23 @@ const SignupForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let response = await addUser(event.target, selectedFile);
-    let { status, data } = response;
-    console.log(status)
-    console.log(data)
 
-    let message = "";
-    if (typeof data === 'string') {
-      message = data;
-    } else {
-      message = data.message;
-    }
-  
-    if(status >= 200 && status < 300) {
+    const formData = new FormData();
+    formData.append('name', event.target.name.value);
+    formData.append('last_name', event.target.lastname.value);
+    formData.append('email', event.target.email.value);
+    formData.append('password', event.target.password.value);
+    formData.append('phone', event.target.phone.value);
+    formData.append('file', selectedFile);
+
+    const { status, data } = await api.post('/auth/signup', formData)
+    if (status === 'success') {
       event.target.reset();
       setSelectedFile(null);
-      setNotification({ message: message, type: 'success' });
+      setNotification({ message: data.message, type: 'success' });
       setIsNotificationVisible(true);
     } else {
-      console.error('Error al registrarse');
-      setNotification({ message: `Error al registrarse: ${message}`, type: 'error' });
+      setNotification({ message: `Error al registrarse: ${data}`, type: 'error' });
       setIsNotificationVisible(true);
     }
   }
@@ -78,7 +75,7 @@ const SignupForm = () => {
                         onClick={() => fileInputRef.current && fileInputRef.current.click()}>
                   Seleccione un archivo
                 </button>
-                <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange}/>
+                <input type="file" ref={fileInputRef} className='hidden' onChange={handleFileChange} accept="image/*"/>
               </>
             }
             {selectedFile && (

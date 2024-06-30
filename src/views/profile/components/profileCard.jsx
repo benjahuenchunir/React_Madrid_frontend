@@ -1,5 +1,4 @@
 import './profileCard.scss';
-import {Navigate} from "react-router-dom";
 
 const ProfileCard = ( {userProfile, logout, handleDeleteAccount}) => {
 

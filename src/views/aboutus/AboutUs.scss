@@ -4,7 +4,9 @@
     align-items: center;
     min-height: 100vh;
     height: auto;
-    background: linear-gradient(in oklab, var(--primary-blue), var(--primary-black));
+    color: var(--secondary-white);
+
+    background-image: linear-gradient(var(--primary-blue), var(--primary-dark-blue));
 
     * {
         margin: 0;
@@ -12,51 +14,120 @@
         box-sizing: border-box;
     }
 
-    .members {
-        justify-content: center;
+    .about-deepspace {
         display: flex;
-        flex-direction: row;
-        width: 100%;
+        margin-right: 40px;
+        gap: 80px;
+        
+
+        #title-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
+            margin-bottom: auto;
+            
+            #landing-title {
+                margin-top: 100px;
+                font-size: 4em;
+                margin-bottom: 0.1em;
+            }
+    
+            #landing-subtitle {
+                font-size: 1em;
+            }
+    
+            @media screen and (max-width: 600px) {
+                #landing-title {
+                    font-size: 2em;
+                }
+            }
+        }
+
+
+        img {
+            width: 50%;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
     }
 
-    .member {
+    .about-team-container {
+        background-color: var(--secondary-black);
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex: 1;
-        padding: 20px;
-        margin: 0 2rem 2rem 2rem;
-    }
+        padding: 30px;
+        gap: 20px;
+        padding-top: 40px;
+        border-radius: 5px;
+        margin-top: 80px;
+        margin-bottom: 80px;
+        margin-left: 100px;
 
-    .member-photo {
-        border-radius: 50%;
-        width: 250px;
-        height: 250px;
-        object-fit: cover;
-    }
+        .about-team-title {
+            font-size: 2em;
+            margin-top: 20px;
+        }
 
-    .photo-container {
-        text-align: center;
+        .members {
+            justify-content: center;
+            display: flex;
+        }
+    
+        .member {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            max-width: 100%;
+            margin: 0 2rem 2rem 2rem;
+            background-color: var(--primary-black);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    
+            .photo-container {
+                width: 100%;
+    
+                .member-photo {
+                    border-radius: 5px;
+                    width: 100%;
+                    height: 250px;
+                    height: 250px;
+                    min-width: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                }
+            }
+
+            .member-description {
+                text-align: justify;
+                font-size: 0.8em;
+                padding: 10px;
+            }
+        }
     }
 
     .about-content {
-        text-align: center;
-        margin: 0 2rem 2rem 2rem;
+        margin-top: 40px;
+        background-color: var(--secondary-black);
+        padding: 10px;
+        padding-left: 30px;
+        border-radius: 0px 5px 5px 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .aboutus-text {
-        font-family: 'Open Sans';
-        color: white;
-        font-size: 20px;
+        font-size: 1.1em;
         margin-top: 20px;
         margin-bottom: 2rem;
-        text-align: center;
+        text-align: justify;
+        padding-right: 20px;
     }
 
     .aboutus-title {
-        font-family: '29LT Bukra';
-        color: white;
-        font-size: 50px;
+        font-size: 2em;
         margin-top: 20px;
     }
 
@@ -80,15 +151,62 @@
     }
 
     .text-title {
-        text-align: center;
-        font-family: '29LT Bukra';
-        color: white;
+        // text-align: center;
         font-size: 20px;
     }
 
     @media (max-width: 1000px) {
+        .about-team-container {
+            flex-direction: column;
+            margin-left: 0;
+            padding: 20px;
+            margin-bottom: 0;
+        }
+    }
+
+    @media (max-width: 1100px) {
+        .about-deepspace {
+            flex-direction: column;
+            margin-right: 40px;
+            gap: 0;
+
+            img {
+                width: 200px;
+                right: 12%;
+            }
+        }
+    }
+
+    @media (max-width: 700px) {
+        .about-deepspace {
+            margin-right: 10px;
+        }
+
+        .about-team-container {
+            margin-right: 20px;
+            margin-bottom: 0;
+            margin-left: 0;
+            width: 100%;
+        }
+
+        
         .members {
             flex-direction: column;
+
+            .member {
+                max-width: 300px;
+            }
+
+            // .photo-container {
+            //     width: 80%;
+    
+            //     .member-photo {
+            //         border-radius: 5px;
+            //         object-fit: cover;
+            //         object-position: center;
+            //     }
+            // }
+
         }
     }
 }
