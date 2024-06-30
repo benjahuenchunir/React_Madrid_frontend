@@ -1,4 +1,5 @@
 import './AboutUs.scss';
+import { useState } from "react";
 import AccordionAbout from '../../components/AccordionAU/AccordionAbout.jsx'
 import pipet from '/face-members/pipet.jpg'
 import benja from '/face-members/benja.jpg'
@@ -6,6 +7,12 @@ import pipev from '/face-members/pipev.png'
 
 
 function AboutUs() {
+    const [isActive, setIsActive] = useState(false);
+
+    const toggleAccordion = () => {
+        setIsActive(!isActive);
+    };
+
     return (
         <div id="about-container">
             <div className="about-deepspace">
@@ -19,33 +26,43 @@ function AboutUs() {
                     <h2 id="landing-subtitle">La única aplicación de mensajería que necesitas</h2>
                 </div>
             </div>
-            <div className="members">
-                <div className="member">
-                    <div className="photo-container">
-                        <img src={benja} className="member-photo"></img>
+            <div className="about-team-container">
+                <h2 className="about-team-title">El equipo</h2>
+                <div className="members">
+                    <div className="member">
+                        <div className="photo-container">
+                            <img src={benja} className="member-photo"></img>
+                        </div>
+                        <AccordionAbout
+                            title="Benjamín Huenchuñir"
+                            text="Estudiante de tercer año de ingeniería de software con una ferviente pasión por el desarrollo móvil y web. Dedicado al backend, fusiona habilidades en diseño para concebir aplicaciones intuitivas y de alto rendimiento.
+                                "
+                            onClick={toggleAccordion}
+                            isActive={isActive}
+                        />
                     </div>
-                    <AccordionAbout
-                        title="Benjamín Huenchuñir"
-                        text="Estudiante de tercer año de ingeniería de software con una ferviente pasión por el desarrollo móvil y web. Dedicado al backend, fusiona habilidades en diseño para concebir aplicaciones intuitivas y de alto rendimiento.
-                              "/>
-                </div>
-                <div className="member">
-                    <div className="photo-container">
-                        <img src={pipet} className="member-photo"></img>
+                    <div className="member">
+                        <div className="photo-container">
+                            <img src={pipet} className="member-photo"></img>
+                        </div>
+                        <AccordionAbout
+                            title="Felipe Torres"
+                            text="Estudiante de cuarto año de Ingeniería de Software con un interés especial en data science y el aprendizaje automático. Ha sido ayudante de algunos cursos del DCC y le gusta crear código que ayuden a los demás."
+                            onClick={toggleAccordion}
+                            isActive={isActive} />
                     </div>
-                    <AccordionAbout
-                        title="Felipe Torres"
-                        text="Estudiante de cuarto año de Ingeniería de Software con un interés especial en data science y el aprendizaje automático. Ha sido ayudante de algunos cursos del DCC y le gusta crear código que ayuden a los demás." />
-                </div>
-                <div className="member">
-                    <div className="photo-container">
-                        <img src={pipev} className="member-photo"></img>
+                    <div className="member">
+                        <div className="photo-container">
+                            <img src={pipev} className="member-photo"></img>
+                        </div>
+                        <AccordionAbout
+                            title="Felipe Vidal"
+                            text="Estudiante de cuarto año de ingeniería de software con interés en Machine-Learning y desarrollo de software. Le gusta usar su experiencia en áreas como la docencia y el diseño para crear software más intuitivo y amigable."
+                            onClick={toggleAccordion}
+                            isActive={isActive} />
                     </div>
-                    <AccordionAbout
-                        title="Felipe Vidal"
-                        text="Estudiante de cuarto año de ingeniería de software con interés en Machine-Learning y desarrollo de software. Le gusta usar su experiencia en áreas como la docencia y el diseño para crear software más intuitivo y amigable." />
-                </div>
 
+                </div>
             </div>
 
         </div>
