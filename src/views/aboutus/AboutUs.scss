@@ -4,7 +4,7 @@
     align-items: center;
     min-height: 100vh;
     height: auto;
-    background: linear-gradient(in oklab, var(--primary-blue), var(--primary-black));
+    background-image: linear-gradient(var(--primary-blue), var(--primary-dark-blue));
 
     * {
         margin: 0;
@@ -12,11 +12,52 @@
         box-sizing: border-box;
     }
 
+    .about-deepspace {
+        display: flex;
+        margin-right: 40px;
+        gap: 80px;
+        
+
+        #title-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
+            margin-bottom: auto;
+            
+            #landing-title {
+                margin-top: 100px;
+                font-size: 4em;
+                margin-bottom: 0.1em;
+            }
+    
+            #landing-subtitle {
+                font-size: 1em;
+            }
+    
+            @media screen and (max-width: 600px) {
+                #landing-title {
+                    font-size: 2em;
+                }
+            }
+        }
+
+
+        img {
+            width: 50%;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    }
+
     .members {
         justify-content: center;
         display: flex;
         flex-direction: row;
         width: 100%;
+        margin-top: 80px;
     }
 
     .member {
@@ -24,39 +65,50 @@
         flex-direction: column;
         align-items: center;
         flex: 1;
-        padding: 20px;
+        max-width: 100%;
         margin: 0 2rem 2rem 2rem;
+        background-color: var(--secondary-black);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+        .photo-container {
+            width: 100%;
+
+            .member-photo {
+                border-radius: 5px;
+                width: 100%; // Ensures the image uses the full width of its container
+                max-height: 250px; // Sets a maximum height for the image
+                object-fit: cover; // Scales the image to cover the container, cropping it if necessary
+                object-position: center; // Optional: Adjusts the alignment of the image when cropped
+            }
+        }
     }
 
-    .member-photo {
-        border-radius: 50%;
-        width: 250px;
-        height: 250px;
-        object-fit: cover;
-    }
 
     .photo-container {
         text-align: center;
     }
 
     .about-content {
-        text-align: center;
-        margin: 0 2rem 2rem 2rem;
+        margin-top: 40px;
+        background-color: var(--secondary-black);
+        padding: 10px;
+        padding-left: 30px;
+        border-radius: 0px 5px 5px 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .aboutus-text {
         font-family: 'Open Sans';
         color: white;
-        font-size: 20px;
+        font-size: 1.1em;
         margin-top: 20px;
         margin-bottom: 2rem;
-        text-align: center;
     }
 
     .aboutus-title {
-        font-family: '29LT Bukra';
         color: white;
-        font-size: 50px;
+        font-size: 2em;
         margin-top: 20px;
     }
 
