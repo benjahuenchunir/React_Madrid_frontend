@@ -2,8 +2,6 @@
 
 * :pencil2: **Nombre Grupo:** React Madrid
 
-* :link: **Sitio Web:** https://musical-mandazi-5f256e.netlify.app/
-
 ## Descripción general :thought_balloon:
 
 - ¿De qué se tratará el proyecto?
