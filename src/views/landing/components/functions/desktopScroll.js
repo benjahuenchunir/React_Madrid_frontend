@@ -1,10 +1,13 @@
 export function handleScroll() {
-  var image = document.querySelector('.desktop-chat-scroll');
-  var scrollPosition = window.scrollY;
+  let image = document.querySelector('.desktop-chat-scroll');
+  let scrollPosition = window.scrollY;
+  let windowWidth = window.innerWidth;
+  let imageWidth = image.offsetWidth;
+  let centeredRightValueInPx = (windowWidth - imageWidth) / 2;
+  let centeredRightValue = centeredRightValueInPx / windowWidth * 100;
 
   // Calculate the right property based on the scroll position
-  var right = Math.min(Math.max(-40, -30 + scrollPosition / 20), 5);
-
+  let right = Math.min(Math.max(-40, -20 + scrollPosition / 20), centeredRightValue);
   // Apply the calculated right property to the image
   image.style.right = right + '%';
 }
